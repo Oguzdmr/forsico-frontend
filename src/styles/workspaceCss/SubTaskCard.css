@@ -1,0 +1,109 @@
+.subtask-container {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box; 
+    width: 100%;
+    border-radius: 15px;
+    border: 1px solid rgba(28, 60, 132, 0.5);
+    margin-top: 16px;
+    padding: 12px;
+    background-color: white;
+    opacity: 1;
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+  }
+  
+  .subtask-frame {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    gap: 12px;
+  }
+  
+  .subtask-content {
+    display: flex;
+    justify-content: space-between;
+    height: 32px;
+  }
+  
+  .subtask-title {
+    width: 175px;
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 18.15px;
+    text-align: left;
+    color: #ACACAC;
+  }
+  
+  .subtask-divider {
+    width: 268px;      
+    height: 1px;            
+    background-color: #F2F2F2;           
+  }
+  
+  .subtask-info-container {
+    display: flex;
+    justify-content: space-between; /* subtask-info ve subtask-stats'Ä± aynÄ± hizaya koyar */
+    align-items: center;
+    margin-top: 10px; /* Ä°steÄŸe baÄŸlÄ± olarak margin ayarlanabilir */
+  }
+  
+  .subtask-info {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .subtask-date {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 10px;
+    border-radius: 15px;
+    background-color: #E2E8F0;
+    color: #1C3C84;
+  }
+  
+  .mini-calendar-icon {
+    width: 16px;
+    height: 16px;
+    color: aqua;
+  }
+  
+  .date-text {
+    font-family: initial;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18.15px;
+  }
+  
+  .subtask-stats {
+    display: flex;
+    justify-content: flex-end; /* SaÄŸ tarafa hizalanÄ±r */
+    gap: 6px;
+  }
+  
+  .stat-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .stat-icon {
+    color: #1C3C84;
+  }
+  
+  .stat-text {
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 18.15px;
+    color: #1C3C84;
+  }
+  
+  .subtask-extra {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    justify-content: flex-end;
+  }
+  
