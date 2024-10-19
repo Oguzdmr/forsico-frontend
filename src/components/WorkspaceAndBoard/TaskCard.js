@@ -80,7 +80,7 @@ function TaskCard({ colIndex, taskIndex, color }) {
             <div className="stat-icon">
               <img src={fork} alt="Fork icon" />
             </div>
-            <div className="stat-text">8</div>
+            <div className="stat-text">{subtasks.length}</div> {/* Burayı güncelledik */}
           </div>
 
           <div className="stat-group">
@@ -98,7 +98,7 @@ function TaskCard({ colIndex, taskIndex, color }) {
       {/* Task footer: Subtasks'ı açmak için */}
       {hasSubtasks && ( // Alt görev varsa footer'ı göster
         <div className="task-footer" onClick={toggleSubtasks}>
-          <span className="footer-text">Subtasks</span>
+          <span className="footer-text"></span>
           <img src={isSubtasksVisible ? upArrow : downArrow} alt="Arrow icon" className="footer-icon" />
         </div>
       )}

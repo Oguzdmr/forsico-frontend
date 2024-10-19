@@ -1,127 +1,169 @@
 {
-    "boards": [
-      {
-        "name": "E-Ticaret Platformu",
-        "isActive": true,
-        "columns": [
-          {
-            "name": "To-do",
-            "tasks": [
-              {
-                "title": "Üyelik Sistemi UI Tasarımı Ve Npm Paket Yapısı",
-                "description": "",
-                "status": "TO-DO",
-                "subtasks": [
-                  {
-                    "title": "Kayıt Ol sayfası",
-                    "isCompleted": true
-                  },
-                  {
-                    "title": "Giriş Yap sayfası",
-                    "isCompleted": false
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Doing",
-            "tasks": [
-              {
-                "title": "Erp API Entegrasyonu",
-                "description": "",
-                "status": "Doing",
-                "subtasks": [
-                  {
-                    "title": "Ürün Ekleme API'si",
-                    "isCompleted": true
-                  },
-                  {
-                    "title": "Ürün Silme API'si",
-                    "isCompleted": false
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Done",
-            "tasks": [
-              {
-                "title": "İlk Prototip Testleri",
-                "description": "",
-                "status": "Done",
-                "subtasks": [
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Pazarlama Stratejisi",
-        "isActive": true,
-        "columns": [
-          {
-            "name": "Yapılacaklar",
-            "tasks": [
-              {
-                "title": "Sosyal Medya Kampanyası Planla",
-                "description": "",
-                "status": "Yapılacak",
-                "subtasks": [
-                  {
-                    "title": "Hedef Kitle Belirleme",
-                    "isCompleted": false
-                  },
-                  {
-                    "title": "İçerik Taslağı Hazırlama",
-                    "isCompleted": false
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Yapılıyor",
-            "tasks": []
-          },
-          {
-            "name": "Tamamlandı",
-            "tasks": []
-          }
-        ]
-      },
-      {
-        "name": "Gelecek Planı",
-        "isActive": true,
-        "columns": [
-          {
-            "name": "Şimdi",
-            "tasks": [
-              {
-                "title": "İlk Sürüm Yayını",
-                "description": "",
-                "status": "",
-                "subtasks": [
-                  {
-                    "title": "Ön Kayıt Listesine Özel Yayın",
-                    "isCompleted": false
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Sonraki",
-            "tasks": []
-          },
-          {
-            "name": "Daha Sonra",
-            "tasks": []
-          }
-        ]
-      }
-    ]
-  }
-  
+  "boards": [
+    {
+      "name": "E-Ticaret Platformu",
+      "isActive": true,
+      "columns": [
+        {
+          "name": "To-do",
+          "tasks": [
+            {
+              "title": "Üyelik Sistemi UI Tasarımı Ve Npm Paket Yapısı",
+              "description": "",
+              "status": "TO-DO",
+              "subtasks": [
+                {
+                  "title": "Kayıt Ol sayfası",
+                  "isCompleted": true
+                },
+                {
+                  "title": "Giriş Yap sayfası",
+                  "isCompleted": false
+                },
+                {
+                  "title": "Şifre Sıfırlama Sayfası",
+                  "isCompleted": false
+                }
+              ]
+            },
+            {
+              "title": "Ürün Yönetimi Arayüzü",
+              "description": "",
+              "status": "TO-DO",
+              "subtasks": [
+                {
+                  "title": "Ürün Listeleme",
+                  "isCompleted": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Doing",
+          "tasks": [
+            {
+              "title": "Erp API Entegrasyonu",
+              "description": "",
+              "status": "Doing",
+              "subtasks": [
+                {
+                  "title": "Ürün Ekleme API'si",
+                  "isCompleted": true
+                },
+                {
+                  "title": "Ürün Silme API'si",
+                  "isCompleted": false
+                },
+                {
+                  "title": "Ürün Güncelleme API'si",
+                  "isCompleted": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Done",
+          "tasks": [
+            {
+              "title": "İlk Prototip Testleri",
+              "description": "",
+              "status": "Done",
+              "subtasks": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pazarlama Stratejisi",
+      "isActive": true,
+      "columns": [
+        {
+          "name": "Yapılacaklar",
+          "tasks": [
+            {
+              "title": "Sosyal Medya Kampanyası Planla",
+              "description": "",
+              "status": "Yapılacak",
+              "subtasks": [
+                {
+                  "title": "Hedef Kitle Belirleme",
+                  "isCompleted": false
+                },
+                {
+                  "title": "İçerik Taslağı Hazırlama",
+                  "isCompleted": false
+                },
+                {
+                  "title": "Rekabet Analizi Yap",
+                  "isCompleted": false
+                }
+              ]
+            },
+            {
+              "title": "E-posta Pazarlama Kampanyası",
+              "description": "",
+              "status": "Yapılacak",
+              "subtasks": []
+            }
+          ]
+        },
+        {
+          "name": "Yapılıyor",
+          "tasks": []
+        },
+        {
+          "name": "Tamamlandı",
+          "tasks": []
+        }
+      ]
+    },
+    {
+      "name": "Gelecek Planı",
+      "isActive": true,
+      "columns": [
+        {
+          "name": "Şimdi",
+          "tasks": [
+            {
+              "title": "İlk Sürüm Yayını",
+              "description": "",
+              "status": "",
+              "subtasks": [
+                {
+                  "title": "Ön Kayıt Listesine Özel Yayın",
+                  "isCompleted": false
+                }
+              ]
+            },
+            {
+              "title": "Kullanıcı Geri Bildirim Toplama",
+              "description": "",
+              "status": "",
+              "subtasks": [
+                {
+                  "title": "Anket Hazırlama",
+                  "isCompleted": false
+                },
+                {
+                  "title": "Geri Bildirim Analizi",
+                  "isCompleted": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Sonraki",
+          "tasks": []
+        },
+        {
+          "name": "Daha Sonra",
+          "tasks": []
+        }
+      ]
+    }
+  ]
+}
