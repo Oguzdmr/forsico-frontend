@@ -4,9 +4,9 @@
   box-sizing: border-box;
   width: 100%;
   border-radius: 15px 15px 0 0;  /* Sadece üst köşeler yuvarlatıldı */
-  border-left: 1px solid rgba(28, 60, 132, 0.5); /* Sadece sol kenara border */
-  border-right: 1px solid rgba(28, 60, 132, 0.5); /* Sadece sağ kenara border */
-  border-top: 1px solid rgba(28, 60, 132, 0.5); /* Sadece alt kenara border */
+  border-left: 1px solid rgba(28, 60, 132, 0.5);
+  border-right: 1px solid rgba(28, 60, 132, 0.5);
+  border-top: 1px solid rgba(28, 60, 132, 0.5);
   margin-top: 16px;
   padding: 16px;
   background-color: white;
@@ -89,7 +89,6 @@
   margin-left: auto;
 }
 
-/* Yeni footer stili */
 .task-footer {
   display: flex;
   justify-content: space-between;
@@ -98,11 +97,24 @@
   padding: 10px;
   background-color: rgba(226, 232, 240, 0.5);
   border-radius: 0 0 15px 15px; /* Alt köşeleri yuvarlat */
-  border-left: 1px solid rgba(28, 60, 132, 0.5); /* Sadece sol kenara border */
-  border-right: 1px solid rgba(28, 60, 132, 0.5); /* Sadece sağ kenara border */
-  border-bottom: 1px solid rgba(28, 60, 132, 0.5); /* Sadece alt kenara border */
+  border-left: 1px solid rgba(28, 60, 132, 0.5);
+  border-right: 1px solid rgba(28, 60, 132, 0.5);
+  border-bottom: 1px solid rgba(28, 60, 132, 0.5);
   margin-top: 0; /* Footer, task-container'ın hemen altında */
 }
+
+/* Eğer alt görev yoksa footer'ı disable yap */
+.task-footer.disabled {
+  opacity: 0.5; /* Daha soluk görünüm */
+  pointer-events: none; /* Tıklanamaz hale getir */
+}
+
+/* Alt görev yoksa köşeleri yuvarlat */
+.task-container.no-subtasks {
+  border-bottom-left-radius: 15px; /* Alt sol köşeyi yuvarlat */
+  border-bottom-right-radius: 15px; /* Alt sağ köşeyi yuvarlat */
+}
+
 
 
 .footer-text {

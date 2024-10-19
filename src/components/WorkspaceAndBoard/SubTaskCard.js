@@ -7,21 +7,8 @@ import miniCalendar from '../../assets/mini-calendar.svg';
 import people from '../../assets/people-blue.svg';
 import flag from '../../assets/flag.svg';
 
-function SubTaskCard({ colIndex, taskIndex, color }) {
-  const boards = useSelector((state) => state.auth.boards);
-  const board = boards.find((board) => board.isActive === true);
-  const columns = board.columns;
-  const col = columns.find((col, i) => i === colIndex);
-  const task = col.tasks.find((task, i) => i === taskIndex);
+function SubTaskCard({ colIndex, taskIndex, subtask, color }) { // subtask'ı prop olarak alıyoruz
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-
-  let completed = 0;
-  let subtasks = task.subtasks;
-  subtasks.forEach((subtask) => {
-    if (subtask.isCompleted) {
-      completed++;
-    }
-  });
 
   const handleOnDrag = (e) => {
     e.dataTransfer.setData(
@@ -43,7 +30,7 @@ function SubTaskCard({ colIndex, taskIndex, color }) {
       >
         <div className="subtask-frame">
           <div className="subtask-content">
-            <p className="subtask-title">{task.title}</p>
+            <p className="subtask-title">{subtask.title}</p> {/* subtask başlığını kullanıyoruz */}
             <div className="subtask-extra">
               <img src={flag} alt="Flag icon" />
             </div>

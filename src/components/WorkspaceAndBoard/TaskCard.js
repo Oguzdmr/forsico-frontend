@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import TaskModal from "./TaskModal";
+import SubTaskCard from "./SubTaskCard";
 import '../../styles/workspaceCss/TaskCard.css';
 import { useSelector } from "react-redux";
 
@@ -9,6 +10,7 @@ import fork from '../../assets/fork-blue.svg';
 import people from '../../assets/people-blue.svg';
 import flag from '../../assets/flag.svg';
 import downArrow from '../../assets/down-arrow.svg';
+import upArrow from '../../assets/up-arrow.svg';
 
 function TaskCard({ colIndex, taskIndex, color }) {
   const boards = useSelector((state) => state.auth.boards);
@@ -17,6 +19,7 @@ function TaskCard({ colIndex, taskIndex, color }) {
   const col = columns.find((col, i) => i === colIndex);
   const task = col.tasks.find((task, i) => i === taskIndex);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isSubtasksVisible, setIsSubtasksVisible] = useState(false);
 
   let completed = 0;
   let subtasks = task.subtasks;
@@ -33,6 +36,12 @@ function TaskCard({ colIndex, taskIndex, color }) {
     );
   };
 
+  const toggleSubtasks = () => {
+    setIsSubtasksVisible(!isSubtasksVisible);
+  };
+
+  const hasSubtasks = subtasks.length > 0; // Alt görevlerin varlığını kontrol et
+
   return (
     <div>
       <div
@@ -41,8 +50,8 @@ function TaskCard({ colIndex, taskIndex, color }) {
         }}
         draggable
         onDragStart={handleOnDrag}
-        className="task-container"
-        style={{ borderColor: color }} // Use the passed color here
+        className={`task-container ${!hasSubtasks ? 'no-subtasks' : ''}`} // Alt görev yoksa sınıf ekle
+        style={{ borderColor: hasSubtasks ? color : 'rgba(28, 60, 132, 0.2)' }} // Border'ı pasif yap
       >
         <div className="task-frame">
           <div className="task-content">
@@ -86,11 +95,28 @@ function TaskCard({ colIndex, taskIndex, color }) {
         </div>
       </div>
 
-      {/* Task container'ın altına eklenen footer */}
-      <div className="task-footer">
-        <span className="footer-text"></span>
-        <img src={downArrow} alt="Extra icon" className="footer-icon" />
-      </div>
+      {/* Task footer: Subtasks'ı açmak için */}
+      {hasSubtasks && ( // Alt görev varsa footer'ı göster
+        <div className="task-footer" onClick={toggleSubtasks}>
+          <span className="footer-text">Subtasks</span>
+          <img src={isSubtasksVisible ? upArrow : downArrow} alt="Arrow icon" className="footer-icon" />
+        </div>
+      )}
+
+      {/* Subtask'ları göstermek için */}
+      {isSubtasksVisible && (
+        <div className="subtasks-container">
+          {subtasks.map((subtask, index) => (
+            <SubTaskCard
+              key={index}
+              colIndex={colIndex}
+              taskIndex={taskIndex}
+              subtask={subtask}
+              color={color}
+            />
+          ))}
+        </div>
+      )}
 
       {isTaskModalOpen && (
         <TaskModal

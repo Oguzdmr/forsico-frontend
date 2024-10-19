@@ -52,10 +52,6 @@
                 "description": "",
                 "status": "Done",
                 "subtasks": [
-                  {
-                    "title": "5 Kullanıcı ile Test",
-                    "isCompleted": true
-                  }
                 ]
               }
             ]
