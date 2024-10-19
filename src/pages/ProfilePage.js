@@ -3,6 +3,7 @@ import '../styles/profilepage.css';
 import Authentication from '../api/AuthApi/authentication.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCredentials } from '../store/authSlice';
+import EditRightArrow from "../assets/edit-profile-right-arrow.svg"
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -52,21 +53,19 @@ const Profile = () => {
                 </div>
                 <div className='edit-profile-form'>
                     <div className='edit-profile-image-area'>
-                        <div >
-                            <img
-                                className='edit-profile-image'
-                                src={profile.profileImage}
-                                alt="Profile"
-                                onClick={handleImageClick} // Trigger file input on image click
-                                style={{ cursor: 'pointer' }}
-                            />
-                            <input
-                                type="file"
-                                ref={fileInputRef} // Associate the input with the ref
-                                onChange={handleImageChange}
-                                style={{ display: 'none' }} // Hide the file input
-                            />
-                        </div>
+                        <img
+                            className='edit-profile-image'
+                            src={profile.profileImage}
+                            alt=""
+                            onClick={handleImageClick} // Trigger file input on image click
+                            style={{ cursor: 'pointer' }}
+                        />
+                        <input
+                            type="file"
+                            ref={fileInputRef} // Associate the input with the ref
+                            onChange={handleImageChange}
+                            style={{ display: 'none' }} // Hide the file input
+                        />
                         <div className='btn-area'>
                             <button
                                 className='image-area-edit-btn'
@@ -80,19 +79,25 @@ const Profile = () => {
 
                     <div className='edit-profile-form-area'>
                         <div className='account-settings'>
-                            <p className='gray-letter'>Account settings</p>
-                            <h3 onClick={() => setEditProfileOpen(!editProfileOpen)}>
-                                Edit profile
-                            </h3>
+                            <p className='gray-letter fs-18'>Account settings</p>
+                            <div className='editprofile-line'></div>
+                            <div className='edit-profile-area' onClick={() => setEditProfileOpen(!editProfileOpen)}>
+                                <h3 className='edit-profile-h3 fs-18'>
+                                    Edit profile
+                                </h3>
+                                <img src={EditRightArrow} alt="" />
+                            </div>
                             {editProfileOpen && (
                                 <div className='edit-profile-fields'>
                                     <input
+                                        className='edit-profile-input'
                                         type="text"
                                         placeholder="User name"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
                                     />
                                     <input
+                                        className='edit-profile-input'
                                         type="text"
                                         placeholder="Full name"
                                         value={`${profile.firstName} ${profile.lastName}`}
@@ -105,12 +110,14 @@ const Profile = () => {
                                         }
                                     />
                                     <input
+                                        className='edit-profile-input'
                                         type="email"
                                         placeholder="e-mail address"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
                                     <input
+                                        className='edit-profile-input'
                                         type="date"
                                         placeholder="Birthday"
                                         value={profile.birthDate}
@@ -118,16 +125,23 @@ const Profile = () => {
                                             setProfile({ ...profile, birthDate: e.target.value })
                                         }
                                     />
-                                    <button onClick={() => {/* Update profile logic */ }}>Update</button>
+                                    <button className='editprofile-update-button' onClick={() => {/* Update profile logic */ }}>Update</button>
                                 </div>
                             )}
+                            <div className='editprofile-line'></div>
 
-                            <h3 onClick={() => setChangePasswordOpen(!changePasswordOpen)}>
-                                Change password
-                            </h3>
+
+                            <div className='edit-profile-area' onClick={() => setChangePasswordOpen(!changePasswordOpen)}>
+                                <h3 className='edit-profile-h3 fs-18'>
+                                    Change password
+                                </h3>
+                                <img src={EditRightArrow} alt="" />
+                            </div>
+
                             {changePasswordOpen && (
                                 <div className='change-password-fields'>
                                     <input
+                                        className='edit-profile-input'
                                         type="password"
                                         name="oldPassword"
                                         placeholder="Old Password"
@@ -137,6 +151,7 @@ const Profile = () => {
                                         }
                                     />
                                     <input
+                                        className='edit-profile-input'
                                         type="password"
                                         name="newPassword"
                                         placeholder="New Password"
@@ -146,6 +161,7 @@ const Profile = () => {
                                         }
                                     />
                                     <input
+                                        className='edit-profile-input'
                                         type="password"
                                         name="confirmPassword"
                                         placeholder="Confirm Password"
@@ -154,22 +170,37 @@ const Profile = () => {
                                             setPassword({ ...password, [e.target.name]: e.target.value })
                                         }
                                     />
-                                    <button onClick={() => {/* Update password logic */ }}>Update</button>
+                                    <button className='editprofile-update-button' onClick={() => {/* Update password logic */ }}>Update</button>
                                 </div>
                             )}
+                                                        <div className='editprofile-line'></div>
+
 
                             <div className='push-notifications'>
-                                <label>Push notifications</label>
-                                <label className="switch">
-                                    <input type="checkbox" />
+                                <label className='fs-18'>Push notifications</label>
+                                <label className="toggle">
+                                    <input className='push-notification-input' type="checkbox" />
                                     <span className='slider round'></span>
                                 </label>
                             </div>
 
                             <div className='more'>
-                                <p className='gray-letter'>More</p>
-                                <h4>Privacy policy</h4>
-                                <h4>Terms and conditions</h4>
+                                <div>
+                                    <span className='edit-profile-p gray-letter fs-18'>More</span>
+                                    <div className='editprofile-line'></div>
+
+                                </div>
+                                
+                                <div className='privacy-policy-title'>
+                                    <h4 className='fs-18'>Privacy policy</h4>
+                                    <img src={EditRightArrow} alt="" />
+                                </div>
+                                <div className='terms-and-conditions-title'>
+                                    <h4 className='fs-18'>Terms and conditions</h4>
+                                    <img src={EditRightArrow} alt="" />
+
+                                </div>
+
                             </div>
                         </div>
                     </div>

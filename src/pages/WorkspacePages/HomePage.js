@@ -7,6 +7,7 @@ import HomePagePen from "../../assets/homepage-pen-icon.svg"
 import Member1 from "../../assets/alper.jpeg"
 import Member2 from "../../assets/furkan.jpeg"
 import Member3 from "../../assets/murat.jpeg"
+import PieChart from "../PieChart";
 
 const HomePage = () => {
     const [workspaces] = useState([
@@ -68,7 +69,7 @@ const HomePage = () => {
                                 </div>
                             </div>
                             <div className="general-info-middleside">
-                                <img className="graphic" src={Graphic} alt="graphic" />
+                                <PieChart/>
                             </div>
                             <div className="general-info-rightside">
                                 <div className="rightside-elements">

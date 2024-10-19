@@ -3,6 +3,8 @@
 /* Main layout */
 
 .profile-page-main-div{
+
+    font-family: sans-serif;
     margin: 1rem;
     width: 100%;
     display: flex;
@@ -39,9 +41,8 @@
 .edit-profile-image-area .edit-profile-image {
     width: 150px;
     height: 150px;
-    border-radius: 50%;
+    border-radius: 75px;
     background-color:#EFEFEF;
-    cursor: pointer;
 }
 
 .edit-profile-image-area .image-area-edit-btn,.image-area-delete-btn {
@@ -51,7 +52,7 @@
     color: white;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 20px;
     width: 76px;
     height: 40px;
 }
@@ -68,6 +69,7 @@
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    margin-top: 1rem;
 }
 /* Account settings area */
 .edit-profile-form-area {
@@ -75,21 +77,19 @@
     max-width: 500px;
 }
 
-.account-settings h3 {
+.account-settings .edit-profile-h3 {
     font-size: 18px;
     margin: 15px 0;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
 }
 
-.account-settings h3::after {
-    content: '>';
-    margin-left: auto;
-    font-size: 18px;
+.account-settings{
+    margin-top: 1rem;
 }
+
 
 
 .edit-profile-fields,
@@ -100,30 +100,32 @@
     margin-bottom: 20px;
 }
 
-.edit-profile-fields input,
-.change-password-fields input {
+.edit-profile-input{
     margin-bottom: 10px;
     padding: 10px;
     font-size: 16px;
     width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1.5px solid rgba(109, 109, 109, 1);
+    border-radius: 15px;
     box-sizing: border-box;
 }
 
-.edit-profile-fields button,
-.change-password-fields button {
+.edit-profile-fields .editprofile-update-button,
+.change-password-fields .editprofile-update-button {
+    width: 110px;
+    height: 40px;
+    align-self: flex-end;
     padding: 10px;
     background-color: #00c2ff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
 }
 
-.edit-profile-fields button:hover,
-.change-password-fields button:hover {
-    background-color: #00a0cc;
+.edit-profile-fields .editprofile-update-button:hover,
+.change-password-fields .editprofile-update-button:hover {
+    background-color: rgba(94, 208, 243, 1);
 }
 
 /* Push notifications */
@@ -134,24 +136,53 @@
     padding: 15px 0;
 }
 
-.push-notifications label {
+.push-notifications .toggle {
     font-size: 16px;
 }
 
-.push-notifications input[type="checkbox"] {
+.push-notifications .push-notification-input[type="checkbox"] {
     width: 20px;
     height: 20px;
 }
 
 /* More options */
 .more {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
     margin-top: 20px;
 }
 
-.more p {
+.more .edit-profile-p {
     font-size: 14px;
     cursor: pointer;
     padding: 10px 0;
+}
+
+.privacy-policy-title,.terms-and-conditions-title{
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit-profile-area{
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.fs-18{
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.editprofile-gray-letter{
+    color: rgba(204, 204, 204, 1);
+}
+
+.editprofile-line{
+    width: 100%;
+    border-bottom: 1px solid rgba(173, 173, 173, 1);
+    margin-top: 10px;
 }
 
 
