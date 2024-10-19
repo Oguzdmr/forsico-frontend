@@ -21,14 +21,6 @@ const AppRoutes = () => {
         <Route path="/confirmEmail" element={<ConfirmEmailPage />} />
         <Route path="/thirdpartylogin" element={<ThirdPartyLogin />} />
         <Route
-          path="/taskboardhomepage"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
           path="/confirmchangeemail"
           element={<ConfirmEmailUpdatePage />}
         />

@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.4",
     "crypto-js": "^4.2.0",
+    "express": "^4.21.1",
     "formik": "^2.4.6",
     "npm-forsico-ui": "^1.0.19",
     "quill": "^2.0.2",
@@ -21,9 +22,11 @@
     "react-router-dom": "^6.26.1",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
+    "redis": "^4.7.0",
     "redux": "^5.0.1",
     "tailwind-scrollbar-hide": "^1.1.7",
     "web-vitals": "^2.1.4",
+    "ws": "^8.18.0",
     "yup": "^1.4.0"
   },
   "scripts": {

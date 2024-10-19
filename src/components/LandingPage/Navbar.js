@@ -148,15 +148,67 @@ const Navbar = () => {
             </div>
 
             <div className="navbar-notification-button">
-              <button className="notification">
+              <input id="notification-dropdown-toggler" type="checkbox"></input>
+              <label htmlFor="notification-dropdown-toggler">
                 <img src={HasNotificationIcon}></img>
                 {/*TODO add no notification svg with if check from notificationState*/}
-              </button>
+              </label>
+              <div className="notification-dropdown">
+                <li>
+                  <div className="notification-container">
+                    <div className="notification-header">
+                      <img
+                        className="notification-image"
+                        src={userInfo?.profilePictureUrl}
+                      ></img>
+                      <div className="notification-header-text">
+                         Alperen Yurtseven created a new task : Lütfen Projeyi Bitirelim!
+                      </div>
+                    </div>
+                    <div className="notification-content">
+
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div className="notification-container">
+                    <div className="notification-header">
+                      <img
+                        className="notification-image"
+                        src={userInfo?.profilePictureUrl}
+                      ></img>
+                      <div className="notification-header-text">
+                         Alperen Yurtseven created a new task : Lütfen Projeyi Bitirelim!
+                      </div>
+                    </div>
+                    <div className="notification-content">
+                        Lütfen açar mısınız efendim kapıyı ?
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div className="notification-container">
+                    <div className="notification-header">
+                      <img
+                        className="notification-image"
+                        src={userInfo?.profilePictureUrl}
+                      ></img>
+                      <div className="notification-header-text">
+                         Alperen Yurtseven created a new task : Lütfen Projeyi Bitirelim!
+                      </div>
+                    </div>
+                    <div className="notification-content">
+                       Sayın Bezmenler!
+                    </div>
+                  </div>
+                </li>
+                 
+              </div>
             </div>
 
-            <div className="profile-button">
+            <div className="navbar-profile-button">
               <input id="profile-dropdown-toggler" type="checkbox"></input>
-              <label for="profile-dropdown-toggler">
+              <label htmlFor="profile-dropdown-toggler">
                 <img
                   className="navbar-profile-image"
                   src={userInfo?.profilePictureUrl || ""}
