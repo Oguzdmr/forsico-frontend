@@ -104,7 +104,7 @@ class Workspace {
     }
   }
 
-  async updateWorkspace(token, workspaceId, name) {
+  async updateWorkspace(token, workspaceId, name, description) {
     const myHeaders = new Headers();
     myHeaders.append("x-workspace-id", workspaceId);
     myHeaders.append("Content-Type", "application/json");
@@ -112,6 +112,7 @@ class Workspace {
 
     const raw = JSON.stringify({
       name: name,
+      description: description
     });
 
     const requestOptions = {

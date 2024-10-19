@@ -1,23 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../styles/workspaceCss/workspaceAi.css';
-import Sidebar from "../SideBar";
-import Navbar from "../../components/LandingPage/Navbar";
 import WorkspaceTitleİcon from "../../assets/workspaceAi-title-icon.svg"
 import Tickİcon from "../../assets/ai-message-tick-icon.svg"
 import Crossİcon from "../../assets/ai-message-cross-icon.svg"
+import { useParams } from 'react-router-dom';
+import WorkspaceApi from '../../api/BoardApi/workspace.js';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWorkspaces } from "../../store/workspaceSlice";
 
 
 const WorkspaceAIPage = () => {
-    const [workspaceName, setWorkspaceName] = useState('Workspace Name');
-    const [description, setDescription] = useState('Description');
+    const { workspaceId} = useParams();
+    const [workspaceIdState, setWorkspaceIdState] = useState(null)
+    const [workspaceName, setWorkspaceName] = useState('New Workspace');
+    const [description, setDescription] = useState('New Workspace Desc');
     const [isEditingName, setIsEditingName] = useState(false);
     const [isEditingDescription, setIsEditingDescription] = useState(false);
     const [workspaceDescription, setWorkspaceDescription] = useState('');
+    const dispatch = useDispatch();
+    const token = useSelector((state) => {
+        return state.auth.token.token || {};
+      });
+    
+    const workspaceApi = new WorkspaceApi();
+
     const [tasks, setTasks] = useState([
         { id: 1, name: 'Create design system for Forsico', tags: ['ui design', 'marketing'] },
         { id: 2, name: 'Create content strategy for Forsico', tags: ['content', 'marketing'] }
     ]);
 
+    useEffect(async () => {
+        if(workspaceId === "new"){
+            let response = await workspaceApi.createWorkspace(token,workspaceName,description);
+            console.log(response);
+            if(response.status === true){
+                setWorkspaceIdState(response.data._id);
+                dispatch(fetchWorkspaces());
+            }
+            
+        }
+    },[workspaceId])
     // Workspace adı değişikliği
     const handleNameChange = (e) => {
         setWorkspaceName(e.target.value);
@@ -27,7 +49,12 @@ const WorkspaceAIPage = () => {
         setIsEditingName(true);
     };
 
-    const handleNameSaveClick = () => {
+    const handleNameSaveClick = async () => {
+        let response = await workspaceApi.updateWorkspace(token, workspaceIdState, workspaceName, description);
+            console.log(response);
+            if(response.status === true){
+                dispatch(fetchWorkspaces());
+            }
         setIsEditingName(false);
     };
 
@@ -40,7 +67,13 @@ const WorkspaceAIPage = () => {
         setIsEditingDescription(true);
     };
 
-    const handleDescriptionSaveClick = () => {
+    const handleDescriptionSaveClick = async () => {
+        let response = await workspaceApi.updateWorkspace(token, workspaceIdState, workspaceName, description);
+            console.log(response);
+            if(response.status === true){
+                dispatch(fetchWorkspaces());
+            }
+        setIsEditingName(false);
         setIsEditingDescription(false);
     };
 

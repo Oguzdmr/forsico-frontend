@@ -56,7 +56,7 @@ const LoginModal = ({ onClose, signUp, forgotPassword }) => {
             );
 
             onClose();
-            navigate('/workspace/mainpage');
+            navigate('/workspaces/home');
         } else {
             setErrorMessage(response.errors[0].errorMessage);
         }

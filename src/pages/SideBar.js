@@ -8,6 +8,7 @@ import SidebarMyDocs from "../assets/sidebar-docs-icon.svg";
 import SidebarPlus from "../assets/sidebar-plus-icon.svg";
 import SidebarDot from "../assets/sidebar-dot-icon.svg";
 import { fetchWorkspaces } from "../store/workspaceSlice";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   // State to track which workspace dropdown is open
@@ -52,13 +53,12 @@ const Sidebar = () => {
       <div className="sidebar-menu">
         <img className="sidebar-home-icon" src={SidebarHome} alt="home" />
         {/* <Link className="sidebar-home sidebar-blue-letter" to="/taskboardhomepage">Home</Link> */}
-        <a
+        <Link
+          to="/workspaces/home"
           className="sidebar-home sidebar-blue-letter"
-          type="button"
-          onClick={() => handleClick("home-page")}
         >
           Home
-        </a>
+        </Link>
       </div>
       <div className="sidebar-menu">
         <img className="sidebar-tasks-icon" src={SidebarMyTasks} alt="tasks" />
@@ -74,13 +74,12 @@ const Sidebar = () => {
 
       <div className="sidebar-workspaces">
         <span className="add-workspace">WORKSPACES</span>
-        <a
+        <Link
+          to="/workspaces/ai/new"
           className="sidebar-plus-icon"
-          type="button"
-          onClick={() => handleClick("workspace-ai")}
         >
           <img className="sidebar-home-icon" src={SidebarPlus} alt="plus" />
-        </a>
+        </Link>
       </div>
 
       {entities?.map((entity, index) => (
@@ -101,10 +100,10 @@ const Sidebar = () => {
           {openDropdown[entity.name] && (
             <div className="sidebar-submenu">
               {entity.boards.map((board, index) => (
-                <a
+                <Link
                   key={index}
-                  type="button"
-                  onClick={() => handleClick("board-page")}
+                  to={"/workspaces/board/" + entity._id +"/"+board._id}
+                  style={{textDecoration:"none"}}
                 >
                   <span className="sidebar-blue-letter">
                     <img
@@ -114,7 +113,7 @@ const Sidebar = () => {
                     />
                     {board?.name}
                   </span>
-                </a>
+                </Link>
               ))}
             </div>
           )}
