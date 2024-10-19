@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import '../../styles/workspaceCss/homepage.css'; // CSS dosyasını ayrı tutuyoruz
-import Sidebar from '../SideBar';
-import Navbar from '../../components/LandingPage/Navbar';
-import Graphic from "../../assets/workspacehomepage-graphic.svg"
 import HomePagePen from "../../assets/homepage-pen-icon.svg"
 import Member1 from "../../assets/alper.jpeg"
 import Member2 from "../../assets/furkan.jpeg"
 import Member3 from "../../assets/murat.jpeg"
 import DoughnutChart from "../DoughnutChart";
 import BarChart from "../BarChart";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const HomePage = () => {
-    const [workspaces] = useState([
+    const [workspaces, setWorkspaces] = useState([
         {
             name: "Forsico",
             sections: [
@@ -22,21 +20,17 @@ const HomePage = () => {
                 { id: "socialmedia", name: "Social Media", members: 8 },
             ]
         },
-        {
-            name: "Startup",
-            sections: [
-                { id: "general", name: "General", members: 5, },
-                { id: "uxui", name: "UX/UI", members: 8, },
-                { id: "software", name: "Software", members: 8 },
-            ]
-        },
-        {
-            name: "Enefitimbu",
-            sections: [
-                { id: "general", name: "General", members: 8, },
-            ]
-        }
+        
     ]);
+
+    const {
+        entities,
+        status = "idle",
+        error,
+      } = useSelector((state) => {
+
+        return state.workspaces || {};
+      });
 
     return (
         <>
@@ -83,16 +77,16 @@ const HomePage = () => {
                                 <span className="workspacearea-title blue-letter">Your workspaces</span>
                             </div>
 
-                            {workspaces.map((workspace, index) => (
+                            {entities.map((workspace, index) => (
                                 <div key={index} className="workspace">
                                     <span className="workspace-title blue-letter">{workspace.name}</span>
                                     <div className="workspace-sections">
-                                        {workspace.sections.map(section => (
-                                            <div key={section.id} className="workspace-card">
+                                        {workspace.boards.map(board => (
+                                            <div key={board._id} className="workspace-card">
                                                 <div className="workspace-card-upperside">
-                                                    <span className="workspace-card-title gray-letter">{section.name}</span>
+                                                    <span className="workspace-card-title gray-letter">{board.name}</span>
                                                     <span className="workspace-card-icon">
-                                                        <img src={HomePagePen} alt={section.name} />
+                                                        <img src={HomePagePen} alt={board.name} />
                                                     </span>
                                                 </div>
                                                 <div className="workspace-card-middleside">
@@ -101,11 +95,13 @@ const HomePage = () => {
                                                 <div className="workspace-card-lowerside">
                                                     <div className="members-image">
                                                         {/* Placeholder for member images */}
-                                                        <img className="member-image" src={Member1} alt="member" />
-                                                        <img className="member-image" src={Member2} alt="member" />
-                                                        <img className="member-image" src={Member3} alt="member" />
+                                                        {board.members.map((member)=>(
+                                                            <img className="member-image" src={member.profilePicture} alt="member" />
+                                                        ))}
+                                                        
+                                                        
                                                     </div>
-                                                    <span className="total-members">+{section.members}</span>
+                                                    <span className="total-members">+{board.members.length}</span>
                                                 </div>
                                             </div>
                                         ))}
