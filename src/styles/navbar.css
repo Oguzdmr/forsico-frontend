@@ -1,4 +1,4 @@
-.navbar{
+.navbar {
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -24,17 +24,17 @@
     justify-content: center;
     width: 154px;
     height: 53px;
-    gap: 0px;    
+    gap: 0px;
 }
 
-.navbar-leftside{
+.navbar-leftside {
     display: inline-flex;
     justify-content: center;
     align-items: center;
     gap: 35px;
 }
 
-.navbar .navbar-leftside .leftside-buttons{
+.navbar .navbar-leftside .leftside-buttons {
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
@@ -43,10 +43,10 @@
     border: none;
     border-radius: 25%;
 
-    
+
 }
 
-.navbar .navbar-rightside{
+.navbar .navbar-rightside {
     width: 50%;
     display: flex;
     justify-content: flex-end;
@@ -58,16 +58,119 @@
     background-color: transparent;
 }
 
-.navbar-rightside .navbar-demo-button{
+.navbar-rightside .navbar-demo-button {
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
 }
 
-.go-profile{
-    text-decoration: none;
+.navbar-search-bar {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-right: 7.5%;
+}
+
+.navbar-search-bar .input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 400px; 
+  }
+
+.navbar-search-bar .navbar-search-input {
+    width: 400px;
+    height: 40px;
+    border-radius: 25px;
+    background-color: transparent;
     color: white;
+    padding: 0px 12px 0px 40px;
+    border: 2px solid white;
+}
+
+.navbar-notification-button .notification {
+    background-color: transparent;
+    border: 0;
+}
+
+.navbar-search-bar .navbar-search-input:focus {
+    outline: none;
+    outline-width: none;
+}
+
+.navbar-search-bar .navbar-search-input::placeholder {
+    color: #94A3B8;
+}
+
+.navbar-search-bar .navbar-search-input::-ms-input-placeholder {
+    color: #94A3B8
+}
+
+.profile-button .navbar-profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 70px;
+}
+
+.profile-button #profile-dropdown-toggler {
+    opacity: 0;
+    pointer-events: none;
+    touch-action: none;
+    display: none;
+}
+
+.profile-button .profile-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    flex-direction: column;
+    right: 0;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 10em;
+    height: auto;
+
+}
+
+.profile-button .profile-dropdown li {
+    list-style: none;
+    text-decoration: none;
+    color: #1C3C84;
     cursor: pointer;
+    border-bottom: .5px solid #CCCCCC;
+    padding: 15px;
+    text-align: left;
+}
+
+.profile-button .profile-dropdown li:last-child {
+    border-bottom: none;
+}
+
+.profile-button .profile-dropdown li a,
+.profile-button .profile-dropdown li a:visited,
+.profile-button .profile-dropdown li a:hover,
+.profile-button .profile-dropdown li a:active {
+    color: inherit;
+    text-decoration: none;
+}
+
+.navbar-search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+  }
+
+.profile-button .profile-dropdown li a:hover{
+    color: #ED1E5A;
+}
+
+.profile-button #profile-dropdown-toggler:checked~.profile-dropdown {
+    display: flex;
 }
