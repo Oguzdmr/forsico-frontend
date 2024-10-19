@@ -15,7 +15,7 @@ const PieChart = () => {
         const myChartRef = chartRef.current.getContext('2d');
 
         chartInstance.current = new Chart(myChartRef, {
-            type: 'pie',
+            type: 'doughnut',
             data: {
                 labels: ["label 1", "label 2", "label 3"],
                 datasets: [

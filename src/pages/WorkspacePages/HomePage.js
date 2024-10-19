@@ -7,7 +7,9 @@ import HomePagePen from "../../assets/homepage-pen-icon.svg"
 import Member1 from "../../assets/alper.jpeg"
 import Member2 from "../../assets/furkan.jpeg"
 import Member3 from "../../assets/murat.jpeg"
-import PieChart from "../PieChart";
+import DoughnutChart from "../DoughnutChart";
+import BarChart from "../BarChart";
+
 
 const HomePage = () => {
     const [workspaces] = useState([
@@ -69,18 +71,10 @@ const HomePage = () => {
                                 </div>
                             </div>
                             <div className="general-info-middleside">
-                                <PieChart/>
+                                <DoughnutChart/>
                             </div>
-                            <div className="general-info-rightside">
-                                <div className="rightside-elements">
-                                    <span>Another Info</span>
-                                </div>
-                                <div className="rightside-elements">
-                                    <span>Another Info</span>
-                                </div>
-                                <div className="rightside-elements">
-                                    <span>Another Info</span>
-                                </div>
+                            <div className="general-info-middleside">
+                                <BarChart/>
                             </div>
                         </div>
 
