@@ -91,7 +91,7 @@ const HomePage = () => {
                                         <span className="blue-letter fs-24">of your tasks</span>
                                     </div>
                                     <div>
-                                        <span className="completed-tasks-percentage pink-letter fs-96">{percentageForCompletedTasks}%</span>
+                                        <span className="completed-tasks-percentage pink-letter fs-96">%{percentageForCompletedTasks}</span>
                                     </div>
                                 </div>
                             </div>

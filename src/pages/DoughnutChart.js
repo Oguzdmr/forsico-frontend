@@ -17,14 +17,14 @@ const DoughnutChart = () => {
         chartInstance.current = new Chart(myChartRef, {
             type: 'doughnut',
             data: {
-                labels: ["label 1", "label 2", "label 3"],
+                labels: ["Completed Task", "Uncompleted Tasks",],
                 datasets: [
                     {
-                        data: [300, 50, 100],
+                        data: [13,26-13],
                         backgroundColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)',
-                            'rgb(255, 205, 86)'
+                            'rgba(237, 30, 90, 1)',
+                            'rgba(28, 60, 132, 1)',
+                            'rgba(54, 197, 240, 1)'
                         ],
                     }
                 ]

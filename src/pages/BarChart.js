@@ -18,15 +18,15 @@ const BarChart = ({workspaceCount, taskCount, completedTaskCount}) => {
         
             type: 'bar',
             data: {
-                labels: ["label 1", "label 2", "label 3"],
+                labels: ["Workspaces", "Tasks", "Completed"],
                 datasets: [
                     {
-                        label : "Murat",
+                        label : "General Info",
                         data: [parseInt(workspaceCount), parseInt(taskCount), parseInt(completedTaskCount)],
                         backgroundColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)',
-                            'rgb(255, 205, 86)'
+                            'rgba(237, 30, 90, 1)',
+                            'rgba(28, 60, 132, 1)',
+                            'rgba(54, 197, 240, 1)'
                         ],
                     }
                 ]
@@ -42,7 +42,7 @@ const BarChart = ({workspaceCount, taskCount, completedTaskCount}) => {
 
     return (
         <div>
-            <canvas ref={chartRef} style={{ width: "300px", height: "200px" }} />
+            <canvas ref={chartRef} />
         </div>
     )
 }
