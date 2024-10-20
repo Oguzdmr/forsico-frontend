@@ -3,7 +3,7 @@ import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
 
 
-const PieChart = () => {
+const DoughnutChart = () => {
 
     const chartRef = useRef(null);
     const chartInstance = useRef(null);
@@ -45,4 +45,4 @@ const PieChart = () => {
     )
 }
 
-export default PieChart
+export default DoughnutChart;

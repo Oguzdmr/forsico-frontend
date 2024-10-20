@@ -3,7 +3,7 @@ import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
 
 
-const PieChart = () => {
+const BarChart = ({workspaceCount, taskCount, completedTaskCount}) => {
 
     const chartRef = useRef(null);
     const chartInstance = useRef(null);
@@ -15,12 +15,14 @@ const PieChart = () => {
         const myChartRef = chartRef.current.getContext('2d');
 
         chartInstance.current = new Chart(myChartRef, {
+        
             type: 'bar',
             data: {
                 labels: ["label 1", "label 2", "label 3"],
                 datasets: [
                     {
-                        data: [300, 50, 100],
+                        label : "Murat",
+                        data: [parseInt(workspaceCount), parseInt(taskCount), parseInt(completedTaskCount)],
                         backgroundColor: [
                             'rgb(255, 99, 132)',
                             'rgb(54, 162, 235)',
@@ -45,4 +47,4 @@ const PieChart = () => {
     )
 }
 
-export default PieChart
+export default BarChart;
