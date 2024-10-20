@@ -9,11 +9,15 @@ import SidebarPlus from "../assets/sidebar-plus-icon.svg";
 import SidebarDot from "../assets/sidebar-dot-icon.svg";
 import { fetchWorkspaces } from "../store/workspaceSlice";
 import { Link } from "react-router-dom";
+import CreateBoardModal from "../components/WorkspaceAndBoard/CreateBoardModal";
 
 const Sidebar = () => {
   // State to track which workspace dropdown is open
   const dispatch = useDispatch();
   const [openDropdown, setOpenDropdown] = useState({});
+  const [showCreateBoardModal, setShowCreateBoardModal] = useState(false);
+  const [selectedWorkspaceId, setSelectedWorkspaceId] = useState();
+
   const {
     entities,
     status = "idle",
@@ -115,10 +119,17 @@ const Sidebar = () => {
                   </span>
                 </Link>
               ))}
+                <a type="button" onClick={() => {console.log("click",entity._id);setSelectedWorkspaceId(entity._id);setShowCreateBoardModal(true); }} >
+                  <img className="sidebar-home-icon" src={SidebarPlus} alt="plus" />
+                </a>
             </div>
           )}
         </div>
       ))}
+
+      {showCreateBoardModal ? (
+        <CreateBoardModal onClose={() => setShowCreateBoardModal(false)} workspaceId={selectedWorkspaceId} />
+      ):(<></>)}
     </div>
   );
 };

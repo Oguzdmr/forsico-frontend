@@ -71,3 +71,6 @@
     display: block;
     margin: 5px 0;
 }
+.sidebar-home-icon{
+    cursor: pointer;
+}

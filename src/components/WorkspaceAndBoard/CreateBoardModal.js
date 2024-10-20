@@ -5,12 +5,13 @@ import "../../styles/loginModal.css";
 import BoardApi from "../../api/BoardApi/board.js";
 const config = require("../../config");
 import Cross from "../../assets/close.svg";
-import InputError from "../../assets/input-error-icon.svg";
-import PasswordInputEye from "../../assets/passwordInputEye.svg";
+import { fetchWorkspaces } from "../../store/workspaceSlice";
 
-const CreateBoardModal = ({ onClose, workspaceId, forgotPassword }) => {
+
+const CreateBoardModal = ({ onClose, workspaceId }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [errorMessage, setErrorMessage] = useState(''); // Error mesajı state
   const modalRef = useRef(null);
 
   const dispatch = useDispatch();
@@ -27,17 +28,20 @@ const CreateBoardModal = ({ onClose, workspaceId, forgotPassword }) => {
   };
 
   useEffect(() => {
+    console.log("modal")
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const handleClickCreate = async () => {
-    let response = await boardApi.createBoard();
+    let response = await boardApi.createBoard(token,workspaceId,name,description);
     if (response.status === true) {
-      setWorkspaceIdState(response.data._id);
       dispatch(fetchWorkspaces());
+      onClose();
+      navigate("/workspaces/board/" + workspaceId + "/" + response.data._id)
     }
   };
 
@@ -56,17 +60,13 @@ const CreateBoardModal = ({ onClose, workspaceId, forgotPassword }) => {
         </div>
         <div className="login-modal-header">
           <div className="login-modal-title">
-            <span>Create</span>
-            <span>Board!</span>
+            <span>Create Board!</span>
           </div>
         </div>
+        <br />
 
-        <div className="login-modal-separator">
-          <span>or</span>
-        </div>
         <div className={`login-modal-input`}>
           <div className="input-icon-wrapper">
-            <img src={Email} className="input-icon" alt="Icon" />
             <input
               className={`login-input-email`}
               type="text"
@@ -80,11 +80,7 @@ const CreateBoardModal = ({ onClose, workspaceId, forgotPassword }) => {
         </div>
         <div className="login-modal-input">
           <div className="input-icon-wrapper">
-            <img
-              src={Password}
-              className="input-icon-left"
-              alt="Password Icon"
-            />
+
             <textarea
               id="board-description-input"
               className="login-input-password"
@@ -94,6 +90,7 @@ const CreateBoardModal = ({ onClose, workspaceId, forgotPassword }) => {
               onChange={(e) => setDescription(e.target.value)}
               required
               placeholder="Description"
+              style={{height:"150px"}}
             />
           </div>
         </div>
