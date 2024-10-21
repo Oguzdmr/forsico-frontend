@@ -239,7 +239,7 @@ const Navbar = () => {
                 {hasUnReadNotification ? (
                   <img src={HasNotificationIcon}></img>
                 ) : (
-                  <img src={""}></img>
+                  <img src={HasNotificationIcon}></img>
                 )}
               </label>
               <div

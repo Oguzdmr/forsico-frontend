@@ -1,8 +1,14 @@
+.introduction-main-container{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
 .introduction-main{
     display: flex;
+    justify-content: space-around;
     margin-top: 90px;
     margin-left: 90px;
-    justify-content: flex-start;
     align-items: center;
 }
 .introdoction-get-start{
@@ -48,4 +54,11 @@
     font-weight: 700;
     line-height: 24.2px;
     text-align: center;
+}
+
+.introduction-board{
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
