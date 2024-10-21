@@ -99,7 +99,7 @@ const HomePage = () => {
                                 <DoughnutChart/>
                             </div>
                             <div className="general-info-middleside">
-                                <BarChart workspaceCount="10" taskCount="20" completedTaskCount="40" />
+                                <BarChart workspaceCount="3" taskCount="26" completedTaskCount="30" />
                             </div>
                         </div>
 

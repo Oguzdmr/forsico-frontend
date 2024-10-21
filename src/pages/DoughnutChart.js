@@ -20,7 +20,7 @@ const DoughnutChart = () => {
                 labels: ["Completed Task", "Uncompleted Tasks",],
                 datasets: [
                     {
-                        data: [13,26-13],
+                        data: [7.8,18.2],
                         backgroundColor: [
                             'rgba(237, 30, 90, 1)',
                             'rgba(28, 60, 132, 1)',

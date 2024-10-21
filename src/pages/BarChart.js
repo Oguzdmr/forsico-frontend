@@ -24,9 +24,10 @@ const BarChart = ({workspaceCount, taskCount, completedTaskCount}) => {
                         label : "General Info",
                         data: [parseInt(workspaceCount), parseInt(taskCount), parseInt(completedTaskCount)],
                         backgroundColor: [
-                            'rgba(237, 30, 90, 1)',
                             'rgba(28, 60, 132, 1)',
-                            'rgba(54, 197, 240, 1)'
+                            'rgba(54, 197, 240, 1)',
+                            'rgba(237, 30, 90, 1)',
+
                         ],
                     }
                 ]
