@@ -14,7 +14,7 @@ class Board {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/board/${boardId}`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/board/${boardId}`, requestOptions);
             const result = await response.json(); 
             return result;
         } catch (error) {
@@ -35,7 +35,7 @@ class Board {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/board/${boardId}`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/board/${boardId}`, requestOptions);
             const result = await response.json(); 
             return result;
         } catch (error) {
@@ -63,7 +63,7 @@ class Board {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/board`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/board`, requestOptions);
             const result = await response.json(); 
             return result;
         } catch (error) {
@@ -90,7 +90,7 @@ class Board {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/board/${boardId}`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/board/${boardId}`, requestOptions);
             const result = await response.json(); 
             return result;
         } catch (error) {
@@ -111,7 +111,7 @@ class Board {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/board/getboardsofworkspace`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/board/getboardsofworkspace`, requestOptions);
             const result = await response.json(); 
             return result;
         } catch (error) {
@@ -138,7 +138,7 @@ class Board {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/board/addMemberToBoard/${boardId}`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/board/addMemberToBoard/${boardId}`, requestOptions);
             const result = await response.json(); 
             return result;
         } catch (error) {

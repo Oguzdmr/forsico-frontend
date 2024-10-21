@@ -1,8 +1,7 @@
+/* Genel container ayarları */
+
 .workspaceAi-container{
     margin: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     height: 100%;
 }
@@ -47,14 +46,7 @@
     display: flex;
 }
 
-/* Genel container ayarları */
-.workspaceAi-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
+
 
 .workspaceAi-top {
     display: flex;

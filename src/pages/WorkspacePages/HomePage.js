@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '../../styles/workspaceCss/homepage.css'; // CSS dosyasını ayrı tutuyoruz
 import HomePagePen from "../../assets/homepage-pen-icon.svg"
 import Member1 from "../../assets/alper.jpeg"
@@ -10,6 +10,37 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 const HomePage = () => {
+    const [percentageForCompletedTasks, setPercentageForCompletedTasks] = useState(0);
+    const [percentageForWorkSpaces, setPercentageForWorkSpaces] = useState(0);
+    const [percentageForTasks, setPercentageForTasks] = useState(0);
+
+
+    // Sayım işlemi için fonksiyon
+    const animateCounter = (endValue, setState, duration = 800) => {
+        let startValue = 0;
+        const stepTime = Math.abs(Math.floor(duration / endValue));
+
+        const timer = setInterval(() => {
+            startValue += 1;
+            setState(startValue);
+            if (startValue === endValue) clearInterval(timer);
+        }, stepTime);
+
+        return () => clearInterval(timer); // Temizleme işlemi
+    };
+
+    useEffect(() => {
+        // Tamamlanan görevler için animasyonu başlat
+        animateCounter(30, setPercentageForCompletedTasks);
+
+        // Workspace sayısı için animasyonu başlat
+        animateCounter(3, setPercentageForWorkSpaces);
+
+        // Task sayısı için animasyonu başlat
+        animateCounter(26, setPercentageForTasks);
+    }, []);
+
+
     const [workspaces, setWorkspaces] = useState([
         {
             name: "Forsico",
@@ -45,11 +76,11 @@ const HomePage = () => {
                             <div className="general-info-leftside">
                                 <div className="double-card">
                                     <div className="active-workspaces">
-                                        <h2 className="fs-96 blue-letter">3</h2>
+                                        <h2 className="fs-96 blue-letter">{percentageForWorkSpaces}</h2>
                                         <span className="active-workspace-title blue-letter-title">workspaces</span>
                                     </div>
                                     <div className="active-task">
-                                        <h2 className="fs-96 turquoise-letter">26</h2>
+                                        <h2 className="fs-96 turquoise-letter">{percentageForTasks}</h2>
                                         <span className="active-task-title turquoise-letter-title">tasks</span>
                                     </div>
                                 </div>
@@ -60,7 +91,7 @@ const HomePage = () => {
                                         <span className="blue-letter fs-24">of your tasks</span>
                                     </div>
                                     <div>
-                                        <span className="completed-tasks-percentage pink-letter fs-96">30%</span>
+                                        <span className="completed-tasks-percentage pink-letter fs-96">%{percentageForCompletedTasks}</span>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +99,7 @@ const HomePage = () => {
                                 <DoughnutChart/>
                             </div>
                             <div className="general-info-middleside">
-                                <BarChart/>
+                                <BarChart workspaceCount="10" taskCount="20" completedTaskCount="40" />
                             </div>
                         </div>
 

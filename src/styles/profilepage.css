@@ -90,6 +90,16 @@
     margin-top: 1rem;
 }
 
+.edit-profile-input-icon{
+    position: absolute;
+    bottom: 45%;
+    left: 2%;
+}
+
+.edit-profile-icon-div{
+    position: relative;
+}
+
 
 
 .edit-profile-fields,
@@ -108,6 +118,7 @@
     border: 1.5px solid rgba(109, 109, 109, 1);
     border-radius: 15px;
     box-sizing: border-box;
+    padding-left: 2.5rem;
 }
 
 .edit-profile-fields .editprofile-update-button,

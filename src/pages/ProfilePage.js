@@ -4,6 +4,9 @@ import Authentication from '../api/AuthApi/authentication.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCredentials } from '../store/authSlice';
 import EditRightArrow from "../assets/edit-profile-right-arrow.svg"
+import UsernameIcon from "../assets/edit-profile-username-icon.svg"
+import EmailIcon from "../assets/edit-profile-email-icon.svg"
+import BirthdayIcon from "../assets/edit-profile-birthday-icon.svg"
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -89,42 +92,54 @@ const Profile = () => {
                             </div>
                             {editProfileOpen && (
                                 <div className='edit-profile-fields'>
-                                    <input
-                                        className='edit-profile-input'
-                                        type="text"
-                                        placeholder="User name"
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
-                                    />
-                                    <input
-                                        className='edit-profile-input'
-                                        type="text"
-                                        placeholder="Full name"
-                                        value={`${profile.firstName} ${profile.lastName}`}
-                                        onChange={(e) =>
-                                            setProfile({
-                                                ...profile,
-                                                firstName: e.target.value.split(' ')[0],
-                                                lastName: e.target.value.split(' ')[1] || ''
-                                            })
-                                        }
-                                    />
-                                    <input
-                                        className='edit-profile-input'
-                                        type="email"
-                                        placeholder="e-mail address"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
-                                    <input
-                                        className='edit-profile-input'
-                                        type="date"
-                                        placeholder="Birthday"
-                                        value={profile.birthDate}
-                                        onChange={(e) =>
-                                            setProfile({ ...profile, birthDate: e.target.value })
-                                        }
-                                    />
+                                    <div className='edit-profile-icon-div'>
+                                        <img className='edit-profile-input-icon' src={UsernameIcon} alt="Username" />
+                                        <input
+                                            className='edit-profile-input'
+                                            type="text"
+                                            placeholder="User name"
+                                            value={username}
+                                            onChange={(e) => setUsername(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className='edit-profile-icon-div'>
+                                        <img className='edit-profile-input-icon' src={UsernameIcon} alt="FullName" />
+                                        <input
+                                            className='edit-profile-input'
+                                            type="text"
+                                            placeholder="Full name"
+                                            value={`${profile.firstName} ${profile.lastName}`}
+                                            onChange={(e) =>
+                                                setProfile({
+                                                    ...profile,
+                                                    firstName: e.target.value.split(' ')[0],
+                                                    lastName: e.target.value.split(' ')[1] || ''
+                                                })
+                                            }
+                                        />
+                                    </div>
+                                    <div className='edit-profile-icon-div'>
+                                        <img className='edit-profile-input-icon' src={EmailIcon} alt="email" />
+                                        <input
+                                            className='edit-profile-input'
+                                            type="email"
+                                            placeholder="e-mail address"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className='edit-profile-icon-div'>
+                                        <img className='edit-profile-input-icon' src={BirthdayIcon} alt="birthDay" />
+                                        <input
+                                            className='edit-profile-input'
+                                            type="date"
+                                            placeholder="Birthday"
+                                            value={profile.birthDate}
+                                            onChange={(e) =>
+                                                setProfile({ ...profile, birthDate: e.target.value })
+                                            }
+                                        />
+                                    </div>
                                     <button className='editprofile-update-button' onClick={() => {/* Update profile logic */ }}>Update</button>
                                 </div>
                             )}
@@ -140,40 +155,46 @@ const Profile = () => {
 
                             {changePasswordOpen && (
                                 <div className='change-password-fields'>
-                                    <input
-                                        className='edit-profile-input'
-                                        type="password"
-                                        name="oldPassword"
-                                        placeholder="Old Password"
-                                        value={password.oldPassword}
-                                        onChange={(e) =>
-                                            setPassword({ ...password, [e.target.name]: e.target.value })
-                                        }
-                                    />
-                                    <input
-                                        className='edit-profile-input'
-                                        type="password"
-                                        name="newPassword"
-                                        placeholder="New Password"
-                                        value={password.newPassword}
-                                        onChange={(e) =>
-                                            setPassword({ ...password, [e.target.name]: e.target.value })
-                                        }
-                                    />
-                                    <input
-                                        className='edit-profile-input'
-                                        type="password"
-                                        name="confirmPassword"
-                                        placeholder="Confirm Password"
-                                        value={password.confirmPassword}
-                                        onChange={(e) =>
-                                            setPassword({ ...password, [e.target.name]: e.target.value })
-                                        }
-                                    />
+                                    <div>
+                                        <input
+                                            className='edit-profile-input'
+                                            type="password"
+                                            name="oldPassword"
+                                            placeholder="Old Password"
+                                            value={password.oldPassword}
+                                            onChange={(e) =>
+                                                setPassword({ ...password, [e.target.name]: e.target.value })
+                                            }
+                                        />
+                                    </div>
+                                    <div>
+                                        <input
+                                            className='edit-profile-input'
+                                            type="password"
+                                            name="newPassword"
+                                            placeholder="New Password"
+                                            value={password.newPassword}
+                                            onChange={(e) =>
+                                                setPassword({ ...password, [e.target.name]: e.target.value })
+                                            }
+                                        />
+                                    </div>
+                                    <div>
+                                        <input
+                                            className='edit-profile-input'
+                                            type="password"
+                                            name="confirmPassword"
+                                            placeholder="Confirm Password"
+                                            value={password.confirmPassword}
+                                            onChange={(e) =>
+                                                setPassword({ ...password, [e.target.name]: e.target.value })
+                                            }
+                                        />
+                                    </div>
                                     <button className='editprofile-update-button' onClick={() => {/* Update password logic */ }}>Update</button>
                                 </div>
                             )}
-                                                        <div className='editprofile-line'></div>
+                            <div className='editprofile-line'></div>
 
 
                             <div className='push-notifications'>
@@ -190,7 +211,7 @@ const Profile = () => {
                                     <div className='editprofile-line'></div>
 
                                 </div>
-                                
+
                                 <div className='privacy-policy-title'>
                                     <h4 className='fs-18'>Privacy policy</h4>
                                     <img src={EditRightArrow} alt="" />
