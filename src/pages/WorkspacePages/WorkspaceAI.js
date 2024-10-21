@@ -156,7 +156,7 @@ const WorkspaceAIPage = () => {
                         <div className='workspaceAi-message'>
                             {aiTasks.map((task) => (
                                 <div key={task.id}>
-                                    <p>{task.name}</p>
+                                    <p className=''>{task.name}</p>
                                     {task.subtasks.map((subtask)=>(
                                         <div key={subtask.id} className='workspaceAi-task'>
                                             <div className='workspaceAi-task-card'>
