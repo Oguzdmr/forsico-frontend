@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import LoginModal from "../Auth/LoginModal";
 import SignUpModal from "../Auth/SignUpModal";
 import ForgotPasswordModal from "../Auth/ForgotPasswordModal";
@@ -12,6 +12,11 @@ import NavbarSearchIcon from "../../assets/navbar-search-icon.svg";
 import NotificationIcon from "../../assets/forsico-logo-white.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/authSlice";
+import {
+  fetchNotifications,
+  readNotification,
+  bulkReadNotifications,
+} from "../../store/notificationSlice";
 
 const Navbar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -21,9 +26,67 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userInfo = useSelector((state) => state.auth.user);
+  const workspaces = useSelector((state) => state.workspaces.entities);
+  const notifications = useSelector((state) => state.notifications.entities);
+  const notificationDropdownRef = useRef(null);
+  const profileDropdownRef = useRef(null);
+  const [notificationDropdown, setNotificationDropdown] = useState(false);
+  const [profileDropdown, setProfileDrodown] = useState(false);
+  const [hasUnReadNotification, setHasUnReadNotification] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const workspaceIds = workspaces.map((workspace) => workspace._id);
+      const boardIds = workspaces
+        .map((workspace) => {
+          return workspace.boards.map((board) => {
+            return board._id;
+          });
+        })
+        .filter(Boolean)
+        .flat();
+
+      dispatch(fetchNotifications({ workspaceIds, boardIds }));
+      //initNotificationListener(dispatch); // Socket.io ile dinlemeye başla
+    }
+  }, [dispatch, isAuthenticated, workspaces]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setHasUnReadNotification(
+        notifications?.filter(
+          (notification) => notification?.user?.id === userInfo.id
+        ).length > 0
+      );
+    }
+  }, [notifications]);
 
   const handleLogoutClick = () => {
     dispatch(logout());
+  };
+
+  const handleClickOutside = (event) => {
+    if (
+      notificationDropdownRef.current &&
+      !notificationDropdownRef.current.contains(event.target)
+    ) {
+      setNotificationDropdown(false);
+    }
+
+    if (
+      profileDropdownRef.current &&
+      !profileDropdownRef.current.contains(event.target)
+    ) {
+      setProfileDrodown(false);
+    }
+  };
+
+  const handleNotificationButtonChange = (e) => {
+    setNotificationDropdown(e.target.checked);
+  };
+
+  const handleProfileButtonChange = (e) => {
+    setProfileDrodown(e.target.checked);
   };
 
   const handleSelect = (item) => {
@@ -31,6 +94,22 @@ const Navbar = () => {
     console.log("selected item", item);
     console.log("select", selectedItem);
   };
+
+  const handleNotificationClick = (workspaceId, notificationId) => {
+    dispatch(
+      readNotification({
+        workspaceId: workspaceId,
+        notificationId: notificationId,
+      })
+    );
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const projectItems = [
     { value: "1", label: "project 1", image: "", link: "/" },
@@ -103,32 +182,34 @@ const Navbar = () => {
           <img src={ForsicoLogoWhite}></img>
         </Link>
 
-        <div className="leftside-buttons">
-          <Dropdown
-            items={projectItems}
-            onSelect={handleSelect}
-            selectedItem={selectedItem}
-            title="Project"
-          />
-          <Dropdown
-            items={solutionsItems}
-            onSelect={handleSelect}
-            selectedItem={selectedItem}
-            title="Solutions"
-          />
-          <Dropdown
-            items={pricingItems}
-            onSelect={handleSelect}
-            selectedItem={selectedItem}
-            title="Pricing"
-          />
-          <Dropdown
-            items={enterpriseItems}
-            onSelect={handleSelect}
-            selectedItem={selectedItem}
-            title="Enterprise"
-          />
-        </div>
+        {!isAuthenticated && (
+          <div className="leftside-buttons">
+            <Dropdown
+              items={projectItems}
+              onSelect={handleSelect}
+              selectedItem={selectedItem}
+              title="Project"
+            />
+            <Dropdown
+              items={solutionsItems}
+              onSelect={handleSelect}
+              selectedItem={selectedItem}
+              title="Solutions"
+            />
+            <Dropdown
+              items={pricingItems}
+              onSelect={handleSelect}
+              selectedItem={selectedItem}
+              title="Pricing"
+            />
+            <Dropdown
+              items={enterpriseItems}
+              onSelect={handleSelect}
+              selectedItem={selectedItem}
+              title="Enterprise"
+            />
+          </div>
+        )}
       </div>
       <div className="navbar-rightside">
         {isAuthenticated ? (
@@ -148,73 +229,79 @@ const Navbar = () => {
             </div>
 
             <div className="navbar-notification-button">
-              <input id="notification-dropdown-toggler" type="checkbox"></input>
+              <input
+                id="notification-dropdown-toggler"
+                checked={notificationDropdown}
+                onChange={handleNotificationButtonChange}
+                type="checkbox"
+              ></input>
               <label htmlFor="notification-dropdown-toggler">
-                <img src={HasNotificationIcon}></img>
-                {/*TODO add no notification svg with if check from notificationState*/}
+                {hasUnReadNotification ? (
+                  <img src={HasNotificationIcon}></img>
+                ) : (
+                  <img src={""}></img>
+                )}
               </label>
-              <div className="notification-dropdown">
-                <li>
-                  <div className="notification-container">
-                    <div className="notification-header">
-                      <img
-                        className="notification-image"
-                        src={userInfo?.profilePictureUrl}
-                      ></img>
-                      <div className="notification-header-text">
-                         Alperen Yurtseven created a new task : Lütfen Projeyi Bitirelim!
+              <div
+                className="notification-dropdown"
+                ref={notificationDropdownRef}
+              >
+                {notifications.map((notification) => (
+                  <Link
+                    key={notification?._id}
+                    to={`/workspaces/${notification.workspaceId}/${notification.boardId}/?selectedTask=${notification.taskId}`}
+                  >
+                    <li
+                      notificationid={notification._id}
+                      workspaceid={notification.workspaceId}
+                      boardid={notification.boardId}
+                      targetid={notification.targetId}
+                      isread={
+                        notification.readBy?.map((user) => {
+                          user.id === userInfo.id;
+                        }).length > 0
+                          ? "true"
+                          : "false"
+                      }
+                      onClick={() => {
+                        handleNotificationClick(
+                          notification.workspaceId,
+                          notification._id
+                        );
+                      }}
+                    >
+                      <div className="notification-container">
+                        <div className="notification-header">
+                          <img
+                            className="notification-image"
+                            src={notification?.user?.profilePicture}
+                          ></img>
+                          <div className="notification-header-text">
+                            {notification.message}
+                          </div>
+                        </div>
+                        <div className="notification-content"></div>
                       </div>
-                    </div>
-                    <div className="notification-content">
-
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div className="notification-container">
-                    <div className="notification-header">
-                      <img
-                        className="notification-image"
-                        src={userInfo?.profilePictureUrl}
-                      ></img>
-                      <div className="notification-header-text">
-                         Alperen Yurtseven created a new task : Lütfen Projeyi Bitirelim!
-                      </div>
-                    </div>
-                    <div className="notification-content">
-                        Lütfen açar mısınız efendim kapıyı ?
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <div className="notification-container">
-                    <div className="notification-header">
-                      <img
-                        className="notification-image"
-                        src={userInfo?.profilePictureUrl}
-                      ></img>
-                      <div className="notification-header-text">
-                         Alperen Yurtseven created a new task : Lütfen Projeyi Bitirelim!
-                      </div>
-                    </div>
-                    <div className="notification-content">
-                       Sayın Bezmenler!
-                    </div>
-                  </div>
-                </li>
-                 
+                    </li>
+                  </Link>
+                ))}
               </div>
             </div>
 
             <div className="navbar-profile-button">
-              <input id="profile-dropdown-toggler" type="checkbox"></input>
+              <input
+                id="profile-dropdown-toggler"
+                checked={profileDropdown}
+                onChange={handleProfileButtonChange}
+                type="checkbox"
+              ></input>
               <label htmlFor="profile-dropdown-toggler">
                 <img
                   className="navbar-profile-image"
                   src={userInfo?.profilePictureUrl || ""}
                 ></img>
               </label>
-              <div className="profile-dropdown">
+              <div className="profile-dropdown" ref={profileDropdownRef}>
                 <li>
                   <Link className="go-profile" to="/workspaces/profile">
                     My Profile
