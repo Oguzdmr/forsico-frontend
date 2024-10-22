@@ -9,7 +9,7 @@ const BarChart = ({workspaceCount, taskCount, completedTaskCount}) => {
     const chartInstance = useRef(null);
 
     useEffect(() => {
-        if (chartInstance.current) {
+        if (chartInstance.current && typeof chartInstance.current.destroy === 'function') {
             chartInstance.current.destroy();
         }
         const myChartRef = chartRef.current.getContext('2d');
@@ -34,7 +34,7 @@ const BarChart = ({workspaceCount, taskCount, completedTaskCount}) => {
             }
         })
         return () => {
-            if(chartInstance.current){
+            if (chartInstance.current && typeof chartInstance.current.destroy === 'function') {
                 chartInstance.current.destroy();
             }
         }
