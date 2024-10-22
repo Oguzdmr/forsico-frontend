@@ -1,7 +1,6 @@
 const config = require("../../config");
 
 class Board {
-    
     async getBoard(token, workspaceId, boardId) {
         const myHeaders = new Headers();
         myHeaders.append("x-workspace-id", workspaceId);
@@ -15,7 +14,7 @@ class Board {
 
         try {
             const response = await fetch(`${config.boardApiBaseUrl}/board/${boardId}`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error fetching board:', error);
@@ -36,7 +35,7 @@ class Board {
 
         try {
             const response = await fetch(`${config.boardApiBaseUrl}/board/${boardId}`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error deleting board:', error);
@@ -64,7 +63,7 @@ class Board {
 
         try {
             const response = await fetch(`${config.boardApiBaseUrl}/board`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error creating board:', error);
@@ -91,7 +90,7 @@ class Board {
 
         try {
             const response = await fetch(`${config.boardApiBaseUrl}/board/${boardId}`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error updating board:', error);
@@ -112,7 +111,7 @@ class Board {
 
         try {
             const response = await fetch(`${config.boardApiBaseUrl}/board/getboardsofworkspace`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error fetching boards of workspace:', error);
@@ -139,7 +138,7 @@ class Board {
 
         try {
             const response = await fetch(`${config.boardApiBaseUrl}/board/addMemberToBoard/${boardId}`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error adding member to board:', error);

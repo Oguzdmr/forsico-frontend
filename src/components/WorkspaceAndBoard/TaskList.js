@@ -30,9 +30,18 @@ function TaskList({ colIndex }) {
   const color = colors[colIndex % colors.length];
 
   const handleOnDrop = (e) => {
+    //console.log("handleOnDrop eeee1 : ", e);
+
     const { prevColIndex, taskIndex } = JSON.parse(
       e.dataTransfer.getData("text")
     );
+
+    /*
+    console.log("handleOnDrop prevColIndex : ", prevColIndex);
+    console.log("handleOnDrop taskIndex : ", taskIndex);
+    console.log("handleOnDrop edatatransfer : ", e.dataTransfer);
+    console.log("handleOnDrop edatatransfertext : ", JSON.parse(e.dataTransfer.getData("text")));
+    */
 
     if (colIndex !== prevColIndex) {
       dispatch(

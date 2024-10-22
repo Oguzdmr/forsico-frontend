@@ -1,7 +1,6 @@
 const config = require("../../config");
 
 class List {
-
     async getList(token, workspaceId, listId) {
         const myHeaders = new Headers();
         myHeaders.append("x-workspace-id", workspaceId);
@@ -15,7 +14,7 @@ class List {
 
         try {
             const response = await fetch(`${config.baseUrl}/list/${listId}`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error fetching list:', error);
@@ -36,7 +35,7 @@ class List {
 
         try {
             const response = await fetch(`${config.baseUrl}/list/${listId}?=${workspaceId}`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error deleting list:', error);
@@ -65,7 +64,7 @@ class List {
 
         try {
             const response = await fetch(`${config.baseUrl}/list`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error creating list:', error);
@@ -92,7 +91,7 @@ class List {
 
         try {
             const response = await fetch(`${config.baseUrl}/list/${listId}`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error updating list:', error);
@@ -113,7 +112,7 @@ class List {
 
         try {
             const response = await fetch(`${config.baseUrl}/list/getlistsofboard/${listId}`, requestOptions);
-            const result = await response.json(); 
+            const result = await response.json();
             return result;
         } catch (error) {
             console.error('Error fetching lists of board:', error);

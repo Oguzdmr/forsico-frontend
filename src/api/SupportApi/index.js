@@ -24,7 +24,7 @@ class Support {
     formData.append("email", ticketInformation.email || "");
     formData.append("images", ticketInformation.images || 0);
     formData.append("apiKey", config.supportApiKey || "");
-    formData.append("file", null); 
+    formData.append("file", null);
 
     const requestOptions = {
       method: "POST",
