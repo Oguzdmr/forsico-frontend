@@ -59,10 +59,10 @@ function Board() {
 
   return (
     <div className={`home-container scrollbar-hide`}>
-      {columns.length > 0 ? (
+      {entities?.lists?.length > 0 ? (
         <>
-          {columns.map((col, index) => (
-            <TaskList key={index} colIndex={index} />
+          {entities.lists.map((list, index) => (
+            <TaskList key={index} list={list} colIndex={index} />
           ))}
           <div
             onClick={() => {
