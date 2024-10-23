@@ -32,9 +32,14 @@ const boardSlice = createSlice({
     },
     dragTask: (state, action) => {
         const { colIndex, prevColIndex, taskIndex } = action.payload;
-        const prevCol = state.entities.lists.find((col, i) => i === prevColIndex);
-        const task = prevCol.tasks.splice(taskIndex, 1)[0];
-        state.entities.lists.find((col, i) => i === colIndex).tasks.push(task);
+        const prevCol = state.entities.lists.find((list) => list._id === prevColIndex);
+        const task = prevCol.tasks.find((task)=>task._id === taskIndex)
+
+        prevCol.tasks = prevCol.tasks.map((prevTask)=>{
+          return prevTask._id !== task._id && prevTask;
+        }).filter(Boolean);
+
+        state.entities.lists.find((list) => list._id === colIndex).tasks.push(task);
       },
   },
   extraReducers: (builder) => {

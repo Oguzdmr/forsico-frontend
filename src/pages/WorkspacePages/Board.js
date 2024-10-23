@@ -62,7 +62,7 @@ function Board() {
       {entities?.lists?.length > 0 ? (
         <>
           {entities.lists.map((list, index) => (
-            <TaskList key={index} list={list} colIndex={index} />
+            <TaskList key={index} list={list} colIndex={list._id} />
           ))}
           <div
             onClick={() => {

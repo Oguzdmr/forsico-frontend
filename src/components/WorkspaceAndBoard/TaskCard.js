@@ -16,18 +16,11 @@ function TaskCard({ task, colIndex, taskIndex, color }) {
   const boards = useSelector((state) => state.auth.boards);
   const board = boards.find((board) => board.isActive === true);
   const columns = board.columns;
-  const col = columns.find((col, i) => i === colIndex);
-  // const task = col.tasks.find((task, i) => i === taskIndex);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isSubtasksVisible, setIsSubtasksVisible] = useState(false);
-console.log("task",task)
+
   let completed = 0;
-  let subtasks = task?.subtasks ;
-  // subtasks.forEach((subtask) => {
-  //   if (subtask.isCompleted) {
-  //     completed++;
-  //   }
-  // });
+  let subtasks = task?.subtasks || [];
 
   const handleOnDrag = (e) => {
     e.dataTransfer.setData(
@@ -40,7 +33,7 @@ console.log("task",task)
     setIsSubtasksVisible(!isSubtasksVisible);
   };
 
-  const hasSubtasks = subtasks?.length > 0; // Alt görevlerin varlığını kontrol et
+  const hasSubtasks = subtasks?.length > 0;
 
   return (
     <div>
@@ -80,7 +73,7 @@ console.log("task",task)
             <div className="stat-icon">
               <img src={fork} alt="Fork icon" />
             </div>
-            <div className="stat-text">{subtasks.length}</div> {/* Burayı güncelledik */}
+            <div className="stat-text">{subtasks?.length}</div> {/* Burayı güncelledik */}
           </div>
 
           <div className="stat-group">

@@ -48,7 +48,6 @@ const Navbar = () => {
         .flat();
 
       dispatch(fetchNotifications({ workspaceIds, boardIds }));
-      //initNotificationListener(dispatch); // Socket.io ile dinlemeye başla
     }
   }, [dispatch, isAuthenticated, workspaces]);
 
@@ -67,6 +66,8 @@ const Navbar = () => {
 
     socket.onopen = () => {
       console.log("WebSocket bağlantısı kuruldu.");
+
+      subscribeToChannels(workspaces, socket);
     };
 
     socket.onmessage = (event) => {
@@ -85,7 +86,18 @@ const Navbar = () => {
     return () => {
       socket.close();
     };
-  }, [dispatch]);
+  }, [workspaces]);
+
+  const subscribeToChannels = (workspaces, socket) => {
+    workspaces?.forEach((workspace) => {
+      workspace.boards.forEach((board) => {
+        const channelName = `workspace:${workspace._id}:board:${board._id}`;
+  
+        socket.send(JSON.stringify({ channels: [channelName] }));
+      });
+    });
+  };
+  
 
   const handleLogoutClick = () => {
     dispatch(logout());

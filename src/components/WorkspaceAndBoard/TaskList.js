@@ -22,12 +22,11 @@ function TaskList({ list,colIndex }) {
   const dispatch = useDispatch();
   const boards = useSelector((state) => state.auth.boards);
   const board = boards.find((board) => board.isActive === true);
-  const col = board.columns.find((col, i) => i === colIndex);
+  const col = board.columns.find((col, i) => i === 1);
 
-  if (!board) return null; // Eğer aktif bir board yoksa render edilmesin
+  if (!board) return null;
 
-  // Assign a unique, fixed color based on column index
-  const color = colors[colIndex % colors.length];
+  const color = colors[1 % colors.length];
   
   const handleOnDrop = (e) => {
     console.log("event json parse",JSON.parse(
@@ -62,7 +61,7 @@ function TaskList({ list,colIndex }) {
       </p>
 
       {(list.tasks || []).map((task, index) => (
-        <TaskCard key={index} task={task} taskIndex={index} colIndex={colIndex} color={color} />
+        <TaskCard key={index} task={task} taskIndex={task._id} colIndex={list._id} color={color} />
       ))}
     </div>
   );

@@ -20,42 +20,7 @@ const wss = new WebSocket.Server({
   server,
 });
 
-let subscribedChannels = [];
-
-app.post("/subscribe", (req, res) => {
-  const { channels } = req.body;
-
-  if (!Array.isArray(channels)) {
-    return res.status(400).json({
-      error: "Channels must be an array.",
-    });
-  }
-
-  channels.forEach((channel) => {
-    if (!subscribedChannels.includes(channel)) {
-      redisClient.subscribe(channel, (message, channel) => {
-        console.log(`Received message from ${channel}: ${message}`);
-
-        wss.clients.forEach((client) => {
-          if (client.readyState === WebSocket.OPEN) {
-            client.send(
-              JSON.stringify({
-                channel,
-                message,
-              })
-            );
-          }
-        });
-      });
-      subscribedChannels.push(channel);
-      console.log(`Subscribed to Redis channel: ${channel}`);
-    }
-  });
-
-  res.status(200).json({
-    message: "Subscribed to channels successfully.",
-  });
-});
+const clientChannelsMap = new WeakMap();
 
 redisClient.on("ready", () => {
   console.log("Redis client is ready.");
@@ -68,8 +33,43 @@ redisClient.on("error", (err) => {
 wss.on("connection", (ws) => {
   console.log("Client connected via WebSocket");
 
+  clientChannelsMap.set(ws, []);
+
+  ws.on("message", async (data) => {
+    const { channels } = JSON.parse(data);
+    console.log("DATA", data);
+    if (Array.isArray(channels)) {
+      const subscribedChannels = clientChannelsMap.get(ws) || [];
+
+      channels.forEach(async (channel) => {
+        if (!subscribedChannels.includes(channel)) {
+          await redisClient.subscribe(channel, (message) => {
+            console.log(`Received message from ${channel}: ${message}`);
+
+            if (ws.readyState === WebSocket.OPEN) {
+              ws.send(
+                JSON.stringify({
+                  channel,
+                  message,
+                })
+              );
+            }
+          });
+
+          subscribedChannels.push(channel);
+          console.log(`Subscribed to Redis channel: ${channel}`);
+        }
+      });
+
+      clientChannelsMap.set(ws, subscribedChannels);
+    } else {
+      ws.send(JSON.stringify({ error: "Channels must be an array." }));
+    }
+  });
+
   ws.on("close", () => {
     console.log("Client disconnected");
+    clientChannelsMap.delete(ws);
   });
 });
 
