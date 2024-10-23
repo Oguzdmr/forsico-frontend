@@ -32,7 +32,7 @@ const WorkspaceAIPage = () => {
         { id: 2, name: 'Create content strategy for Forsico', tags: ['content', 'marketing'] }
     ]);
 
-    useEffect(async () => {
+    const workspaceIdSetter = async() =>{
         if(workspaceId === "new"){
             let response = await workspaceApi.createWorkspace(token,workspaceName,description);
             console.log(response);
@@ -42,6 +42,10 @@ const WorkspaceAIPage = () => {
             }
             
         }
+    }
+
+    useEffect(() => {
+        workspaceIdSetter();
     },[workspaceId])
     // Workspace adı değişikliği
 

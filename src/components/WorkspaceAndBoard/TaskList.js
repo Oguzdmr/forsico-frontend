@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import TaskCard from "./TaskCard";
 import authSlice from "../../store/authSlice";
 import "../../styles/workspaceCss/TaskList.css";
-import { dragTask } from '../../store/authSlice';
+import { dragTask } from '../../store/boardSlice';
 
 
-function TaskList({ colIndex }) {
+function TaskList({ list,colIndex }) {
   const colors = [
     "color-blue",
     "color-red",
@@ -28,8 +28,11 @@ function TaskList({ colIndex }) {
 
   // Assign a unique, fixed color based on column index
   const color = colors[colIndex % colors.length];
-
+  
   const handleOnDrop = (e) => {
+    console.log("event json parse",JSON.parse(
+      e.dataTransfer.getData("text")
+    ))
     const { prevColIndex, taskIndex } = JSON.parse(
       e.dataTransfer.getData("text")
     );
@@ -55,11 +58,11 @@ function TaskList({ colIndex }) {
         className={`column-header ${color}`}
       >
         <div className={`rounded-circle ${color}`} />
-        {col.name} ({col.tasks.length})
+        {list.name} ({col.tasks.length})
       </p>
 
-      {(col.tasks || []).map((task, index) => (
-        <TaskCard key={index} taskIndex={index} colIndex={colIndex} color={color} />
+      {(list.tasks || []).map((task, index) => (
+        <TaskCard key={index} task={task} taskIndex={index} colIndex={colIndex} color={color} />
       ))}
     </div>
   );
