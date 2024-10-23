@@ -53,6 +53,7 @@ class Notification {
 
   async bulkReadNotifications(token, workspaceId, notificationIds) {
     const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
     myHeaders.append("x-workspace-id", workspaceId);
     myHeaders.append("Authorization", `Bearer ${token}`);
 
@@ -67,10 +68,9 @@ class Notification {
       redirect: "follow",
     };
 
-    fetch(`${config.boardApiBaseUrl}/notification/bulkRead`, requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
+    const response = await fetch(`${config.boardApiBaseUrl}/notification/bulkRead`, requestOptions)
+    const result = await response.json();
+    return result;
   }
 }
 

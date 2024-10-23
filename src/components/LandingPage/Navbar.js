@@ -16,6 +16,7 @@ import {
   fetchNotifications,
   readNotification,
   bulkReadNotifications,
+  addNotification,
 } from "../../store/notificationSlice";
 
 const Navbar = () => {
@@ -36,10 +37,10 @@ const Navbar = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      const workspaceIds = workspaces.map((workspace) => workspace._id);
+      const workspaceIds = workspaces?.map((workspace) => workspace._id);
       const boardIds = workspaces
-        .map((workspace) => {
-          return workspace.boards.map((board) => {
+        ?.map((workspace) => {
+          return workspace.boards?.map((board) => {
             return board._id;
           });
         })
@@ -60,6 +61,31 @@ const Navbar = () => {
       );
     }
   }, [notifications]);
+
+  useEffect(() => {
+    const socket = new WebSocket("ws://localhost:3001");
+
+    socket.onopen = () => {
+      console.log("WebSocket bağlantısı kuruldu.");
+    };
+
+    socket.onmessage = (event) => {
+      console.log(event.data);
+      dispatch(
+        addNotification(
+          JSON.parse((JSON.parse(event.data || "{}") || {}).message)
+        )
+      );
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket bağlantısı kapandı.");
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, [dispatch]);
 
   const handleLogoutClick = () => {
     dispatch(logout());
@@ -100,6 +126,17 @@ const Navbar = () => {
       readNotification({
         workspaceId: workspaceId,
         notificationId: notificationId,
+      })
+    );
+  };
+
+  const handleMarkAllAsRead = () => {
+    dispatch(
+      bulkReadNotifications({
+        workspaceId: notifications[0]?.workspaceId,
+        notificationIds: notifications.map((notification) => {
+          return notification._id;
+        }),
       })
     );
   };
@@ -246,10 +283,16 @@ const Navbar = () => {
                 className="notification-dropdown"
                 ref={notificationDropdownRef}
               >
-                {notifications.map((notification) => (
+                <div
+                  className="notification-dropdown-header"
+                  onClick={handleMarkAllAsRead}
+                >
+                  <p className="mark-all-as-read-button">Mark all as read!</p>
+                </div>
+                {notifications?.map((notification) => (
                   <Link
                     key={notification?._id}
-                    to={`/workspaces/${notification.workspaceId}/${notification.boardId}/?selectedTask=${notification.taskId}`}
+                    to={`/workspaces/board/${notification.workspaceId}/${notification.boardId}/?selectedTask=${notification.taskId}`}
                   >
                     <li
                       notificationid={notification._id}
@@ -277,10 +320,17 @@ const Navbar = () => {
                             src={notification?.user?.profilePicture}
                           ></img>
                           <div className="notification-header-text">
-                            {notification.message}
+                            {notification.message.split("::=>")[0].trim()}
                           </div>
                         </div>
-                        <div className="notification-content"></div>
+                        <div className="notification-content">
+                          {notification.message.includes("::=>")
+                            ? notification.message
+                                .split("::=>")
+                                .slice(-1)[0]
+                                ?.trim()
+                            : ""}
+                        </div>
                       </div>
                     </li>
                   </Link>

@@ -42,6 +42,7 @@ export const readNotification = createAsyncThunk(
 export const bulkReadNotifications = createAsyncThunk(
   "notifications/bulkReadNotifications",
   async ({ workspaceId, notificationIds }, { getState, rejectWithValue }) => {
+    console.log(notificationIds);
     const token = getState().auth?.token?.token;
     const notificationService = new NotificationService();
     try {
@@ -67,6 +68,7 @@ const notificationSlice = createSlice({
   },
   reducers: {
     addNotification: (state, action) => {
+      console.log("NEW NOTIFICATION::", action.payload);
       state.entities.unshift(action.payload);
     },
   },
@@ -92,11 +94,14 @@ const notificationSlice = createSlice({
         state.entities = updatedEntities;
       })
       .addCase(bulkReadNotifications.fulfilled, (state, action) => {
-        const updatedEntities = state.entities.map((entity) =>
-          action.payload.notificationIds.includes(entity._id)
-            ? { ...entity, readBy: action.payload.readBy }
-            : entity
-        );
+        const updatedEntities = state.entities.map((entity) => {
+          const matchedEntity = action.payload.find(
+            (payloadEntity) => payloadEntity._id === entity._id
+          );
+      
+          return matchedEntity ? { ...entity, readBy: matchedEntity.readBy } : entity;
+        });
+        
         state.entities = updatedEntities;
       });
   },
