@@ -1,7 +1,7 @@
 const config = require("../../config");
 
 class Notification {
-  async getNotifications(token, workspaceIds = [], boardIds = []) {
+  async getNotifications(token, workspaceIds = [], boardIds = [], page) {
     const myHeaders = new Headers();
 
     myHeaders.append("Authorization", `Bearer ${token}`);
@@ -21,7 +21,7 @@ class Notification {
 
     try {
       const response = await fetch(
-        `${config.boardApiBaseUrl}/notification`,
+        `${config.boardApiBaseUrl}/notification?page=${page}`,
         requestOptions
       );
       const result = await response.json();

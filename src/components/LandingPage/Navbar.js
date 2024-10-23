@@ -9,9 +9,12 @@ import { Link } from "react-router-dom";
 import ForsicoLogoWhite from "../../assets/forsico-logo-white.svg";
 import HasNotificationIcon from "../../assets/has-notification-icon.svg";
 import NavbarSearchIcon from "../../assets/navbar-search-icon.svg";
-import NotificationIcon from "../../assets/forsico-logo-white.svg";
+import NotificationIcon from "../../assets/has-no-notification.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/authSlice";
+import { debounce } from "lodash";
+import { RotatingLines } from "react-loader-spinner";
+
 import {
   fetchNotifications,
   readNotification,
@@ -28,17 +31,23 @@ const Navbar = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const userInfo = useSelector((state) => state.auth.user);
   const workspaces = useSelector((state) => state.workspaces.entities);
-  const notifications = useSelector((state) => state.notifications.entities);
+  const notifications = useSelector(
+    (state) => state.notifications.pagedEntities
+  );
   const notificationDropdownRef = useRef(null);
   const profileDropdownRef = useRef(null);
   const [notificationDropdown, setNotificationDropdown] = useState(false);
   const [profileDropdown, setProfileDrodown] = useState(false);
   const [hasUnReadNotification, setHasUnReadNotification] = useState(false);
+  const [workspaceIds, setWorkspaceIds] = useState([]);
+  const [boardIds, setBoardIds] = useState([]);
+  const notificationLastPage = useSelector((state) => state.notifications.page);
+  const [areNotificationsLoading, setAreNotificationsLoading] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
-      const workspaceIds = workspaces?.map((workspace) => workspace._id);
-      const boardIds = workspaces
+      const _workspaceIds = workspaces?.map((workspace) => workspace._id);
+      const _boardIds = workspaces
         ?.map((workspace) => {
           return workspace.boards?.map((board) => {
             return board._id;
@@ -47,16 +56,24 @@ const Navbar = () => {
         .filter(Boolean)
         .flat();
 
-      dispatch(fetchNotifications({ workspaceIds, boardIds }));
+      setBoardIds(_boardIds);
+      setWorkspaceIds(_workspaceIds);
+
+      dispatch(
+        fetchNotifications({ workspaceIds: _workspaceIds, boardIds: _boardIds })
+      );
     }
   }, [dispatch, isAuthenticated, workspaces]);
 
   useEffect(() => {
     if (isAuthenticated) {
       setHasUnReadNotification(
-        notifications?.filter(
-          (notification) => notification?.user?.id === userInfo.id
-        ).length > 0
+        notifications?.filter((notification) => {
+          const readby = notification?.readBy?.map((readby) => {
+            return readby.id;
+          });
+          return !readby?.includes(userInfo.id);
+        }).length > 0
       );
     }
   }, [notifications]);
@@ -92,12 +109,11 @@ const Navbar = () => {
     workspaces?.forEach((workspace) => {
       workspace.boards.forEach((board) => {
         const channelName = `workspace:${workspace._id}:board:${board._id}`;
-  
+
         socket.send(JSON.stringify({ channels: [channelName] }));
       });
     });
   };
-  
 
   const handleLogoutClick = () => {
     dispatch(logout());
@@ -146,12 +162,34 @@ const Navbar = () => {
     dispatch(
       bulkReadNotifications({
         workspaceId: notifications[0]?.workspaceId,
-        notificationIds: notifications.map((notification) => {
+        notificationIds: notifications?.map((notification) => {
           return notification._id;
         }),
       })
     );
   };
+
+  const handleNotificationScroll = debounce((e) => {
+    const bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+
+    if (bottom) {
+      setAreNotificationsLoading(true);
+      dispatch(
+        fetchNotifications({
+          workspaceIds: workspaceIds,
+          boardIds: boardIds,
+          page: notificationLastPage + 1,
+        })
+      )
+        .then(() => {
+          setAreNotificationsLoading(false);
+        })
+        .catch(() => {
+          setAreNotificationsLoading(false);
+        });
+    }
+  }, 500);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -288,12 +326,13 @@ const Navbar = () => {
                 {hasUnReadNotification ? (
                   <img src={HasNotificationIcon}></img>
                 ) : (
-                  <img src={HasNotificationIcon}></img>
+                  <img src={NotificationIcon}></img>
                 )}
               </label>
               <div
                 className="notification-dropdown"
                 ref={notificationDropdownRef}
+                onScroll={handleNotificationScroll}
               >
                 <div
                   className="notification-dropdown-header"
@@ -332,13 +371,13 @@ const Navbar = () => {
                             src={notification?.user?.profilePicture}
                           ></img>
                           <div className="notification-header-text">
-                            {notification.message.split("::=>")[0].trim()}
+                            {notification.message?.split("::=>")[0].trim()}
                           </div>
                         </div>
                         <div className="notification-content">
-                          {notification.message.includes("::=>")
+                          {notification.message?.includes("::=>")
                             ? notification.message
-                                .split("::=>")
+                                ?.split("::=>")
                                 .slice(-1)[0]
                                 ?.trim()
                             : ""}
@@ -347,6 +386,26 @@ const Navbar = () => {
                     </li>
                   </Link>
                 ))}
+                <div>
+                  {" "}
+                  {areNotificationsLoading ? (
+                    <div className="notificationScroll">
+                      <div>
+                        <RotatingLines
+                          height="40"
+                          width="40"
+                          radius="9"
+                          strokeColor="#36C5F0"
+                          ariaLabel="loading"
+                          wrapperStyle
+                          wrapperClass
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </div>
 

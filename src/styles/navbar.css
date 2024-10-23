@@ -149,6 +149,15 @@
     overflow: hidden;
     max-height: 800px;
     overflow-y: scroll;
+    overflow-anchor: none;
+}
+
+.notificationScroll{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 .navbar-notification-button .notification-dropdown li {
@@ -220,6 +229,10 @@
 
 .navbar-notification-button #notification-dropdown-toggler:checked~.notification-dropdown {
     display: flex;
+}
+
+body:has(#notification-dropdown-toggler:checked){ /*TODO burası bok kokan bir geliştirme*/
+    overflow: hidden;
 }
 
 .notification-dropdown-header{

@@ -3,16 +3,23 @@ import NotificationService from "../api/BoardApi/notification";
 
 export const fetchNotifications = createAsyncThunk(
   "notifications/fetchAll",
-  async ({ workspaceIds, boardIds }, { getState, rejectWithValue }) => {
+  async (
+    { workspaceIds, boardIds, page = 1 },
+    { getState, rejectWithValue }
+  ) => {
     const token = getState().auth?.token?.token;
     const notificationService = new NotificationService();
     try {
       const response = await notificationService.getNotifications(
         token,
         workspaceIds,
-        boardIds
+        boardIds,
+        page
       );
-      return response.data;
+      return {
+        data: response.data,
+        page: page,
+      };
     } catch (error) {
       console.error("Error fetching notifications:", error);
       return rejectWithValue(error.message);
@@ -59,17 +66,26 @@ export const bulkReadNotifications = createAsyncThunk(
   }
 );
 
+const uniqueById = (array) => {
+  const seen = new Set();
+  return array.filter((item) => {
+    const isDuplicate = seen.has(item._id);
+    seen.add(item._id);
+    return !isDuplicate;
+  });
+};
+
 const notificationSlice = createSlice({
   name: "notifications",
   initialState: {
     entities: [],
+    pagedEntities: [],
     status: "idle",
     error: null,
   },
   reducers: {
     addNotification: (state, action) => {
-      console.log("NEW NOTIFICATION::", action.payload);
-      state.entities.unshift(action.payload);
+      state.pagedEntities.unshift(action.payload);
     },
   },
   extraReducers: (builder) => {
@@ -79,30 +95,38 @@ const notificationSlice = createSlice({
       })
       .addCase(fetchNotifications.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.entities = action.payload;
+        state.entities = action.payload.data.notifications;
+        state.page = action.payload.page;
+
+        state.pagedEntities.push(...action.payload.data.notifications);
+
+        state.pagedEntities = uniqueById(state.pagedEntities);
       })
       .addCase(fetchNotifications.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })
       .addCase(readNotification.fulfilled, (state, action) => {
-        const updatedEntities = state.entities.map((entity) =>
+        console.log(action);
+        const updatedEntities = state.pagedEntities.map((entity) =>
           entity._id === action.payload._id
             ? { ...entity, readBy: action.payload.readBy }
             : entity
         );
-        state.entities = updatedEntities;
+        state.pagedEntities = updatedEntities;
       })
       .addCase(bulkReadNotifications.fulfilled, (state, action) => {
-        const updatedEntities = state.entities.map((entity) => {
+        const updatedEntities = state.pagedEntities.map((entity) => {
           const matchedEntity = action.payload.find(
             (payloadEntity) => payloadEntity._id === entity._id
           );
-      
-          return matchedEntity ? { ...entity, readBy: matchedEntity.readBy } : entity;
+
+          return matchedEntity
+            ? { ...entity, readBy: matchedEntity.readBy }
+            : entity;
         });
-        
-        state.entities = updatedEntities;
+
+        state.pagedEntities = updatedEntities;
       });
   },
 });
