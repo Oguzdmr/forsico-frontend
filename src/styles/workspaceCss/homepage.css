@@ -44,6 +44,7 @@
 
 .fs-96 {
     font-size: 6rem; /* 96px */
+    font-weight: 700;
     margin: 0;
 }
 
@@ -86,7 +87,6 @@
 
 .workspace-general-info-title {
     font-size: 1.8rem; /* 28.8px */
-    font-weight: bold;
     margin-bottom: 1.25rem; /* 20px */
 }
 
@@ -96,7 +96,6 @@
 
 .workspace-title {
     font-size: 1.5rem; /* 24px */
-    font-weight: bold;
     margin-bottom: 0.9375rem; /* 15px */
 }
 

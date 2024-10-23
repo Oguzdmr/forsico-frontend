@@ -7,6 +7,7 @@ import EditRightArrow from "../assets/edit-profile-right-arrow.svg"
 import UsernameIcon from "../assets/edit-profile-username-icon.svg"
 import EmailIcon from "../assets/edit-profile-email-icon.svg"
 import BirthdayIcon from "../assets/edit-profile-birthday-icon.svg"
+import moment from "moment"
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const Profile = () => {
     const token = useSelector((state) => state.auth.token);
 
     const fileInputRef = useRef(null); // Reference to the file input
+    
 
     const [editProfileOpen, setEditProfileOpen] = useState(false);
     const [changePasswordOpen, setChangePasswordOpen] = useState(false);
@@ -23,8 +25,8 @@ const Profile = () => {
     const [profile, setProfile] = useState({
         firstName: user?.firstName || '',
         lastName: user?.lastName || '',
-        birthDate: user?.dateOfBirth || '',
-        profileImage: user?.profileImage || './default-profile-image.jpg'
+        birthDate: moment(user?.dateOfBirth).format("YYYY-MM-DD").toString() || '',
+        profileImage: user?.profilePictureUrl || './default-profile-image.jpg'
     });
 
     const [password, setPassword] = useState({
@@ -134,7 +136,7 @@ const Profile = () => {
                                             className='edit-profile-input'
                                             type="date"
                                             placeholder="Birthday"
-                                            value={profile.birthDate}
+                                            value={profile.birthDate }
                                             onChange={(e) =>
                                                 setProfile({ ...profile, birthDate: e.target.value })
                                             }

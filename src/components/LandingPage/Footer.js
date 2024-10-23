@@ -66,9 +66,7 @@ const Footer = () => {
           </div>
           <div className="left-area-content">
             <p className="footer-left-p">
-              Regístrate y disfruta de todas las ventajas que te ofrecemos,
-              introduce tus platos y empieza la transformación de tu
-              restaurante.
+            Have questions, feedback, or need assistance? We’re here to help! Reach out to us, and our team will get back to you as soon as possible.
             </p>
           </div>
         </div>
@@ -146,15 +144,15 @@ const Footer = () => {
           </p>
         </div>
         <div className="social-icons">
-          <span className="icon linkedin-icon footer-social-icon" href="#">
+          <a className="icon linkedin-icon footer-social-icon" href="https://www.linkedin.com/company/forsicoio/" target="_blank">
             <img src={linkedInIcon} alt="linkedin" />
-          </span>
-          <span className="icon instagram-icon footer-social-icon" href="#">
+          </a>
+          <a className="icon instagram-icon footer-social-icon" href="https://www.instagram.com/forsico.io/" target="_blank">
             <img src={instagramIcon} alt="instagram" />
-          </span>
-          <span className="icon linkedin-icon footer-social-icon" href="#">
+          </a>
+          <a className="icon linkedin-icon footer-social-icon" href="https://x.com/forsicoio?s=21&t=x0z6d1vm-mTi9VXGXbnRsw" target="_blank">
             <img src={twitterIcon} alt="x" />
-          </span>
+          </a>
         </div>
       </div>
     </footer>
