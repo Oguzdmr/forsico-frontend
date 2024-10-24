@@ -26,12 +26,10 @@ function Board() {
   const { boardId } = useParams();
 
   useEffect(() => {
-    console.log(boardId);
     dispatch(updateStatus({ status: "idle" }));
   }, [boardId]);
 
   useEffect(() => {
-    console.log("çalıştı")
     if (status === "idle") {
       dispatch(fetchBoard({ workspaceId, boardId }));
     }

@@ -9,7 +9,6 @@ export const fetchBoard = createAsyncThunk(
 
     try {
       const response = await board.getBoard(token, _.workspaceId, _.boardId);
-      console.log("res data",response.data)
       return response.data;
     } catch (error) {
       console.log(error);
@@ -27,7 +26,6 @@ const boardSlice = createSlice({
   },
   reducers: {
     updateStatus: (state, action) => {
-        console.log("dispatch works",action.payload.status)
       state.status = action.payload.status;
     },
     dragTask: (state, action) => {

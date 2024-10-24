@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TaskModal from "./TaskModal";
 import SubTaskCard from "./SubTaskCard";
 import '../../styles/workspaceCss/TaskCard.css';
@@ -12,15 +12,16 @@ import flag from '../../assets/flag.svg';
 import downArrow from '../../assets/down-arrow.svg';
 import upArrow from '../../assets/up-arrow.svg';
 
-function TaskCard({ task, colIndex, taskIndex, color }) {
-  const boards = useSelector((state) => state.auth.boards);
-  const board = boards.find((board) => board.isActive === true);
-  const columns = board.columns;
+function TaskCard({ list, task, colIndex, taskIndex, color }) {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isSubtasksVisible, setIsSubtasksVisible] = useState(false);
-
+  console.log("list",list);
+  console.log("task",task)
+  const [subtasks,setSubtasks] = useState(task.subtasks.map((sub)=>{
+    return list.tasks.filter(tsk => tsk._id === sub)[0]
+  }) || []);
   let completed = 0;
-  let subtasks = task?.subtasks || [];
+
 
   const handleOnDrag = (e) => {
     e.dataTransfer.setData(
@@ -34,7 +35,7 @@ function TaskCard({ task, colIndex, taskIndex, color }) {
   };
 
   const hasSubtasks = subtasks?.length > 0;
-
+console.log(subtasks)
   return (
     <div>
       <div

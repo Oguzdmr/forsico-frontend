@@ -20,18 +20,9 @@ function TaskList({ list,colIndex }) {
   ];
 
   const dispatch = useDispatch();
-  const boards = useSelector((state) => state.auth.boards);
-  const board = boards.find((board) => board.isActive === true);
-  const col = board.columns.find((col, i) => i === 1);
-
-  if (!board) return null;
-
   const color = colors[1 % colors.length];
   
   const handleOnDrop = (e) => {
-    console.log("event json parse",JSON.parse(
-      e.dataTransfer.getData("text")
-    ))
     const { prevColIndex, taskIndex } = JSON.parse(
       e.dataTransfer.getData("text")
     );
@@ -57,12 +48,16 @@ function TaskList({ list,colIndex }) {
         className={`column-header ${color}`}
       >
         <div className={`rounded-circle ${color}`} />
-        {list.name} ({col.tasks.length})
+        {list.name} ({list.tasks.length})
       </p>
 
-      {(list.tasks || []).map((task, index) => (
-        <TaskCard key={index} task={task} taskIndex={task._id} colIndex={list._id} color={color} />
-      ))}
+      {(list.tasks || []).map((task, index) => {
+        if(!task.parentTask){
+          return (
+            <TaskCard key={index} list={list} task={task} taskIndex={task._id} colIndex={list._id} color={color} />
+          )
+        }
+      })}
     </div>
   );
 }
