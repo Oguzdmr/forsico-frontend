@@ -6,7 +6,6 @@ const redis = require("redis");
 const app = express();
 const server = createServer(app);
 
-// JSON veriyi almak için middleware
 app.use(express.json());
 
 const redisClient = redis.createClient({
@@ -31,8 +30,6 @@ redisClient.on("error", (err) => {
 });
 
 wss.on("connection", (ws) => {
-  console.log("Client connected via WebSocket");
-
   clientChannelsMap.set(ws, []);
 
   ws.on("message", async (data) => {
@@ -57,7 +54,6 @@ wss.on("connection", (ws) => {
           });
 
           subscribedChannels.push(channel);
-          console.log(`Subscribed to Redis channel: ${channel}`);
         }
       });
 
@@ -68,7 +64,6 @@ wss.on("connection", (ws) => {
   });
 
   ws.on("close", () => {
-    console.log("Client disconnected");
     clientChannelsMap.delete(ws);
   });
 });

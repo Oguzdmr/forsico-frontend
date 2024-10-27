@@ -95,12 +95,12 @@ const notificationSlice = createSlice({
       })
       .addCase(fetchNotifications.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.entities = action.payload.data.notifications;
-        state.page = action.payload.page;
+        state.entities = action.payload?.data?.notifications || [];
+        state.page = action.payload.page || 1;
 
-        state.pagedEntities.push(...action.payload.data.notifications);
+        state.pagedEntities.push(...action.payload.data?.notifications || []);
 
-        state.pagedEntities = uniqueById(state.pagedEntities);
+        state.pagedEntities = uniqueById(state.pagedEntities || []);
       })
       .addCase(fetchNotifications.rejected, (state, action) => {
         state.status = "failed";

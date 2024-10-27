@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import LoginModal from "../Auth/LoginModal";
 import SignUpModal from "../Auth/SignUpModal";
 import ForgotPasswordModal from "../Auth/ForgotPasswordModal";
@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/authSlice";
 import { debounce } from "lodash";
 import { RotatingLines } from "react-loader-spinner";
+import flag from "../../assets/flag.svg";
 
 import {
   fetchNotifications,
@@ -21,6 +22,8 @@ import {
   bulkReadNotifications,
   addNotification,
 } from "../../store/notificationSlice";
+
+import { search, removeResults } from "../../store/searchSlice";
 
 const Navbar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -34,15 +37,28 @@ const Navbar = () => {
   const notifications = useSelector(
     (state) => state.notifications.pagedEntities
   );
+  const searchResults = useSelector(
+    (state) => state.searchResults?.pagedEntities
+  );
+  const [areSearchResultsLoading, setAreSearchResultsLoading] = useState(false);
+  const searchResulstLastPage = useSelector(
+    (state) => state.searchResults?.page
+  );
+  const searchResultsStatus = useSelector(
+    (state) => state.searchResults?.status
+  );
   const notificationDropdownRef = useRef(null);
+  const searchDropdownRef = useRef(null);
   const profileDropdownRef = useRef(null);
   const [notificationDropdown, setNotificationDropdown] = useState(false);
-  const [profileDropdown, setProfileDrodown] = useState(false);
+  const [profileDropdown, setProfileDropdown] = useState(false);
   const [hasUnReadNotification, setHasUnReadNotification] = useState(false);
   const [workspaceIds, setWorkspaceIds] = useState([]);
   const [boardIds, setBoardIds] = useState([]);
   const notificationLastPage = useSelector((state) => state.notifications.page);
   const [areNotificationsLoading, setAreNotificationsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -70,7 +86,7 @@ const Navbar = () => {
       setHasUnReadNotification(
         notifications?.filter((notification) => {
           const readby = notification?.readBy?.map((readby) => {
-            return readby.id;
+            return readby.id || readby;
           });
           return !readby?.includes(userInfo.id);
         }).length > 0
@@ -131,7 +147,7 @@ const Navbar = () => {
       profileDropdownRef.current &&
       !profileDropdownRef.current.contains(event.target)
     ) {
-      setProfileDrodown(false);
+      setProfileDropdown(false);
     }
   };
 
@@ -140,7 +156,7 @@ const Navbar = () => {
   };
 
   const handleProfileButtonChange = (e) => {
-    setProfileDrodown(e.target.checked);
+    setProfileDropdown(e.target.checked);
   };
 
   const handleSelect = (item) => {
@@ -169,6 +185,46 @@ const Navbar = () => {
     );
   };
 
+  const debouncedSearch = useCallback(
+    debounce((query, workspaceIds) => {
+      dispatch(removeResults());
+
+      if (query.length > 3) {
+        dispatch(search({ workspaceIds, query, page: 1 }));
+      }
+    }, 500),
+    [] 
+  );
+
+  const handleSearch = (e) => {
+    const query = e.target.value || "";
+    setSearchQuery(query);
+    debouncedSearch(query, workspaceIds);
+  };
+
+  const handleSearchScroll = debounce((e) => {
+    const bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+
+    if (bottom) {
+      setAreSearchResultsLoading(true);
+      dispatch(
+        search({
+          workspaceIds: workspaceIds,
+          query: searchQuery,
+          page: searchResulstLastPage + 1,
+          limit: 10,
+        })
+      )
+        .then(() => {
+          setAreSearchResultsLoading(false);
+        })
+        .catch(() => {
+          setAreSearchResultsLoading(false);
+        });
+    }
+  }, 500);
+
   const handleNotificationScroll = debounce((e) => {
     const bottom =
       e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
@@ -190,6 +246,20 @@ const Navbar = () => {
         });
     }
   }, 500);
+
+  const handleSearchInputFocus = () => {
+    setIsSearchDropdownOpen(true);
+  };
+  const handleSearchInputBlur = (e) => {
+    if (!searchDropdownRef.current.contains(e.relatedTarget)) {
+      setIsSearchDropdownOpen(false);
+    }
+  };
+
+  const handleSearchResultLinkClick = () => {
+    setIsSearchDropdownOpen(false);
+    setSearchQuery("");
+  };
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -311,7 +381,85 @@ const Navbar = () => {
                   type="text"
                   className="navbar-search-input"
                   placeholder="Search..."
+                  value={searchQuery}
+                  onChange={handleSearch}
+                  onFocus={handleSearchInputFocus}
+                  onBlur={handleSearchInputBlur}
                 ></input>
+                {isSearchDropdownOpen && (
+                  <div
+                    className="search-dropdown"
+                    onScroll={handleSearchScroll}
+                    ref={searchDropdownRef}
+                  >
+                    {searchResults?.length <= 0 || searchQuery.length < 3 ? (
+                      <div className="is-empty-search">
+                        {searchResultsStatus === "loading" ? (
+                          <div>
+                            <RotatingLines
+                              height="40"
+                              width="40"
+                              radius="9"
+                              strokeColor="#36C5F0"
+                              ariaLabel="loading"
+                              wrapperStyle
+                              wrapperClass
+                            />
+                          </div>
+                        ) : (
+                          " You need to type at least 3 characters to search."
+                        )}
+                      </div>
+                    ) : (
+                      <div className="search-results">
+                        {searchResults?.map((searchResult, index) => (
+                          <Link
+                            onClick={handleSearchResultLinkClick}
+                            key={index}
+                            to={`/workspaces/board/${searchResult.workspaceId}/${searchResult.boardId?._id}/?selectedTask=${searchResult._id}`}
+                          >
+                            <li className="search-result">
+                              <div className="top">
+                                <img
+                                  alt="priority"
+                                  className="priority-icon"
+                                  src={flag}
+                                ></img>
+                                <h3 className="task-name">
+                                  {searchResult.name}
+                                </h3>
+                              </div>
+                              <div className="bottom">
+                                <p className="board-name">
+                                  {searchResult.boardId?.name}
+                                </p>
+                              </div>
+                            </li>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                    <div>
+                      {areSearchResultsLoading ? (
+                        <div className="searchScroll">
+                          <div>
+                            <RotatingLines
+                              height="40"
+                              width="40"
+                              radius="9"
+                              strokeColor="#36C5F0"
+                              ariaLabel="loading"
+                              wrapperStyle
+                              wrapperClass
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -387,7 +535,6 @@ const Navbar = () => {
                   </Link>
                 ))}
                 <div>
-                  {" "}
                   {areNotificationsLoading ? (
                     <div className="notificationScroll">
                       <div>

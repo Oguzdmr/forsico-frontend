@@ -3,7 +3,8 @@ import authReducer from "./authSlice";
 import workspaceReducer from "./workspaceSlice";
 import notificationReducer from "./notificationSlice";
 import selectedComponentReducer from "./selectedComponentSlice";
-import boardReducer from './boardSlice'
+import boardReducer from "./boardSlice";
+import searchReducer from "./searchSlice";
 //import boardsSlice from "./boardsSlice";
 //boards: boardsSlice.reducer,
 
@@ -13,6 +14,7 @@ export const store = configureStore({
     selectedComp: selectedComponentReducer,
     workspaces: workspaceReducer,
     notifications: notificationReducer,
-    board: boardReducer
+    board: boardReducer,
+    searchResults: searchReducer
   },
 });
