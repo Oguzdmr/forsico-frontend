@@ -189,6 +189,16 @@
     border-bottom: none;
 }
 
+.search-dropdown li:hover {
+    background-color: #36C5F0;
+    color: white;
+}
+
+.search-dropdown li:hover .board-name{
+    color: white;
+}
+
+
 .search-dropdown a,
 .search-dropdown a:visited,
 .search-dropdown a:hover,

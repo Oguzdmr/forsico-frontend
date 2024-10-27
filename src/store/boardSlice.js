@@ -29,19 +29,42 @@ const boardSlice = createSlice({
       state.status = action.payload.status;
     },
     addList: (state, action) => {
-      state.entities.lists.push({_id:action.payload._id, name:action.payload.name, color:action.payload.color, tasks:[]});
+      state.entities.lists.push({
+        _id: action.payload._id,
+        name: action.payload.name,
+        color: action.payload.color,
+        tasks: [],
+      });
     },
     dragTask: (state, action) => {
-        const { colIndex, prevColIndex, taskIndex } = action.payload;
-        const prevCol = state.entities.lists.find((list) => list._id === prevColIndex);
-        const task = prevCol.tasks.find((task)=>task._id === taskIndex)
+      const { colIndex, prevColIndex, taskIndex } = action.payload;
+      const prevCol = state.entities.lists.find(
+        (list) => list._id === prevColIndex
+      );
+      const task = prevCol.tasks.find((task) => task._id === taskIndex);
 
-        prevCol.tasks = prevCol.tasks.map((prevTask)=>{
+      prevCol.tasks = prevCol.tasks
+        .map((prevTask) => {
           return prevTask._id !== task._id && prevTask;
-        }).filter(Boolean);
+        })
+        .filter(Boolean);
 
-        state.entities.lists.find((list) => list._id === colIndex).tasks.push(task);
-      },
+      prevCol.tasks = prevCol.tasks
+        ?.map((prevTask) => {
+          if (task.subtasks?.includes(prevTask._id)) {
+            state.entities.lists
+              .find((list) => list._id === colIndex)
+              .tasks.push(prevTask);
+            return false;
+          }
+          return prevTask;
+        })
+        .filter(Boolean);
+
+      state.entities.lists
+        .find((list) => list._id === colIndex)
+        .tasks.push(task);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -57,8 +80,7 @@ const boardSlice = createSlice({
         state.error = action.payload;
       });
   },
- 
 });
 
-export const { updateStatus,dragTask,addList } = boardSlice.actions;
+export const { updateStatus, dragTask, addList } = boardSlice.actions;
 export default boardSlice.reducer;
