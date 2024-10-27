@@ -1,0 +1,60 @@
+/* styles.css */
+.board-page{
+    background-color: #ffff;
+    width: max-content;
+}
+.board-header{
+    padding: 20px;
+    color: #1C3C84;
+    width: calc(100vw - 330px);
+    height: 78px;
+    position: fixed;
+    background-color: #ffff;
+}
+.board-header h1{
+    font-size: 40px;
+}
+.board-top-line{
+ padding-top: 40px;
+}
+.board-top-line hr{
+    height:2px;
+    border-width:0;
+    color:#F2F2F2;
+    background-color:#F2F2F2;    
+}
+.board-container {
+    padding: 1rem;
+    padding-top: 130px;
+    background-color: #ffff;
+    height: 100vh;
+    display: flex;
+    width: max-content; /* Ekranın tamamını kaplar */
+    gap: 1.5rem;
+    overflow: scroll;
+}
+.new-column-button {
+    display: flex;
+    align-items: start;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    height: 32px;    
+}
+.new-column-button img{
+    width: 24px;
+    height: 24px;
+}
+.add-task-button{
+    background-color:#36C5F0 ;
+    color:white;
+    border: 1px solid transparent;
+    border-radius:20px ;
+    width:100px;
+    height:40px ;
+    font-size:15px;
+    display: block;
+    align-self: end;
+    margin-bottom: 100px;
+    cursor: pointer;
+}

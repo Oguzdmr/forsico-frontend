@@ -103,7 +103,7 @@ console.log(subtasks)
       {/* Subtask'ları göstermek için */}
       {isSubtasksVisible && (
         <div className="subtasks-container">
-          {subtasks.map((subtask, index) => (
+          {subtasks?.map((subtask, index) => (
             <SubTaskCard
               key={index}
               colIndex={colIndex}

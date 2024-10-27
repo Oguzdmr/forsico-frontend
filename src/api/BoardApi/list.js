@@ -43,7 +43,7 @@ class List {
         }
     }
 
-    async createList(token, workspaceId, name, description, boardId) {
+    async createList(token, workspaceId, name, description, boardId, color) {
         const myHeaders = new Headers();
         myHeaders.append("x-workspace-id", workspaceId);
         myHeaders.append("Content-Type", "application/json");
@@ -52,7 +52,8 @@ class List {
         const raw = JSON.stringify({
             name: name,
             description: description,
-            boardId: boardId
+            boardId: boardId,
+            color:color
         });
 
         const requestOptions = {

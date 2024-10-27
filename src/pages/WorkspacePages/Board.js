@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TaskList from "../../components/WorkspaceAndBoard/TaskList";
 import VectorIcon from "../../assets/Vector.png";
 import { useDispatch, useSelector } from "react-redux";
-import "../../styles/Home.css";
+import "../../styles/workspaceCss/board.css";
 import { fetchBoard, updateStatus } from "../../store/boardSlice";
 
 import { useParams } from "react-router-dom";
@@ -50,18 +50,27 @@ function Board() {
 
   const [isListModalOpen, setIsListModalOpen] = useState(false);
 
-  const boards = useSelector((state) => state.auth.boards);
-  const board = boards.find((board) => board.isActive === true);
-  const columns = board.columns;
+  const board = useSelector((state) => state.board.entities);
+
 
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
 
   return (
-    <div className={`home-container scrollbar-hide`}>
+    <div className="board-page">
+    <div className="board-header">
+      <h1>{board.name}</h1>
+      <div className="board-top-line">
+      <hr />
+      </div>
+      
+    </div>
+   
+    <div className={`board-container scrollbar-hide`}>
+     
       {entities?.lists?.length > 0 ? (
         <>
           {entities.lists.map((list, index) => (
-            <TaskList key={index} list={list} colIndex={list._id} />
+            <TaskList key={index} list={list} colIndex={list._id} workspaceId={workspaceId} boardId={boardId} />
           ))}
           <div
             onClick={() => {
@@ -84,11 +93,12 @@ function Board() {
           </div>
         </>
       )}
-
       {isListModalOpen && (
         <CreateListModal onClose={()=> setIsListModalOpen(false)} workspaceId={workspaceId} boardId={boardId} />
       )}
+
       <button className="add-task-button">Add Task +</button>
+    </div>
     </div>
   );
 }

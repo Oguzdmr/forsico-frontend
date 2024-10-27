@@ -29,7 +29,7 @@ const boardSlice = createSlice({
       state.status = action.payload.status;
     },
     addList: (state, action) => {
-      state.entities.lists.push({name:action.payload.name, _id:action.payload._id, tasks:[]});
+      state.entities.lists.push({_id:action.payload._id, name:action.payload.name, color:action.payload.color, tasks:[]});
     },
     dragTask: (state, action) => {
         const { colIndex, prevColIndex, taskIndex } = action.payload;

@@ -1,0 +1,19 @@
+/* Ana kapsayıcı */
+.main-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.content-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.outlet-container {
+    margin-left: 290px; 
+    height: calc(100vh - 80px); 
+    overflow: auto; 
+}

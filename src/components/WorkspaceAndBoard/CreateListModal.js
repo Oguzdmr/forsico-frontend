@@ -49,12 +49,13 @@ const CreateListModal = ({ onClose, workspaceId, boardId }) => {
         workspaceId,
         name,
         description,
-        boardId
+        boardId,
+        color
       );
         console.log("create list response",response)
       if (response.status === true) {
         dispatch(
-          addList({ name:response.data.name, _id:response.data._id })
+          addList({ name:response.data.name, _id:response.data._id , color:response.data.color})
         );
         onClose();
       } else {
