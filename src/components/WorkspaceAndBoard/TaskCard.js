@@ -3,7 +3,6 @@ import TaskModal from "./TaskModal";
 import SubTaskCard from "./SubTaskCard";
 import '../../styles/workspaceCss/TaskCard.css';
 import { useSelector } from "react-redux";
-
 import rightButton from '../../assets/right-button.svg';
 import miniCalendar from '../../assets/mini-calendar.svg';
 import fork from '../../assets/fork-blue.svg';
@@ -11,6 +10,7 @@ import people from '../../assets/people-blue.svg';
 import flag from '../../assets/flag.svg';
 import downArrow from '../../assets/down-arrow.svg';
 import upArrow from '../../assets/up-arrow.svg';
+import moment from 'moment';
 
 function TaskCard({ list, task, colIndex, taskIndex, color }) {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
@@ -58,12 +58,15 @@ console.log(subtasks)
         </div>
 
         <div className="task-info">
-          <div className="task-date">
+          {task.dueDate && (
+            <div className="task-date">
             <div className="mini-calendar-icon">
               <img src={miniCalendar} alt="mini calendar" />
             </div>
-            <span className="date-text">{task.dueDate}</span>
-          </div>
+            <span className="date-text">{moment(task.dueDate).format("MMMM-DD")}</span>
+            </div>
+          )}
+         
           <div className="task-status">
             <span>%50</span>
           </div>

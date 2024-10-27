@@ -28,6 +28,9 @@ const boardSlice = createSlice({
     updateStatus: (state, action) => {
       state.status = action.payload.status;
     },
+    addList: (state, action) => {
+      state.entities.lists.push({name:action.payload.name, _id:action.payload._id, tasks:[]});
+    },
     dragTask: (state, action) => {
         const { colIndex, prevColIndex, taskIndex } = action.payload;
         const prevCol = state.entities.lists.find((list) => list._id === prevColIndex);
@@ -57,5 +60,5 @@ const boardSlice = createSlice({
  
 });
 
-export const { updateStatus,dragTask } = boardSlice.actions;
+export const { updateStatus,dragTask,addList } = boardSlice.actions;
 export default boardSlice.reducer;

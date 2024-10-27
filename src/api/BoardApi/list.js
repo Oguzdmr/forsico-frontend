@@ -13,7 +13,7 @@ class List {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/list/${listId}`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/list/${listId}`, requestOptions);
             const result = await response.json();
             return result;
         } catch (error) {
@@ -34,7 +34,7 @@ class List {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/list/${listId}?=${workspaceId}`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/list/${listId}?=${workspaceId}`, requestOptions);
             const result = await response.json();
             return result;
         } catch (error) {
@@ -63,7 +63,7 @@ class List {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/list`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/list`, requestOptions);
             const result = await response.json();
             return result;
         } catch (error) {
@@ -90,7 +90,7 @@ class List {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/list/${listId}`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/list/${listId}`, requestOptions);
             const result = await response.json();
             return result;
         } catch (error) {
@@ -99,7 +99,7 @@ class List {
         }
     }
 
-    async getListsOfBoard(token, workspaceId, listId) {
+    async getListsOfBoard(token, workspaceId, boardId) {
         const myHeaders = new Headers();
         myHeaders.append("x-workspace-id", workspaceId);
         myHeaders.append("Authorization", `Bearer ${token}`);
@@ -111,7 +111,7 @@ class List {
         };
 
         try {
-            const response = await fetch(`${config.baseUrl}/list/getlistsofboard/${listId}`, requestOptions);
+            const response = await fetch(`${config.boardApiBaseUrl}/list/getlistsofboard/${boardId}`, requestOptions);
             const result = await response.json();
             return result;
         } catch (error) {

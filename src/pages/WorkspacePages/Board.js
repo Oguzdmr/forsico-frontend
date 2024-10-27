@@ -6,6 +6,7 @@ import "../../styles/Home.css";
 import { fetchBoard, updateStatus } from "../../store/boardSlice";
 
 import { useParams } from "react-router-dom";
+import CreateListModal from "../../components/WorkspaceAndBoard/CreateListModal";
 
 function Board() {
   const [windowSize, setWindowSize] = useState([
@@ -47,7 +48,7 @@ function Board() {
     };
   });
 
-  const [isBoardModalOpen, setIsBoardModalOpen] = useState(false);
+  const [isListModalOpen, setIsListModalOpen] = useState(false);
 
   const boards = useSelector((state) => state.auth.boards);
   const board = boards.find((board) => board.isActive === true);
@@ -64,7 +65,7 @@ function Board() {
           ))}
           <div
             onClick={() => {
-              setIsBoardModalOpen(true);
+              setIsListModalOpen(true);
             }}
             className="new-column-button"
           >
@@ -73,10 +74,20 @@ function Board() {
         </>
       ) : (
         <>
-          <img src={VectorIcon} alt="New Column" />
+           <div
+            onClick={() => {
+              setIsListModalOpen(true);
+            }}
+            className="new-column-button"
+          >
+            <img src={VectorIcon} alt="New Column" />
+          </div>
         </>
       )}
 
+      {isListModalOpen && (
+        <CreateListModal onClose={()=> setIsListModalOpen(false)} workspaceId={workspaceId} boardId={boardId} />
+      )}
       <button className="add-task-button">Add Task +</button>
     </div>
   );
