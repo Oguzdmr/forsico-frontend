@@ -9,7 +9,6 @@ export const fetchBoard = createAsyncThunk(
 
     try {
       const response = await board.getBoard(token, _.workspaceId, _.boardId);
-      console.log("res data",response.data)
       return response.data;
     } catch (error) {
       console.log(error);
@@ -27,8 +26,10 @@ const boardSlice = createSlice({
   },
   reducers: {
     updateStatus: (state, action) => {
-        console.log("dispatch works",action.payload.status)
       state.status = action.payload.status;
+    },
+    addList: (state, action) => {
+      state.entities.lists.push({name:action.payload.name, _id:action.payload._id, tasks:[]});
     },
     dragTask: (state, action) => {
         const { colIndex, prevColIndex, taskIndex } = action.payload;
@@ -59,5 +60,5 @@ const boardSlice = createSlice({
  
 });
 
-export const { updateStatus,dragTask } = boardSlice.actions;
+export const { updateStatus,dragTask,addList } = boardSlice.actions;
 export default boardSlice.reducer;

@@ -30,7 +30,7 @@ function SubTaskCard({ colIndex, taskIndex, subtask, color }) { // subtask'ı pr
       >
         <div className="subtask-frame">
           <div className="subtask-content">
-            <p className="subtask-title">{subtask.title}</p> {/* subtask başlığını kullanıyoruz */}
+            <p className="subtask-title">{subtask.name}</p> {/* subtask başlığını kullanıyoruz */}
             <div className="subtask-extra">
               <img src={flag} alt="Flag icon" />
             </div>

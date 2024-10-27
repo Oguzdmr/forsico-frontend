@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TaskModal from "./TaskModal";
 import SubTaskCard from "./SubTaskCard";
 import '../../styles/workspaceCss/TaskCard.css';
 import { useSelector } from "react-redux";
-
 import rightButton from '../../assets/right-button.svg';
 import miniCalendar from '../../assets/mini-calendar.svg';
 import fork from '../../assets/fork-blue.svg';
@@ -11,16 +10,18 @@ import people from '../../assets/people-blue.svg';
 import flag from '../../assets/flag.svg';
 import downArrow from '../../assets/down-arrow.svg';
 import upArrow from '../../assets/up-arrow.svg';
+import moment from 'moment';
 
-function TaskCard({ task, colIndex, taskIndex, color }) {
-  const boards = useSelector((state) => state.auth.boards);
-  const board = boards.find((board) => board.isActive === true);
-  const columns = board.columns;
+function TaskCard({ list, task, colIndex, taskIndex, color }) {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isSubtasksVisible, setIsSubtasksVisible] = useState(false);
-
+  console.log("list",list);
+  console.log("task",task)
+  const [subtasks,setSubtasks] = useState(task.subtasks.map((sub)=>{
+    return list.tasks.filter(tsk => tsk._id === sub)[0]
+  }) || []);
   let completed = 0;
-  let subtasks = task?.subtasks || [];
+
 
   const handleOnDrag = (e) => {
     e.dataTransfer.setData(
@@ -34,7 +35,7 @@ function TaskCard({ task, colIndex, taskIndex, color }) {
   };
 
   const hasSubtasks = subtasks?.length > 0;
-
+console.log(subtasks)
   return (
     <div>
       <div
@@ -57,12 +58,15 @@ function TaskCard({ task, colIndex, taskIndex, color }) {
         </div>
 
         <div className="task-info">
-          <div className="task-date">
+          {task.dueDate && (
+            <div className="task-date">
             <div className="mini-calendar-icon">
               <img src={miniCalendar} alt="mini calendar" />
             </div>
-            <span className="date-text">{task.dueDate}</span>
-          </div>
+            <span className="date-text">{moment(task.dueDate).format("MMMM-DD")}</span>
+            </div>
+          )}
+         
           <div className="task-status">
             <span>%50</span>
           </div>
