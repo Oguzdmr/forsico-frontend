@@ -1,20 +1,17 @@
 /* Genel container ayarları */
 
 .workspaceAi-container{
-    margin: 1rem;
-    width: 100%;
+    padding: 1rem;
     height: 100%;
 }
 .workspaceAi-top{
     display: flex;
     flex-direction: column;
-    width: 1165px;
     height: 76px;
     gap: 10px;
 }
 .workspaceAi-title-div{
     display: flex;
-    width: 1165px; 
     height: auto; 
     min-height: 48px; 
     gap: 0px; 
@@ -51,7 +48,6 @@
 .workspaceAi-top {
     display: flex;
     flex-direction: column;
-    width: 1165px;
     gap: 10px;
 }
 
@@ -161,36 +157,44 @@
 
 /* --------------------------------------------- Task kartları ---------------------------------------------*/
 
-.workspaceAi-message{
-    width: 377px;
-    height: 90px;
+  
+  .workspaceAi-task {
+    margin-top: 1rem;
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    transition: transform 0.2s, opacity 0.5s;
+  }
+
+  .workspaceAi-message{
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-left: 5rem;
-}
-
-.workspaceAi-task {
-   
-    border-radius: 10px;
+    margin-top: 1rem;
+  }
+  
+  .workspaceAi-task:hover {
+    transform: scale(1.02);
+  }
+  
+  .rejected-task {
+    opacity: 0.2 !important; /* Yarı saydamlık */
+  }
+  
+  .task-icons {
     display: flex;
-    flex-direction: row;
-}
+    gap: 10px;
+    cursor: pointer;
+  }
 
-.workspaceAi-task-card{
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
 
-    width: 300px;
-    height: 90px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding-left: 1rem;
-
-}
-
-.task-tags {
+  .task-tags {
+    margin-top: 1rem;
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
@@ -204,13 +208,7 @@
     color: #00796B;
 }
 
-.task-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    gap: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-left: 1rem;
+
+.workspaceAi-response-title{
+    margin-top: 1rem;
 }
