@@ -1,0 +1,338 @@
+.create-board-modal-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2); 
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.create-board-modal-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 30em;
+    height: 40em;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.create-board-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.create-board-modal-close-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.create-board-modal-header {
+    width: 300px;
+}
+
+.create-board-modal-title {
+    font-size: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.create-board-modal-title span {
+    display: flex;
+    justify-content: flex-start;
+    font-family: 'Inter', sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 60.51px;
+    text-align: left;
+    color: #ED1E5A;
+    width: 100%;
+}
+
+.create-board-modal-signup {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.create-board-modal-signup-link {
+    color: #ff005c;
+    text-decoration: none;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.create-board-modal-auth-options {
+    display: flex;
+    justify-content: space-around;
+    width: 300px;
+    height: 50px;
+}
+
+.login-google-auth, .login-microsoft-auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 50px;
+    border: solid 1.5px #767676;
+    border-radius: 15px;
+    background-color: #FFF ;
+    cursor: pointer;
+}
+
+.login-google-icon, .login-microsoft-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.create-board-modal-separator {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #aaa;
+    width: 300px;
+}
+
+.create-board-modal-separator::before, .create-board-modal-separator::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #ddd;
+}
+
+.create-board-modal-separator::before {
+    margin-right: 10px;
+}
+
+.create-board-modal-separator::after {
+    margin-left: 10px;
+}
+
+
+.create-board-modal-input {
+    margin-bottom: 15px;
+    position: relative; 
+}
+
+.input-icon-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; 
+    height: 20px; 
+    pointer-events: none; 
+}
+
+.create-board-input-email, .create-board-input-password {
+    width: 300px;
+    height: 50px;
+    padding: 10px 10px 10px 40px; 
+    border: 1.5px solid #6D6D6D;
+    border-radius: 15px;
+    font-size: 14px;
+    box-sizing: border-box; 
+}
+
+.create-board-input-email::placeholder {
+    color: #6D6D6D;
+    font-size: 14px;
+}
+
+.create-board-input-email.error input {
+    border-color: #FF005C;
+}
+
+.create-board-input-email.error .create-board-error-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.create-board-error-icon img {
+    width: 20px;
+    height: 20px;
+}
+
+.input-icon-left {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; 
+    height: 20px; 
+    pointer-events: none; 
+}
+
+.input-icon-right {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px; 
+    cursor: pointer; 
+}
+
+.create-board-input-password {
+    width: 300px;
+    height: 50px;
+    padding: 10px 40px 10px 40px; 
+    border: 1.5px solid #6D6D6D;
+    border-radius: 15px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.create-board-input-password::placeholder {
+    color: #6D6D6D;
+    font-size: 14px;
+}
+
+
+.create-board-modal-options {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    height: 24px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.login-remember-me {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+}
+
+.login-remember-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    border: 1px solid #DBDBDB;
+}
+
+.login-remember-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #9A9A9A;
+    margin: 0; 
+}
+
+.login-forgot-password {
+    color: #ED1E5A;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18.15px;
+    text-align: left;
+    text-decoration: none;
+}
+
+.create-board-modal-action {
+    margin-bottom: 20px;
+}
+
+.create-board-submit-btn {
+    background-color: #36C5F0;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    width: 300px;
+    height: 50px;
+    padding: 12px 101px 12px 101px;
+    gap: 10px;
+    border-radius: 25px;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 24.2px;
+    text-align: center;
+}
+
+.login-submit-btn:hover {
+    background: #5ED0F3;
+}
+
+.login-help-link {
+    color: #00baff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.create-board-modal-message {
+    color: #ED1E5A; /* Hata mesajı rengi */
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+.create-board-error-message {
+    color: #ED1E5A;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.create-board-input-email.error {
+    border-color: #ED1E5A; /* Hata rengi (kırmızı) */
+}
+
+.create-board-input-email.error .login-error-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.create-board-error-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.create-board-name{
+    position: relative;
+}
+
+.create-board-pen-icon{
+    position: absolute;
+    top: 30%;
+    left: 3%;
+}
+
+.create-board-desc-area{
+    position: relative;
+}
+
+.create-board-desc-icon{
+position: absolute;
+top: 5%;
+left: 2%;
+}
+

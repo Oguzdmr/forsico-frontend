@@ -74,3 +74,52 @@
 .sidebar-home-icon{
     cursor: pointer;
 }
+
+.sidebar-menu.active,.sidebar-blue-letter.active {
+    border-radius: 8px;
+    color: rgba(54, 197, 240, 1);  /* Metin rengi */
+  }
+  
+  /* Aktif olan img için renk filtresi */
+  .sidebar-menu.active,.sidebar-blue-letter.active img {
+    color: rgba(54, 197, 240, 1);
+}
+  
+  /* Aktif olan metinlerin rengi */
+  .sidebar-menu.active .sidebar-blue-letter,
+  .sidebar-menu.active a {
+    color:rgba(54, 197, 240, 1);  /* Metin rengi */
+  }
+
+.sidebar-submenu-dot.active {
+    color: rgba(54, 197, 240, 1) ;
+}  
+  /* Geçiş efektleri */
+  .sidebar-menu {
+    transition: all 0.3s ease-in-out;
+  }
+
+  .sidebar-workspaces-menu:has(.sidebar-blue-letter.active) > .sidebar-blue-letter{
+    color: rgba(237, 30, 90, 1);
+  }
+
+.sidebar-menu.active img {
+    filter: brightness(0) saturate(100%) invert(64%) sepia(82%) saturate(1196%) hue-rotate(160deg) brightness(101%) contrast(88%);  
+}
+
+.workspaces-submenu.active img{
+        filter: brightness(0) saturate(100%) invert(64%) sepia(82%) saturate(1196%) hue-rotate(160deg) brightness(101%) contrast(88%);  
+
+    }
+
+.sidebar-workspaces-menu:has(.sidebar-submenu-dot.active)>.sidebar-submenu-dot{
+    filter: brightness(0) saturate(100%) invert(24%) sepia(91%) saturate(3111%) hue-rotate(329deg) brightness(92%) contrast(102%);
+}
+
+.sidebar-create-board-icon{
+    margin-left: 5rem;
+}
+
+.lower-line{
+    margin-top: 5px;
+}

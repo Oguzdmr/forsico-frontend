@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import "../../styles/loginModal.css";
+import "../../styles/workspaceCss/createboardmodal.css";
 import BoardApi from "../../api/BoardApi/board.js";
 const config = require("../../config");
 import Cross from "../../assets/close.svg";
 import { fetchWorkspaces } from "../../store/workspaceSlice";
-
+import Penİcon from "../../assets/homepage-pen-icon.svg"
+import Descİcon from "../../assets/create-board-modal-desc.svg"
 
 const CreateBoardModal = ({ onClose, workspaceId }) => {
   const [name, setName] = useState("");
@@ -37,7 +38,7 @@ const CreateBoardModal = ({ onClose, workspaceId }) => {
   }, []);
 
   const handleClickCreate = async () => {
-    let response = await boardApi.createBoard(token,workspaceId,name,description);
+    let response = await boardApi.createBoard(token, workspaceId, name, description);
     if (response.status === true) {
       dispatch(fetchWorkspaces());
       onClose();
@@ -46,64 +47,66 @@ const CreateBoardModal = ({ onClose, workspaceId }) => {
   };
 
   return (
-    <div className="login-modal-container">
-      <div className="login-modal-card" ref={modalRef}>
-        <div className="login-modal-close">
+    <div className="create-board-modal-container">
+      <div className="create-board-modal-card" ref={modalRef}>
+        <div className="create-board-modal-close">
           <span>
             <img
-              className="login-modal-close-icon"
+              className="create-board-modal-close-icon"
               src={Cross}
               alt="Close"
               onClick={onClose}
             />
           </span>
         </div>
-        <div className="login-modal-header">
-          <div className="login-modal-title">
-            <span>Create Board!</span>
+        <div className="create-board-modal-header">
+          <div className="create-board-modal-title">
+            <span>Let's create your Board!</span>
           </div>
         </div>
         <br />
 
-        <div className={`login-modal-input`}>
-          <div className="input-icon-wrapper">
+        <div className={`create-board-modal-input`}>
+          <div className="input-icon-wrapper create-board-name">
+            <img className="create-board-pen-icon" src={Penİcon} alt="Pen" />
             <input
-              className={`login-input-email`}
-              type="text"
+              className={`create-board-input-email`}
+              type="email"
               name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              placeholder="Board İsmi Giriniz..."
+              placeholder="Type your board name ..."
             />
           </div>
         </div>
-        <div className="login-modal-input">
-          <div className="input-icon-wrapper">
+        <div className="create-board-modal-input">
+          <div className="input-icon-wrapper create-board-desc-area">
+            <img className="create-board-desc-icon" src={Descİcon} alt="Desc" />
 
             <textarea
               id="board-description-input"
-              className="login-input-password"
+              className="create-board-input-password"
               type="text"
               name="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              placeholder="Description"
-              style={{height:"150px"}}
+              placeholder="Type your board description ..."
+              style={{ height: "150px" }}
             />
           </div>
         </div>
         {errorMessage && (
-          <div className="login-error-message">
+          <div className="create-board-error-message">
             <p>{errorMessage}</p>
           </div>
         )}
 
-        <div className="login-modal-action">
+        <div className="create-board-modal-action">
           <button
             type="button"
-            className="login-submit-btn"
+            className="create-board-submit-btn"
             onClick={handleClickCreate}
           >
             Create

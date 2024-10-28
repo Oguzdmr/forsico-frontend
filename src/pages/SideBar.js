@@ -8,10 +8,13 @@ import SidebarMyDocs from "../assets/sidebar-docs-icon.svg";
 import SidebarPlus from "../assets/sidebar-plus-icon.svg";
 import SidebarDot from "../assets/sidebar-dot-icon.svg";
 import { fetchWorkspaces } from "../store/workspaceSlice";
-import { Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import CreateBoardModal from "../components/WorkspaceAndBoard/CreateBoardModal";
 
 const Sidebar = () => {
+
+  const location = useLocation();  // Aktif sayfanın yolunu almak için
+
   // State to track which workspace dropdown is open
   const dispatch = useDispatch();
   const [openDropdown, setOpenDropdown] = useState({});
@@ -52,84 +55,73 @@ const Sidebar = () => {
       })
     );
   };
+
+  const isActive = (path) => location.pathname === path; // Aktif sayfayı kontrol eder
+
   return (
     <div className="sidebar">
-      <div className="sidebar-menu">
+      <div className={`sidebar-menu ${isActive("/workspaces/home") ? "active" : ""}`}>
         <img className="sidebar-home-icon" src={SidebarHome} alt="home" />
-        {/* <Link className="sidebar-home sidebar-blue-letter" to="/taskboardhomepage">Home</Link> */}
-        <Link
-          to="/workspaces/home"
-          className="sidebar-home sidebar-blue-letter"
-        >
-          Home
-        </Link>
+        <Link to="/workspaces/home" className="sidebar-blue-letter">Home</Link>
       </div>
-      <div className="sidebar-menu">
+
+      <div className={`sidebar-menu ${isActive("/workspaces/tasks") ? "active" : ""}`}>
         <img className="sidebar-tasks-icon" src={SidebarMyTasks} alt="tasks" />
         <span className="sidebar-blue-letter">My Tasks</span>
       </div>
-      <div className="sidebar-menu">
+
+      <div className={`sidebar-menu ${isActive("/mydocs") ? "active" : ""}`}>
         <img className="sidebar-docs-icon" src={SidebarMyDocs} alt="docs" />
-        <a href="/mydocs" className="sidebar-blue-letter">
-          My Docs
-        </a>
+        <a href="/mydocs" className="sidebar-blue-letter">My Docs</a>
       </div>
+
       <div className="sidebar-line"></div>
 
       <div className="sidebar-workspaces">
         <span className="add-workspace">WORKSPACES</span>
-        <Link
-          to="/workspaces/ai/new"
-          className="sidebar-plus-icon"
-        >
+        <Link to="/workspaces/ai/new" className="sidebar-plus-icon">
           <img className="sidebar-home-icon" src={SidebarPlus} alt="plus" />
         </Link>
       </div>
 
-      {entities?.map((entity, index) => (
-        <div key={index} className="sidebar-workspaces-menu">
+      {entities?.map((entity) => (
+        <div key={entity._id} className="sidebar-workspaces-menu">
           <img
             className="sidebar-submenu-dot"
             src={SidebarDot}
             alt="dot"
             onClick={() => toggleDropdown(entity.name)}
           />
-          <span
-            className="sidebar-blue-letter"
-            onClick={() => toggleDropdown(entity.name)}
-          >
+          <span className="sidebar-blue-letter workspaces-menu" onClick={() => toggleDropdown(entity.name)}>
             {entity.name}
           </span>
+          <a className="sidebar-create-board-icon" type="button" onClick={() => { console.log("click", entity._id); setSelectedWorkspaceId(entity._id); setShowCreateBoardModal(true); }} >
+                <img className="sidebar-home-icon" src={SidebarPlus} alt="plus" />
+          </a>
+          <div className="sidebar-line lower-line"></div>
 
           {openDropdown[entity.name] && (
+            
             <div className="sidebar-submenu">
-              {entity.boards.map((board, index) => (
+              
+              {entity.boards.map((board) => (
                 <Link
-                  key={index}
-                  to={"/workspaces/board/" + entity._id +"/"+board._id}
-                  style={{textDecoration:"none"}}
+                  key={board._id}
+                  to={`/workspaces/board/${entity._id}/${board._id}`}
+                  className={`sidebar-blue-letter workspaces-submenu ${isActive(`/workspaces/board/${entity._id}/${board._id}`) ? "active" : ""}`}
                 >
-                  <span className="sidebar-blue-letter">
-                    <img
-                      className="sidebar-submenu-dot"
-                      src={SidebarDot}
-                      alt="dot"
-                    />
-                    {board?.name}
-                  </span>
+                  <img className={`sidebar-submenu-dot ${isActive(`/workspaces/board/${entity._id}/${board._id}`) ? "active" : ""}`} src={SidebarDot} alt="dot" />
+                  {board.name}
                 </Link>
               ))}
-                <a type="button" onClick={() => {console.log("click",entity._id);setSelectedWorkspaceId(entity._id);setShowCreateBoardModal(true); }} >
-                  <img className="sidebar-home-icon" src={SidebarPlus} alt="plus" />
-                </a>
             </div>
           )}
         </div>
       ))}
 
-      {showCreateBoardModal ? (
+      {showCreateBoardModal && (
         <CreateBoardModal onClose={() => setShowCreateBoardModal(false)} workspaceId={selectedWorkspaceId} />
-      ):(<></>)}
+      )}
     </div>
   );
 };
