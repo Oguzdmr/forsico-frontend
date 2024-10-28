@@ -3,15 +3,31 @@
     background-color: #ffff;
     width: max-content;
 }
-.board-header{
+/* .board-header{
     padding: 20px;
     color: #1C3C84;
     width: calc(100vw - 330px);
     height: 78px;
     position: fixed;
     background-color: #ffff;
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
 }
-.board-header h1{
+.board-title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.board-button-group{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+
+}
+.board-title h1{
     font-size: 40px;
 }
 .board-top-line{
@@ -22,6 +38,107 @@
     border-width:0;
     color:#F2F2F2;
     background-color:#F2F2F2;    
+} */
+
+.board-page{
+    display: flex;
+    flex-direction: column;
+}
+.board-header {
+    padding: 20px;
+    color: #1C3C84;
+    width: calc(100vw - 330px); /* Genişlik ayarı */
+    height: 78px;
+    position: fixed;
+    background-color: #fff;
+    display: flex;
+    align-items: center; /* Dikey ortalama */
+    justify-content: space-between; /* Öğeleri iki uca yayar */
+
+}
+
+.board-title {
+    display: flex;
+    align-items: center;
+    flex: 1; /* Başlık alanını genişletir */
+}
+
+.board-title h1 {
+    font-size: 40px;
+}
+
+.board-button-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* İkonları sağa yaslar */
+    gap: 10px; /* İkonlar arasında boşluk */
+}
+
+.board-members img {
+    cursor: pointer;
+    margin-left: 10px; /* İkonlar arasında boşluk */
+}
+
+.member-modal {
+    position: absolute;
+    top: 80px; /* Header’ın hemen altında */
+    right: 10px; /* Sağ tarafta hizalanmış */
+    width: 238px;
+    height: 162px;
+    padding: 16px;
+    gap: 15px;
+    background-color: #fff;
+    border-radius: 15px 0px 15px 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #1C3C8480
+}
+
+.member-modal-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.member-modal-title h1{
+    font-size: 20px;
+    color: #1C3C84;
+    font-weight: 700;
+    line-height: 24.2px;
+}
+.member-modal-line {
+    width: 100%;
+    height: 1px;
+    background-color: #F2F2F2;
+}
+
+.member-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: scroll;
+}
+
+.member {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.member img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.board-top-line{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    padding-top: 40px;
+    height: 2px;
+    border-bottom: #F2F2F2;
 }
 .board-container {
     padding: 1rem;
