@@ -19,10 +19,10 @@ const WorkspaceAIPage = () => {
   const [workspaceIdState, setWorkspaceIdState] = useState(null);
   const [workspaceName, setWorkspaceName] = useState(useSelector((state)=>state.workspaces.entities.filter((workspace)=> {
     return workspaceId === workspace._id && workspace.name
-  } )[0].name));
+  } )[0]?.name || ""));
   const [description, setDescription] = useState(useSelector((state)=>state.workspaces.entities.filter((workspace)=> {
     return workspaceId === workspace._id && workspace.description
-  } )[0].description));
+  } )[0]?.description || ""));
   const [aiTasks, setAiTasks] = useState([]);
   const [visibleTasks, setVisibleTasks] = useState([]);
   const [taskStates, setTaskStates] = useState({}); // Her kartın durumunu tutmak için
