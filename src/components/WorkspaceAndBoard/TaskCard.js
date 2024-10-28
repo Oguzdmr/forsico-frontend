@@ -45,7 +45,7 @@ console.log(subtasks)
         draggable
         onDragStart={handleOnDrag}
         className={`task-container ${!hasSubtasks ? 'no-subtasks' : ''}`} // Alt görev yoksa sınıf ekle
-        style={{ borderColor: hasSubtasks ? color : 'rgba(28, 60, 132, 0.2)' }} // Border'ı pasif yap
+        style={{ borderColor: color }} // Border'ı pasif yap
       >
         <div className="task-frame">
           <div className="task-content">

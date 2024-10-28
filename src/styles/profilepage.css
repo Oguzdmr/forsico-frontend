@@ -6,7 +6,7 @@
 
     font-family: sans-serif;
     margin: 1rem;
-    width: 100%;
+    width: calc(100vw - 320px);
     display: flex;
     justify-content: center;
 }

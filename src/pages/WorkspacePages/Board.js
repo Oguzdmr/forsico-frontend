@@ -99,22 +99,14 @@ function Board() {
             </div>
             <div className="member-modal-line"></div>
             <div className="member-modal-content">
-              <div className="member">
-                <img src="" alt="Member 1" />
-                <span>Oğuzhan Demir</span>
+              {entities?.members.map((member)=>(
+                <div className="member" key={member._id}>
+                <img src={member?.profilePicture} alt="Member 1" />
+                <span>{member.firstName} {member.lastName}</span>
               </div>
-              <div className="member">
-                <img src="" alt="Member 2" />
-                <span>Alperen Yurtseven</span>
-              </div>
-              <div className="member">
-                <img src="" alt="Member 2" />
-                <span>Murat Turoğlu</span>
-              </div>
-              <div className="member">
-                <img src="" alt="Member 2" />
-                <span>Furkan Yıldız</span>
-              </div>
+              ))}
+              
+              
             </div>
           </div>
         )}

@@ -115,7 +115,9 @@
 .sidebar-workspaces-menu:has(.sidebar-submenu-dot.active)>.sidebar-submenu-dot{
     filter: brightness(0) saturate(100%) invert(24%) sepia(91%) saturate(3111%) hue-rotate(329deg) brightness(92%) contrast(102%);
 }
-
+.workspaces-submenu{
+    margin-bottom: 15px;
+}
 .sidebar-create-board-icon{
     margin-left: 5rem;
 }

@@ -6,6 +6,7 @@ import Crossİcon from "../../assets/ai-message-cross-icon.svg";
 import { useParams } from "react-router-dom";
 import WorkspaceApi from "../../api/BoardApi/workspace.js";
 import ForsicoAiApi from "../../api/ForsicoAiApi/forsicoai.js";
+import TaskApi from "../../api/BoardApi/task.js"
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWorkspaces } from "../../store/workspaceSlice";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,15 +18,39 @@ const WorkspaceAIPage = () => {
   const [isEditingName, setIsEditingName] = useState(false);
   const { workspaceId } = useParams();
   const [workspaceIdState, setWorkspaceIdState] = useState(null);
-  const [workspaceName, setWorkspaceName] = useState(useSelector((state)=>state.workspaces.entities.filter((workspace)=> {
-    return workspaceId === workspace._id && workspace.name
-  } )[0]?.name || ""));
-  const [description, setDescription] = useState(useSelector((state)=>state.workspaces.entities.filter((workspace)=> {
-    return workspaceId === workspace._id && workspace.description
-  } )[0]?.description || ""));
+  const [workspaceName, setWorkspaceName] = useState("New Workspace");
+  const [description, setDescription] = useState("New Desc");
   const [aiTasks, setAiTasks] = useState([]);
   const [visibleTasks, setVisibleTasks] = useState([]);
   const [taskStates, setTaskStates] = useState({}); // Her kartın durumunu tutmak için
+
+  const _workspaceName = useSelector((state)=>state.workspaces.entities.filter((workspace)=> {
+    return workspaceId === workspace._id && workspace.name
+  } )[0]?.name || "")
+
+  const _workspaceDesc = useSelector((state)=>state.workspaces.entities.filter((workspace)=> {
+    return workspaceId === workspace._id && workspace.description
+  })[0]?.description || "")
+
+  const _boardId = useSelector((state)=>state.workspaces.entities.filter((workspace)=> {
+    return workspaceId === workspace._id && workspace.boards
+  } )[0]?.boards[0]?._id || "")
+
+  const _listId = useSelector((state)=>state.workspaces.entities.filter((workspace)=> {
+    return workspaceId === workspace._id && workspace.boards
+  } )[0]?.boards[0]?.lists[0]?._id || "")
+
+  const ownerId = useSelector((state) => {
+    return state.auth.user.id || "";
+  });
+
+  useEffect(()=>{
+    setWorkspaceName(_workspaceName)
+  },[_workspaceName])
+
+  useEffect(()=>{
+    setDescription(_workspaceDesc)
+  },[_workspaceDesc])
 
   // Animasyon yapılandırması
   const staggerAnimation = {
@@ -47,7 +72,7 @@ const WorkspaceAIPage = () => {
   });
   const workspaceApi = new WorkspaceApi();
   const forsicoAiApi = new ForsicoAiApi();
-
+  const taskApi = new TaskApi();
   const getAiTasks = async () => {
     let res = await forsicoAiApi.generateAzureAIContent(workspaceDescription);
     if (res.success) {
@@ -69,8 +94,14 @@ const WorkspaceAIPage = () => {
     return () => clearInterval(interval);
   }, [aiTasks]);
 
-  const handleApprove = (taskId) => {
-    setTaskStates((prev) => ({ ...prev, [taskId]: "approved" }));
+  const handleApprove = async (task) => {
+    try {
+        let responseCreate = await taskApi.createTask(token,workspaceId,{name: task.name, description:task.description,listId:_listId,boardId:_boardId,ownerId:ownerId,assignee:ownerId});
+        setTaskStates((prev) => ({ ...prev, [task.id]: "approved" }));
+    } catch (error) {
+        
+    }
+    
   };
 
   const handleReject = (taskId) => {
@@ -261,7 +292,7 @@ const WorkspaceAIPage = () => {
                       </div>
                       <div className="task-tags">
                         <span className="task-tag">
-                          {subtask.type.replace(/[^A-Z,a-z]/g, " ")}
+                          {subtask.type?.replace(/[^A-Z,a-z]/g, " ")}
                         </span>
                         <span className="task-tag">{subtask.assignee}</span>
                       </div>
@@ -278,7 +309,7 @@ const WorkspaceAIPage = () => {
                       {taskStates[subtask.id] !== "rejected" && (
                         <span
                           className="task-icon"
-                          onClick={() => handleApprove(subtask.id)}
+                          onClick={() => handleApprove(subtask)}
                         >
                           <img src={Tickİcon} alt="tick" />
                         </span>

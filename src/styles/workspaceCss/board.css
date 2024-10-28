@@ -1,8 +1,4 @@
-/* styles.css */
-.board-page{
-    background-color: #ffff;
-    width: max-content;
-}
+
 /* .board-header{
     padding: 20px;
     color: #1C3C84;
@@ -43,6 +39,9 @@
 .board-page{
     display: flex;
     flex-direction: column;
+    background-color: #ffff;
+    width: max-content;
+    min-width: calc(100vw - 290px);
 }
 .board-header {
     padding: 20px;
@@ -144,7 +143,6 @@
     padding: 1rem;
     padding-top: 130px;
     background-color: #ffff;
-    height: 100vh;
     display: flex;
     width: max-content; /* Ekranın tamamını kaplar */
     gap: 1.5rem;
@@ -174,4 +172,28 @@
     align-self: end;
     margin-bottom: 100px;
     cursor: pointer;
+}
+
+.add-task-button {
+    background-color: #36C5F0;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 20px;
+    width: 100px;
+    height: 40px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed; /* Butonu ekranın sağ alt köşesine sabitle */
+    bottom: 20px; /* Ekranın altından boşluk */
+    right: 20px; /* Ekranın sağından boşluk */
+    cursor: pointer;
+    z-index: 100; /* Diğer elemanların üzerinde gösterilmesini sağla */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hafif bir gölge ekle */
+    transition: background-color 0.3s ease;
+}
+
+.add-task-button:hover {
+    background-color: #2BA9E1; /* Hover durumunda farklı bir renk */
 }
