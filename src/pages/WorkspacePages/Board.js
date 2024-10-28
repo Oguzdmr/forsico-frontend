@@ -46,8 +46,6 @@ function Board() {
     }
   }, [dispatch, status]);
 
-
-
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -99,62 +97,63 @@ function Board() {
             </div>
             <div className="member-modal-line"></div>
             <div className="member-modal-content">
-              {entities?.members.map((member)=>(
+              {entities?.members.map((member) => (
                 <div className="member" key={member._id}>
-                <img src={member?.profilePicture} alt="Member 1" />
-                <span>{member.firstName} {member.lastName}</span>
-              </div>
+                  <img src={member?.profilePicture} alt="Member 1" />
+                  <span>
+                    {member.firstName} {member.lastName}
+                  </span>
+                </div>
               ))}
-              
-              
             </div>
           </div>
         )}
       </div>
-      <div className="board-top-line"></div>
-      <hr />
       <div className={`board-container scrollbar-hide`}>
-        {entities?.lists?.length > 0 ? (
-          <>
-            {entities.lists.map((list, index) => (
-              <TaskList
-                key={index}
-                list={list}
-                colIndex={list._id}
-                workspaceId={workspaceId}
-                boardId={boardId}
-              />
-            ))}
-            <div
-              onClick={() => {
-                setIsListModalOpen(true);
-              }}
-              className="new-column-button"
-            >
-              <img src={VectorIcon} alt="New Column" />
-            </div>
-          </>
-        ) : (
-          <>
-            <div
-              onClick={() => {
-                setIsListModalOpen(true);
-              }}
-              className="new-column-button"
-            >
-              <img src={VectorIcon} alt="New Column" />
-            </div>
-          </>
-        )}
-        {isListModalOpen && (
-          <CreateListModal
-            onClose={() => setIsListModalOpen(false)}
-            workspaceId={workspaceId}
-            boardId={boardId}
-          />
-        )}
+        <div className="board-top-line"></div>
+        <div className="board-content">
+          {entities?.lists?.length > 0 ? (
+            <>
+              {entities.lists.map((list, index) => (
+                <TaskList
+                  key={index}
+                  list={list}
+                  colIndex={list._id}
+                  workspaceId={workspaceId}
+                  boardId={boardId}
+                />
+              ))}
+              <div
+                onClick={() => {
+                  setIsListModalOpen(true);
+                }}
+                className="new-column-button"
+              >
+                <img src={VectorIcon} alt="New Column" />
+              </div>
+            </>
+          ) : (
+            <>
+              <div
+                onClick={() => {
+                  setIsListModalOpen(true);
+                }}
+                className="new-column-button"
+              >
+                <img src={VectorIcon} alt="New Column" />
+              </div>
+            </>
+          )}
+          {isListModalOpen && (
+            <CreateListModal
+              onClose={() => setIsListModalOpen(false)}
+              workspaceId={workspaceId}
+              boardId={boardId}
+            />
+          )}
 
-        <button className="add-task-button">Add Task +</button>
+          <button className="add-task-button">Add Task +</button>
+        </div>
       </div>
     </div>
   );
