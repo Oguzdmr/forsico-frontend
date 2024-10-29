@@ -1,61 +1,66 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LandingPage from "../pages/LandingPage";
-import ResetPasswordPage from "../pages/ResetPasswordPage";
-import ConfirmEmailPage from "../pages/ConfirmEmailPage";
-import ProfilePage from "../pages/ProfilePage";
-import HomePage from "../pages/WorkspacePages/HomePage";
-import ThirdPartyLogin from "../pages/ThirdPartyLogin";
-import ConfirmEmailUpdatePage from "../pages/ConfirmEmailUpdatePage";
-import WorkspaceAI from "../pages/WorkspacePages/WorkspaceAI";
-import MainPage from "../pages/WorkspacePages/MainPage";
-import Board from "../pages/WorkspacePages/Board";
-import MyDocs from "../pages/MyDocs";
-import MyTasks from "../pages/MyTasks";
+import React, { Suspense, lazy } from "react";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
+
+const LandingPage = lazy(() => import("../pages/LandingPage"));
+const ResetPasswordPage = lazy(() => import("../pages/ResetPasswordPage"));
+const ConfirmEmailPage = lazy(() => import("../pages/ConfirmEmailPage"));
+const ProfilePage = lazy(() => import("../pages/ProfilePage"));
+const HomePage = lazy(() => import("../pages/WorkspacePages/HomePage"));
+const ThirdPartyLogin = lazy(() => import("../pages/ThirdPartyLogin"));
+const ConfirmEmailUpdatePage = lazy(() => import("../pages/ConfirmEmailUpdatePage"));
+const WorkspaceAI = lazy(() => import("../pages/WorkspacePages/WorkspaceAI"));
+const MainPage = lazy(() => import("../pages/WorkspacePages/MainPage"));
+const Board = lazy(() => import("../pages/WorkspacePages/Board"));
+const MyDocs = lazy(() => import("../pages/MyDocs"));
+const MyTasks = lazy(() => import("../pages/MyTasks"));
+
+const LoadingFallback = () => <div>Loading...</div>;
+
 const AppRoutes = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/resetPassword" element={<ResetPasswordPage />} />
-        <Route path="/confirmEmail" element={<ConfirmEmailPage />} />
-        <Route path="/thirdpartylogin" element={<ThirdPartyLogin />} />
-        <Route
-          path="/confirmchangeemail"
-          element={<ConfirmEmailUpdatePage />}
-        />
-        <Route
-          path="/workspaces"
-          element={
-            <ProtectedRoute>
-              <MainPage />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="home" element={<HomePage />} />
-          <Route path="ai/:workspaceId" element={<WorkspaceAI />} /> {/*TODO ai a'da parametre geçerek ayırmak gerekebilir*/}
-          <Route path="board/:workspaceId/:boardId" element={<Board />} /> {/*TODO boardlar workspaceid/boardId path paramlarıyla kullanılacak*/}
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="mytasks" element={<MyTasks />} />
-        </Route>
-        <Route
-          path="/mydocs"
-          element={
-            <ProtectedRoute>
-              <MyDocs />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profilepage"
-          element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/resetPassword" element={<ResetPasswordPage />} />
+          <Route path="/confirmEmail" element={<ConfirmEmailPage />} />
+          <Route path="/thirdpartylogin" element={<ThirdPartyLogin />} />
+          <Route path="/confirmchangeemail" element={<ConfirmEmailUpdatePage />} />
+          <Route
+            path="/profilepage"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mydocs"
+            element={
+              <ProtectedRoute>
+                <MyDocs />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/workspaces"
+            element={
+              <ProtectedRoute>
+                <MainPage />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Navigate to="home" />} />
+            <Route path="home" element={<HomePage />} />
+            <Route path="ai/:workspaceId" element={<WorkspaceAI />} />
+            <Route path="board/:workspaceId/:boardId" element={<Board />} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="mytasks" element={<MyTasks />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </Router>
   );
 };

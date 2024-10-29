@@ -20,7 +20,7 @@ import {
   fetchNotifications,
   readNotification,
   bulkReadNotifications,
-  addNotification,
+  handleNotification,
 } from "../../store/notificationSlice";
 
 import { search, removeResults } from "../../store/searchSlice";
@@ -104,9 +104,8 @@ const Navbar = () => {
     };
 
     socket.onmessage = (event) => {
-      console.log(event.data);
       dispatch(
-        addNotification(
+        handleNotification(
           JSON.parse((JSON.parse(event.data || "{}") || {}).message)
         )
       );

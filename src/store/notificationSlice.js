@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import NotificationService from "../api/BoardApi/notification";
+import { fetchBoard } from "./boardSlice";
+import { debounce } from "lodash";
 
 export const fetchNotifications = createAsyncThunk(
   "notifications/fetchAll",
@@ -49,7 +51,6 @@ export const readNotification = createAsyncThunk(
 export const bulkReadNotifications = createAsyncThunk(
   "notifications/bulkReadNotifications",
   async ({ workspaceId, notificationIds }, { getState, rejectWithValue }) => {
-    console.log(notificationIds);
     const token = getState().auth?.token?.token;
     const notificationService = new NotificationService();
     try {
@@ -65,6 +66,48 @@ export const bulkReadNotifications = createAsyncThunk(
     }
   }
 );
+
+const debouncedFetchBoard = debounce((dispatch, workspaceId, boardId) => {
+  dispatch(
+    fetchBoard({
+      workspaceId,
+      boardId,
+    })
+  );
+}, 500);
+
+export const handleNotification = (notification) => async (dispatch, getState) => {
+  dispatch(addNotification(notification));
+  const userId = getState().auth?.user?.id;
+
+  if(notification.user?.id === userId) return;
+
+  switch (notification.action) {
+    case "newTask":
+    case "statusChange":
+    case "updateTask":
+      if (
+        window.location.pathname.indexOf(
+        `/workspaces/board/${notification.workspaceId}/${notification.boardId}`) === 0
+      ) {
+        console.log("called debounced fetch board");
+        debouncedFetchBoard(
+          dispatch,
+          notification.workspaceId,
+          notification.boardId
+        );
+      }
+      break;
+    case "newComment":
+    case "updateComment":
+      if(window.location.search.split('selectedTask=').slice(-1)[0].split('&')[0] === notification.taskId){
+        //TODO fetchTask
+      }
+      break;
+    default:
+      break;
+  }
+};
 
 const uniqueById = (array) => {
   const seen = new Set();
@@ -98,7 +141,7 @@ const notificationSlice = createSlice({
         state.entities = action.payload?.data?.notifications || [];
         state.page = action.payload.page || 1;
 
-        state.pagedEntities.push(...action.payload.data?.notifications || []);
+        state.pagedEntities.push(...(action.payload.data?.notifications || []));
 
         state.pagedEntities = uniqueById(state.pagedEntities || []);
       })
@@ -107,7 +150,6 @@ const notificationSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(readNotification.fulfilled, (state, action) => {
-        console.log(action);
         const updatedEntities = state.pagedEntities.map((entity) =>
           entity._id === action.payload._id
             ? { ...entity, readBy: action.payload.readBy }
