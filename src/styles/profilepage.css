@@ -3,8 +3,6 @@
 /* Main layout */
 
 .profile-page-main-div{
-
-    font-family: sans-serif;
     margin: 1rem;
     width: calc(100vw - 320px);
     display: flex;

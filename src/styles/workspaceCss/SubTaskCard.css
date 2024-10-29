@@ -27,7 +27,6 @@
   
   .subtask-title {
     width: 175px;
-    font-family: Inter;
     font-size: 15px;
     font-weight: 700;
     line-height: 18.15px;
@@ -70,7 +69,6 @@
   }
   
   .date-text {
-    font-family: initial;
     font-size: 15px;
     font-weight: 500;
     line-height: 18.15px;
@@ -93,7 +91,6 @@
   }
   
   .stat-text {
-    font-family: Inter;
     font-size: 15px;
     font-weight: 700;
     line-height: 18.15px;

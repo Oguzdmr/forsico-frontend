@@ -29,7 +29,6 @@
 
 .task-title {
   width: 175px;
-  font-family: Inter;
   font-size: 15px;
   font-weight: 700;
   line-height: 18.15px;
@@ -54,6 +53,7 @@
   align-items: center;
   gap: 5px;
   padding: 6px 10px;
+  font-weight: 700;
   border-radius: 15px;
   background-color: #E2E8F0;
   color: #1C3C84;
@@ -76,9 +76,7 @@
 }
 
 .stat-text, .extra-text {
-  font-family: Inter;
   font-size: 15px;
-  font-weight: 700;
   line-height: 18.15px;
   color: #1C3C84;
 }
@@ -100,6 +98,7 @@
   border-left: 1px solid rgba(28, 60, 132, 0.5);
   border-right: 1px solid rgba(28, 60, 132, 0.5);
   border-bottom: 1px solid rgba(28, 60, 132, 0.5);
+  border-top: 1px solid rgba(28, 60, 132, 0.5);
   margin-top: 0; /* Footer, task-container'ın hemen altında */
 }
 
@@ -113,12 +112,12 @@
 .task-container.no-subtasks {
   border-bottom-left-radius: 15px; /* Alt sol köşeyi yuvarlat */
   border-bottom-right-radius: 15px; /* Alt sağ köşeyi yuvarlat */
+  border-bottom: 1px solid rgba(28, 60, 132, 0.5);
 }
 
 
 
 .footer-text {
-  font-family: Inter;
   font-size: 14px;
   color: #fff;
 }

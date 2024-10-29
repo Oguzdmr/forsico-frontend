@@ -25,7 +25,6 @@
     width: 100%;
     height: 48px;
     gap: 0px;
-    font-family: 'Inter', sans-serif;
     font-size: 40px;
     font-weight: 700;
     line-height: 48.41px;
@@ -61,7 +60,6 @@
 }
 
 .workspaceAi-title {
-    font-family: 'Inter', sans-serif;
     font-size: 40px;
     font-weight: 700;
     line-height: 48.41px;
@@ -100,8 +98,6 @@
 }
 
 .workspaceAi-input {
-    font-family: 'Inter', sans-serif;
-
     width: 100%;
     height: 150px;
     padding: 15px;
@@ -243,7 +239,6 @@
   
   /* Textarea */
   .workspaceAi-input {
-    font-family: 'Inter', sans-serif;
     width: 100%;
     height: 150px;
     padding: 15px;

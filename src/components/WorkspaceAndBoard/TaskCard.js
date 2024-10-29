@@ -94,7 +94,7 @@ console.log(subtasks)
 
       {/* Task footer: Subtasks'ı açmak için */}
       {hasSubtasks && ( // Alt görev varsa footer'ı göster
-        <div className="task-footer" onClick={toggleSubtasks}>
+        <div className="task-footer" onClick={toggleSubtasks} style={{ borderColor: color }}>
           <span className="footer-text"></span>
           <img src={isSubtasksVisible ? upArrow : downArrow} alt="Arrow icon" className="footer-icon" />
         </div>

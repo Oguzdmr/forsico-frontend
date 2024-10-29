@@ -114,15 +114,14 @@
     pointer-events: none;
 }
 
-
 .search-dropdown {
     display: flex;
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 3px);
     flex-direction: column;
     right: 0;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 24px 0 24px 24px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     width: 456px;
     left: 0;
@@ -232,11 +231,11 @@
 .navbar-notification-button .notification-dropdown {
     display: none;
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 3px);
     flex-direction: column;
     right: 0;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 24px 0 24px 24px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     width: auto;
     height: auto;
@@ -374,19 +373,22 @@ body:has(#notification-dropdown-toggler:checked, .navbar-search-input:focus) {
 .navbar-profile-button .profile-dropdown {
     display: none;
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 3px);
+    font-weight: 400;
     flex-direction: column;
     right: 0;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 24px 0 24px 24px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     width: 10em;
     height: auto;
+    overflow: hidden;
 }
 
 .navbar-profile-button .profile-dropdown li {
     list-style: none;
     text-decoration: none;
+    font-weight: 400;
     color: #1C3C84;
     cursor: pointer;
     border-bottom: .5px solid #CCCCCC;
@@ -406,8 +408,9 @@ body:has(#notification-dropdown-toggler:checked, .navbar-search-input:focus) {
     text-decoration: none;
 }
 
-.navbar-profile-button .profile-dropdown li a:hover {
-    color: #ED1E5A;
+.navbar-profile-button .profile-dropdown li:hover {
+    background-color: #36C5F0;
+    color: white;
 }
 
 .navbar-profile-button #profile-dropdown-toggler:checked~.profile-dropdown {

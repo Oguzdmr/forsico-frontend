@@ -52,9 +52,7 @@
 .signup-modal-title span {
     display: flex;
     justify-content: flex-start;
-    font-family: 'Inter', sans-serif;
     font-size: 50px;
-    font-weight: 700;
     line-height: 60.51px;
     text-align: left;
     color: #ED1E5A;
@@ -188,9 +186,7 @@
 }
 
 .signup-terms-text {
-    font-family: 'Inter', sans-serif;
     font-size: 10px;
-    font-weight: 700;
     line-height: 12.1px;
     text-align: left;
     color: #9A9A9A;
@@ -217,7 +213,6 @@
     padding: 12px 101px 12px 101px;
     gap: 10px;
     border-radius: 25px;
-    font-family: 'Inter', sans-serif;
     font-size: 20px;
     font-weight: 800;
     line-height: 24.2px;
