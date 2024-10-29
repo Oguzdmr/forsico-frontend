@@ -108,24 +108,6 @@ const WorkspaceAIPage = () => {
     setTaskStates((prev) => ({ ...prev, [taskId]: "rejected" }));
   };
 
-  const workspaceIdSetter = async () => {
-    if (workspaceId === "new") {
-      let response = await workspaceApi.createWorkspace(
-        token,
-        workspaceName,
-        description
-      );
-      console.log(response);
-      if (response.status === true) {
-        setWorkspaceIdState(response.data._id);
-        dispatch(fetchWorkspaces());
-      }
-    }
-  };
-
-  useEffect(() => {
-    workspaceIdSetter();
-  }, [workspaceId]);
   // Workspace adı değişikliği
 
   const handleNameSaveClick = async () => {

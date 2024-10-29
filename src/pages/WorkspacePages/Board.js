@@ -4,11 +4,13 @@ import VectorIcon from "../../assets/Vector.png";
 import MembersIcon from "../../assets/memberIcon.svg";
 import ShareIcon from "../../assets/shareIcon.svg";
 import FilterBoardIcon from "../../assets/filterBoard.svg";
+import AiIcon from "../../assets/aiIcon.svg"
+import shareCopyIcon from"../../assets/shareCopyIcon.svg"
 import AddMemberIcon from "../../assets/addMemberIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/workspaceCss/board.css";
 import { fetchBoard, updateStatus } from "../../store/boardSlice";
-
+import { useLocation, Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import CreateListModal from "../../components/WorkspaceAndBoard/CreateListModal";
 
@@ -30,8 +32,10 @@ function Board() {
   const { workspaceId } = useParams();
   const { boardId } = useParams();
   const memberModalRef = useRef(null);
+  const shareModalRef = useRef(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -60,6 +64,12 @@ function Board() {
     ) {
       setIsModalOpen(false);
     }
+    if (
+      shareModalRef.current &&
+      !shareModalRef.current.contains(event.target)
+    ) {
+      setIsShareModalOpen(false);
+    }
   };
 
   const [isListModalOpen, setIsListModalOpen] = useState(false);
@@ -67,6 +77,23 @@ function Board() {
   const board = useSelector((state) => state.board.entities);
 
   const [isSideBarOpen, setIsSideBarOpen] = useState(true);
+
+  const [copySuccess, setCopySuccess] = useState(false); 
+  const linkInputRef = useRef(null);
+
+  const handleCopyClick = async () => {
+    try {
+      if (linkInputRef.current) {
+        await navigator.clipboard.writeText(linkInputRef.current.value);
+        setCopySuccess(true);
+
+        setTimeout(() => setCopySuccess(false), 2000);
+      }
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
+
 
   return (
     <div className="board-page">
@@ -76,6 +103,12 @@ function Board() {
         </div>
 
         <div className="board-button-group">
+        <div className="board-ai">
+            <Link to={"/workspaces/ai/" + workspaceId} >
+            <img src={AiIcon} alt="AI" />
+            </Link>
+           
+          </div>
           <div className="board-filter">
             <img src={FilterBoardIcon} alt="Filter" />
           </div>
@@ -84,7 +117,7 @@ function Board() {
             <img src={MembersIcon} alt="Members" />
           </div>
 
-          <div className="board-share">
+          <div className="board-share" onClick={()=> setIsShareModalOpen(!isShareModalOpen)} >
             <img src={ShareIcon} alt="Share" />
           </div>
         </div>
@@ -107,6 +140,50 @@ function Board() {
               ))}
             </div>
           </div>
+        )}
+
+        {isShareModalOpen && (
+          <div className="share-modal" ref={shareModalRef}>
+          <div className="share-modal-title">
+            <h1>Share the board</h1>
+          </div>
+          <div className="share-modal-line"></div>
+        
+          <div className="share-modal-content">
+            {/* <div className="email-input-wrapper">
+              <input
+                type="text"
+                placeholder="E-mail address or name"
+                className="email-input"
+              />
+              <button className="send-button">Send</button>
+            </div> */}
+        
+            <div className="share-connection-link-wrapper">
+              <label>Share with connection link</label>
+              <div className="share-link-input-container">
+                <input
+                  type="text"
+                  value={window.location.href.split("?")[0]}
+                  readOnly
+                  className="share-link-input"
+                  ref={linkInputRef}
+                />
+                <button className="share-copy-button" onClick={()=>handleCopyClick()}>
+                  <img
+                    src={shareCopyIcon}
+                    alt="Copy"
+                    className="share-copy-icon"
+                  />
+                </button>
+              </div>
+              {copySuccess && (
+                <span className="share-copy-success">Copied!</span> 
+              )}
+            </div>
+          </div>
+        </div>
+        
         )}
       </div>
       <div className={`board-container scrollbar-hide`}>

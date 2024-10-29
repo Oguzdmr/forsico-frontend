@@ -10,7 +10,7 @@ import SidebarDot from "../assets/sidebar-dot-icon.svg";
 import { fetchWorkspaces } from "../store/workspaceSlice";
 import { useLocation, Link } from "react-router-dom";
 import CreateBoardModal from "../components/WorkspaceAndBoard/CreateBoardModal";
-
+import CreateWorkspaceModal from "../components/WorkspaceAndBoard/CreateWorkspaceModal"
 const Sidebar = () => {
 
   const location = useLocation();  // Aktif sayfanın yolunu almak için
@@ -19,6 +19,7 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const [openDropdown, setOpenDropdown] = useState({});
   const [showCreateBoardModal, setShowCreateBoardModal] = useState(false);
+  const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState();
 
   const {
@@ -79,9 +80,9 @@ const Sidebar = () => {
 
       <div className="sidebar-workspaces">
         <span className="add-workspace">WORKSPACES</span>
-        <Link to="/workspaces/ai/new" className="sidebar-plus-icon">
+        <div  onClick={()=>setShowCreateWorkspaceModal(true)} className="sidebar-plus-icon">
           <img className="sidebar-home-icon" src={SidebarPlus} alt="plus" />
-        </Link>
+        </div>
       </div>
 
       {entities?.map((entity) => (
@@ -121,6 +122,9 @@ const Sidebar = () => {
 
       {showCreateBoardModal && (
         <CreateBoardModal onClose={() => setShowCreateBoardModal(false)} workspaceId={selectedWorkspaceId} />
+      )}
+      {showCreateWorkspaceModal && (
+        <CreateWorkspaceModal onClose={() => setShowCreateWorkspaceModal(false)} />
       )}
     </div>
   );
