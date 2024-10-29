@@ -1,0 +1,79 @@
+.modal-title {
+    font-size: 40px;
+    display: inline-flex;
+    line-height: 48.41;
+    font-weight: 700;
+    justify-content: center;
+    text-align: center;
+    padding: 0;
+}
+
+.modal-title span {
+    padding: 0;
+    font-size: 40px;
+    color: #1C3C84;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 0;
+}
+
+.connection-area{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.connection-link {
+    width: 33vh;
+    height: 5.5vh;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.email-invite {
+    width: 33vh;
+    height: 10vh;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+.line-or {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #aaa;
+    position: relative;
+}
+
+.invited-email {
+    display: flex;
+    justify-content: start;
+    text-align: center;
+    font-size: 15px;
+    width: 9em;
+    text-align: center;
+    border: none;
+    border-radius: 15px;
+    margin-top: 3em;
+    background-color: #6D6D6D;
+    margin-bottom: 1vh;
+}
+
+.invited-email a {
+display: flex;
+justify-content: center;
+align-items: center;
+text-align: center;
+
+}

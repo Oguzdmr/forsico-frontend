@@ -13,6 +13,7 @@ import { fetchBoard, updateStatus } from "../../store/boardSlice";
 import { useLocation, Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import CreateListModal from "../../components/WorkspaceAndBoard/CreateListModal";
+import AddMemberModal from "../../components/WorkspaceAndBoard/AddMemberModal"
 
 function Board() {
   const [windowSize, setWindowSize] = useState([
@@ -36,6 +37,7 @@ function Board() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isAddMemberModalOpen, setAddMemberModalOpen] = useState(false);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -126,7 +128,10 @@ function Board() {
           <div className="member-modal" ref={memberModalRef}>
             <div className="member-modal-title">
               <h1>Members</h1>
+              <div onClick={()=>setAddMemberModalOpen(true)}>
               <img src={AddMemberIcon} alt="Add Member" />
+              </div>
+              
             </div>
             <div className="member-modal-line"></div>
             <div className="member-modal-content">
@@ -228,7 +233,12 @@ function Board() {
               boardId={boardId}
             />
           )}
-
+          {isAddMemberModalOpen && (
+            <AddMemberModal
+              onClose={()=>setAddMemberModalOpen(false)}
+              workspaceId={workspaceId}
+            />
+          )}
           <button className="add-task-button">Add Task +</button>
         </div>
       </div>
