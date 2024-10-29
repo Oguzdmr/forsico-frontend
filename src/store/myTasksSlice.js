@@ -30,6 +30,8 @@ const myTasksSlice = createSlice({
     entities: [],
     status: "idle",
     error: null,
+    taskCount: 0,
+    completedTasks: 0,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -40,6 +42,17 @@ const myTasksSlice = createSlice({
       .addCase(fetchMyTasks.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.entities = action.payload;
+        state.taskCount = action.payload?.reduce((total, workspace) => {
+          return total + workspace.tasks.length;
+        }, 0);
+        state.completedTasks = action.payload?.reduce((total, workspace) => {
+          return (
+            total +
+            workspace.tasks.filter((task) => {
+              return task.statusId?.name === "Done";
+            }).length
+          );
+        }, 0);
       })
       .addCase(fetchMyTasks.rejected, (state, action) => {
         state.status = "failed";

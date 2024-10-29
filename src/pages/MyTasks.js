@@ -6,7 +6,6 @@ import AddMemberIcon from "../assets/addMemberIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles/workspaceCss/board.css";
 import { fetchMyTasks } from "../store/myTasksSlice";
-import CreateListModal from "../components/WorkspaceAndBoard/CreateListModal";
 
 function MyTasks() {
   const [windowSize, setWindowSize] = useState([
