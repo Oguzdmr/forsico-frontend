@@ -67,7 +67,7 @@ const Sidebar = () => {
 
       <div className={`sidebar-menu ${isActive("/workspaces/tasks") ? "active" : ""}`}>
         <img className="sidebar-tasks-icon" src={SidebarMyTasks} alt="tasks" />
-        <span className="sidebar-blue-letter">My Tasks</span>
+        <Link to="/workspaces/mytasks" className="sidebar-blue-letter">My Tasks</Link>
       </div>
 
       <div className={`sidebar-menu ${isActive("/mydocs") ? "active" : ""}`}>

@@ -11,6 +11,7 @@ import WorkspaceAI from "../pages/WorkspacePages/WorkspaceAI";
 import MainPage from "../pages/WorkspacePages/MainPage";
 import Board from "../pages/WorkspacePages/Board";
 import MyDocs from "../pages/MyDocs";
+import MyTasks from "../pages/MyTasks";
 import ProtectedRoute from "./ProtectedRoute";
 const AppRoutes = () => {
   return (
@@ -36,6 +37,7 @@ const AppRoutes = () => {
           <Route path="ai/:workspaceId" element={<WorkspaceAI />} /> {/*TODO ai a'da parametre geçerek ayırmak gerekebilir*/}
           <Route path="board/:workspaceId/:boardId" element={<Board />} /> {/*TODO boardlar workspaceid/boardId path paramlarıyla kullanılacak*/}
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="mytasks" element={<MyTasks />} />
         </Route>
         <Route
           path="/mydocs"

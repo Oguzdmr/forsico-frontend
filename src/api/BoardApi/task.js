@@ -25,6 +25,30 @@ class Task {
     }
   }
 
+  async getUserTasks(token, workspaceId) {
+    const myHeaders = new Headers();
+    myHeaders.append("x-workspace-id", workspaceId);
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch(
+        `${config.boardApiBaseUrl}/task/getUserTasks`,
+        requestOptions
+      );
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Error fetching list:", error);
+      throw error;
+    }
+  }
+
   async deleteTask(token, workspaceId, taskId) {
     const myHeaders = new Headers();
     myHeaders.append("x-workspace-id", workspaceId);
