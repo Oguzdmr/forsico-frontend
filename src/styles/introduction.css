@@ -60,4 +60,102 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.introduction-board-main{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 110px;
+}
+
+.board-title-name{
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    width: 342px;
+    height: 46px;
+}
+
+.board-title-name-text{
+    margin-left: 16px;
+}
+.bg-turkuoise{
+    background-color:rgba(54, 197, 240, 1) ;
+}
+
+.bg-blue{
+    background-color:rgba(28, 60, 132, 1) ;
+}
+
+.bg-green{
+    background-color:rgba(161, 246, 121, 1) ;
+}
+
+.introduction-board-card-main{
+    display: flex;
+    gap: 110px;
+
+}
+
+.introduction-board-card{
+    border: 1px dashed gray;
+    border-radius: 15px;
+    width: 342px;
+    height: 182px;
+}
+
+.introduction-card-icon{
+    margin-top: 40px;
+    width: 442px;
+    height: 282px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(454px);
+
+}
+
+.board-card-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+.introduction-card-icon {
+    position: relative;
+    animation: moveIcon 10s infinite; /* Toplam 8 saniyelik döngü */
+}
+
+/* Animasyon tanımı */
+@keyframes moveIcon {
+    0% {
+        transform: translateX(0); /* Başlangıç pozisyonu */
+    }
+    17% {
+        transform: translateX(454px); /* 454px sağa gider */
+    }
+    34% {
+        transform: translateX(454px); /* 454px sağa gider */
+    }
+    51% {
+        transform: translateX(908px); /* 454px sağa gider */
+    }
+    68% {
+        transform: translateX(908px); /* Ortada bekler */
+    }
+    85% {
+        transform: translateX(0); /* Başlangıç pozisyonuna döner */
+    }
+    100% {
+        transform: translateX(0); /* Başlangıç pozisyonuna döner */
+    }
 }
