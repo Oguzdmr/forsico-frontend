@@ -1,96 +1,3 @@
-/*.modal-wrapper {
-    position: fixed;
-    right: 0;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 16px;
-    overflow-y: auto;
-    z-index: 50;
-  }
-  
-  .modal-content-trello {
-    max-height: 95vh;
-    margin: auto;
-    background-color: white;
-    color: black;
-    font-weight: bold;
-    box-shadow: 0 0 8px rgba(54, 78, 126, 0.1);
-    max-width: 640px;
-    width: 100%;
-    padding: 32px;
-    border-radius: 16px;
-  }
-  
-  .modal-content.dark-mode {
-    background-color: #2b2c37;
-    color: white;
-  }
-  
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-  }
-  
-  .modal-header h1 {
-    font-size: 1.125rem;
-  }
-  
-  .elipsis-icon {
-    cursor: pointer;
-    height: 24px;
-  }
-  
-  .modal-description {
-    color: #6b7280;
-    font-weight: 600;
-    letter-spacing: 0.05rem;
-    font-size: 0.75rem;
-    padding-top: 24px;
-  }
-  
-  .subtasks-info {
-    padding-top: 24px;
-    color: #6b7280;
-    letter-spacing: 0.1rem;
-    font-size: 0.875rem;
-  }
-  
-  .subtasks-wrapper {
-    margin-top: 12px;
-    space-y: 8px;
-  }
-  
-  .select-status {
-    padding: 8px 16px;
-    border-radius: 8px;
-    background-color: transparent;
-    border: 1px solid #d1d5db;
-    outline: none;
-    font-size: 0.875rem;
-    width: 100%;
-  }
-  
-  .select-status:focus {
-    border-color: #635fc7;
-  }
-  
-  .status-options {
-    font-size: 0.875rem;
-  }
-  
-  .delete-modal,
-  .add-edit-task-modal {
-    /* Add any modal-specific styling here */
-
-      /* Yeni Eklenenler */
-
-
 
   .modal-content-trello{
     display: flex;
@@ -288,4 +195,349 @@
   resize: none;
   cursor: pointer;
 }
-  
+
+/* Yeni eklenenler*/
+
+
+.assignee-modal {
+  position: absolute; /* Use absolute positioning */
+  top: 20%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust positioning */
+  background-color: white; /* Modal background color */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+  padding: 20px; /* Padding inside the modal */
+  z-index: 2000; /* Ensure it appears above other elements */
+  width: 300px; /* Set a fixed width for the modal */
+  max-width: 90%; /* Responsive width */
+}
+
+.assignee-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assignee-modal-title {
+  margin: 0;
+  font-size: 18px; /* Font size for title */
+}
+
+.assignee-modal-divider {
+  margin: 10px 0; /* Space between header and content */
+  border-top: 1px solid #ddd; /* Divider line */
+}
+
+.assignee-modal-content {
+  display: flex;
+  align-items: center;
+  margin: 10px 0; /* Space between assignees */
+}
+
+.assignee-avatar {
+  width: 40px; /* Avatar size */
+  height: 40px; /* Avatar size */
+  border-radius: 50%; /* Circular avatar */
+  margin-right: 10px; /* Space between avatar and name */
+}
+
+
+.assignee-name {
+  font-size: 14px; /* Font size for names */
+}
+
+
+.assignee-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.assignee-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1C3C84; /* Adjust as needed */
+}
+
+.assignee-modal-close-button {
+  background: none;
+  border: none;
+  color: #1C3C84; /* Adjust as needed */
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.assignee-modal-divider {
+  width: 100%;
+  height: 1px; /* Tek çizgi için 1px */
+  background-color: #F2F2F2;
+  margin: 10px 0; /* Üst ve alt boşluk */
+}
+
+.assignee-modal-content {
+  display: flex;
+  align-items: center;
+  margin-top: 10px; /* Adjust margin as needed */
+}
+
+.assignee-avatar {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  border-radius: 50%; /* Make it circular */
+  margin-right: 10px; /* Space between avatar and name */
+}
+
+.assignee-name {
+  font-size: 0.875rem; /* Smaller font size */
+  color: #1C3C84; /* Color remains the same */
+  font-weight: 400; /* Lighter font weight */
+}
+
+/* Status Modal Styles */
+.status-modal {
+  position: absolute; /* Use absolute positioning */
+  top: 20%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust positioning */
+  background-color: white; /* Modal background color */
+  border-radius: 8px; /* Slightly smaller rounded corners */
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow effect */
+  padding: 15px; /* Reduced padding inside the modal */
+  z-index: 2000; /* Ensure it appears above other elements */
+  width: 250px; /* Set a smaller fixed width for the modal */
+  max-width: 90%; /* Responsive width */
+}
+
+/* Header Style */
+.status-modal-header {
+  padding: 10px 15px; /* Padding around the header */
+  border-bottom: 1px solid #eee; /* Bottom border */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1C3C84; /* Adjust as needed */
+}
+
+
+
+/* Individual Status Option Style */
+.status-option {
+  padding: 10px; /* Padding for each option */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background transition */
+  font-size: 0.875rem; /* Smaller font size */
+  color: #1C3C84; /* Color remains the same */
+  font-weight: 400; /* Lighter font weight */
+}
+
+.status-option:hover {
+  color: #36C5F0; /* Highlight on hover */
+}
+
+/* styles.css */
+.status-text {
+  color: #1C3C84;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif; /* Inter fontunu kullanabilmek için fontun projenize dahil edilmesi gerektiğini unutmayın. */
+}
+
+.priorty-text {
+  color: #1C3C84;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif; /* Inter fontunu kullanabilmek için fontun projenize dahil edilmesi gerektiğini unutmayın. */
+}
+
+/* Priority Modal Styles */
+.priority-modal {
+  position: absolute; /* Use absolute positioning */
+  top: 20%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust positioning */
+  background-color: white; /* Modal background color */
+  border-radius: 8px; /* Slightly smaller rounded corners */
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow effect */
+  padding: 15px; /* Reduced padding inside the modal */
+  z-index: 2000; /* Ensure it appears above other elements */
+  width: 250px; /* Set a smaller fixed width for the modal */
+  max-width: 90%; /* Responsive width */
+}
+
+.priority-modal-header {
+  padding: 10px 15px; /* Padding around the header */
+  border-bottom: 1px solid #eee; /* Bottom border */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.priority-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1C3C84; /* Adjust as needed */
+}
+
+.priority-modal-divider {
+  height: 1px;
+  background-color: #e0e0e0;
+}
+
+.priority-options {
+  padding: 10px;
+}
+
+.priority-option {
+  padding: 10px; /* Padding for each option */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background transition */
+  font-size: 0.875rem; /* Smaller font size */
+  color: #1C3C84; /* Color remains the same */
+  font-weight: 400; /* Lighter font weight */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Bayrak ve yazı arasındaki boşluk için */
+}
+
+.priority-option:hover {
+  color: #36C5F0; /* Highlight on hover */
+}
+
+.priority-text {
+  color: #1C3C84;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+}
+
+.options-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem; /* Space between flag and text */
+  vertical-align: middle;
+}
+
+/* CSS Özelleştirmeleri */
+/* Wrapper for the DatePicker */
+.datepicker-wrapper {
+  position: absolute; /* Use absolute positioning */
+  top: 30%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust positioning */
+  background-color: white; /* Modal background color */
+  border-radius: 8px; /* Slightly smaller rounded corners */
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow effect */
+  padding: 15px; /* Reduced padding inside the modal */
+  z-index: 2000; /* Ensure it appears above other elements */
+  width: 340px; /* Set a smaller fixed width for the modal */
+  max-width: 90%; /* Responsive width */
+
+}
+
+/* Header styles for the DatePicker */
+.react-datepicker__header {
+  background-color: #f0f0f0; /* Header background */
+  border-bottom: 1px solid #ddd; /* Bottom border */
+  text-align: center; /* Center align header text */
+}
+
+.custom-picker input {
+  visibility: hidden;
+}
+
+/* Day styles */
+.react-datepicker__day {
+  width: 40px; /* Set fixed width for days */
+  line-height: 40px; /* Center text vertically */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor */
+}
+
+/* Styles for highlighted day on hover */
+.react-datepicker__day:hover {
+  background-color: #e0e0e0; /* Background color on hover */
+}
+
+/* Selected day styles */
+.react-datepicker__day--selected {
+  background-color: #007bff; /* Background for selected day */
+  color: #fff; /* Text color for selected day */
+}
+
+/* Today’s date styles */
+.react-datepicker__day--today {
+  font-weight: bold; /* Bold font for today's date */
+}
+
+/* Month navigation styles */
+.react-datepicker__navigation {
+  top: 8px; /* Positioning */
+  border: none; /* Remove default border */
+}
+
+/* Navigation button styles */
+.react-datepicker__navigation--previous {
+  left: 10px; /* Positioning */
+}
+
+.react-datepicker__navigation--next {
+  right: 10px; /* Positioning */
+}
+
+/* Month styles */
+.react-datepicker__month {
+  margin: 0; /* Remove margin */
+}
+
+/* Custom styles for the year dropdown */
+.react-datepicker__select {
+  margin: 0 5px; /* Spacing around select */
+  padding: 4px; /* Padding for select */
+  border-radius: 4px; /* Rounded corners */
+  border: 1px solid #ddd; /* Border for select */
+}
+
+/* Styles for the year select */
+.react-datepicker__year-select {
+  margin: 0 5px; /* Spacing around year select */
+  padding: 4px; /* Padding for year select */
+  border-radius: 4px; /* Rounded corners */
+  border: 1px solid #ddd; /* Border for year select */
+}
+
+/* Additional spacing for date picker content */
+.react-datepicker__month-container {
+  padding: 10px; /* Padding inside month container */
+}
+
+
+.selected-date {
+  color: #007bff; /* Change to your desired color */
+  font-weight: bold; /* Optional: make the date bold */
+}
+.taskmodal-selected-date {
+  color: #1C3C84; /* Change to your desired color */
+  font-weight: 400; /* Optional: make the date bold */
+}
+
+.selected-priority {
+  display: flex;
+  align-items: center; /* Center align items vertically */
+  margin-left: 8px; /* Optional spacing between the elements */
+}
+
+.priority-flag {
+  margin-right: 4px; /* Space between icon and text */
+}
+
+.status-text {
+  color: #1C3C84;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif; 
+}
+
+
