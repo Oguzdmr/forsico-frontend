@@ -14,6 +14,8 @@ import { useLocation, Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import CreateListModal from "../../components/WorkspaceAndBoard/CreateListModal";
 import AddMemberModal from "../../components/WorkspaceAndBoard/AddMemberModal"
+import InviteTeamModal from "../../components/WorkspaceAndBoard/InviteTeamModal";
+import { RotatingLines } from "react-loader-spinner";
 
 function Board() {
   const [windowSize, setWindowSize] = useState([
@@ -38,17 +40,20 @@ function Board() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isAddMemberModalOpen, setAddMemberModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
   useEffect(() => {
+    setIsLoading(true)
     dispatch(updateStatus({ status: "idle" }));
   }, [boardId]);
 
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchBoard({ workspaceId, boardId }));
+      setIsLoading(false)
     }
   }, [dispatch, status]);
 
@@ -191,7 +196,22 @@ function Board() {
         
         )}
       </div>
-      <div className={`board-container scrollbar-hide`}>
+      {isLoading ? (
+          <div className={`board-container scrollbar-hide`}>
+          <div className="board-top-line"></div>
+          <div className="board-content">
+        <RotatingLines
+          height="40"
+          width="40"
+          radius="9"
+          strokeColor="#36C5F0"
+          ariaLabel="loading"
+          wrapperStyle
+          wrapperClass
+        />
+        </div></div>
+      ):(
+        <div className={`board-container scrollbar-hide`}>
         <div className="board-top-line"></div>
         <div className="board-content">
           {entities?.lists?.length > 0 ? (
@@ -233,15 +253,18 @@ function Board() {
               boardId={boardId}
             />
           )}
-          {isAddMemberModalOpen && (
-            <AddMemberModal
-              onClose={()=>setAddMemberModalOpen(false)}
-              workspaceId={workspaceId}
-            />
-          )}
+          
           <button className="add-task-button">Add Task +</button>
         </div>
+        
       </div>
+      )}
+      {isAddMemberModalOpen && (
+            <InviteTeamModal
+              onClose={()=>setAddMemberModalOpen(false)}
+              
+            />
+          )}
     </div>
   );
 }

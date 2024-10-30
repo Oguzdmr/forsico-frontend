@@ -1,0 +1,170 @@
+.invite-team-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .invite-team-modal-content {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .invite-team-modal-close {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .invite-team-modal-header h2 {
+    text-align: center;
+    font-family: 'Forsico-Font',sans-serif;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 48px;
+    align-items: center;
+    color: #1C3C84;
+  }
+  
+  .invite-team-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .invite-team-input-group label{
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 700;
+    color: #9A9A9A;
+  }
+  .invite-team-link-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    border-radius: 20px;
+    border: 1px solid #D9D9D9;
+    background-color: #F9F9F9;
+  }
+  
+  .invite-team-link-container input {
+    flex: 1;
+    height: 40px;
+    padding: 0 10px;
+    border: none;
+    font-size: 14px;
+    color: #707070;
+    border-radius: 20px;
+
+    background-color: #F9F9F9;
+  }
+  
+  .invite-team-link-container button {
+
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .invite-team-line{
+    width: 100%;
+    border-bottom: 1px solid #DBDBDB;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .invite-team-emails-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .invite-team-emails-label{
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 700;
+  color: #9A9A9A;
+  margin-bottom: 20px;
+  }
+  .invite-team-email-item {
+    display: flex;
+    align-items: center;
+    background-color: #6D6D6D;
+    padding: 3px 18px;
+    border-radius: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 18px;
+    margin-top: 20px;
+    color: #ffff;
+    gap: 5px;
+  }
+  
+  .invite-team-email-item button {
+    background-color: #ffff;
+    border-radius: 999px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    right: 0;
+  }
+  
+  .invite-team-email-input-form {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .invite-team-email-input-form input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  .invite-team-email-input-form button {
+    background-color: #36c5f0;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .invite-team-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .invite-team-back-button {
+    background-color: transparent;
+    border: 1px solid #36c5f0;
+    color: #36c5f0;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .invite-team-continue-button {
+    background-color: #36c5f0;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
