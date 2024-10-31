@@ -543,4 +543,22 @@
 }
 
 
+.save-description-button {
+  background-color: #36C5F0; /* Butonun arka plan rengi */
+  color: white; /* Yazı rengi */
+  border: none; /* Kenarlık yok */
+  border-radius: 8px; /* Köşeleri yuvarlaştır */
+  padding: 10px 20px; /* İç boşluklar */
+  font-size: 16px; /* Yazı boyutu */
+  font-weight: bold; /* Kalın yazı */
+  cursor: pointer; /* Pointer imleci */
+  transition: background-color 0.3s; /* Arka plan rengi geçişi */
+  z-index: 1001; /* Diğer elementlerin üstünde görünmesi için */
+  margin-top: -15px;
+}
+
+.save-description-button:hover {
+  background-color: #28A0DB; /* Üzerine gelince arka plan rengi değişimi */
+}
+
 

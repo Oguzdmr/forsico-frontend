@@ -21,7 +21,9 @@ import NormalFlag from "../../assets/taskcard-info-priority.svg";
 
 const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
   const [description, setDescription] = useState("Task description here...");
+  console.log("description", description);
   const [isDescriptionEditing, setIsDescriptionEditing] = useState(false);
+  const [tempDescription, setTempDescription] = useState(description);
   const [comment, setComment] = useState("Add a comment...");
   const [isCommentEditing, setIsCommentEditing] = useState(false);
   const [isAssigneeModalOpen, setAssigneeModalOpen] = useState(false);
@@ -48,7 +50,13 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
     { label: "Normal", icon: NormalFlag },
   ];
 
-  const handleSaveDescription = () => setIsDescriptionEditing(false);
+  const handleSaveDescription = () => {
+    if (tempDescription.trim() !== "") { // Check if the new description is not just whitespace
+      setDescription(tempDescription); // Update the main description state
+    }
+     setIsDescriptionEditing(false); // Exit editing mode
+  };
+  
   const handleSaveComment = () => setIsCommentEditing(false);
 
   const toggleAssigneeModal = () => {
@@ -75,6 +83,12 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
     setSelectedPriority(priority);
     setPriorityModalOpen(false);
   };
+
+  const toggleDescriptionEditing = () => {
+    setIsDescriptionEditing(prev => !prev); // Düzenleme modunu tersine çevir
+  };
+  
+
 
   const handleSaveTitle = () => setIsTitleEditing(false);
 
@@ -158,23 +172,34 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
                 </p>
               )}
             </div>
-            {/* Description Section */}
-            <div className="taskcard-info-description-area">
-              {isDescriptionEditing ? (
-                <TextEditor
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  onBlur={handleSaveDescription}
-                />
-              ) : (
-                <textarea
-                  className="taskcard-info-textarea"
-                  value={description}
-                  onClick={() => setIsDescriptionEditing(true)}
-                  readOnly
-                />
-              )}
-            </div>
+
+{/* Description Section */}
+<div className="taskcard-info-description-area">
+      {isDescriptionEditing ? (
+        <div>
+          <TextEditor 
+            value={tempDescription} // Düzenleme alanındaki değer
+            setValue={setTempDescription} // Değeri güncelleme fonksiyonu
+          />
+        </div>
+      ) : (
+        <div
+          className="taskcard-info-textarea"
+          onClick={toggleDescriptionEditing} // Düzenleme moduna geçiş
+          dangerouslySetInnerHTML={{ __html: description }} // HTML içeriğini güvenli bir şekilde göster
+        />
+      )}
+  </div>
+      <button 
+        onClick={isDescriptionEditing ? handleSaveDescription : toggleDescriptionEditing} 
+        className="save-description-button"
+      >
+        {isDescriptionEditing ? 'Save' : 'Edit'} {/* Buton metni */}
+      </button>
+  
+
+
+
 
             {/* Comment Section */}
             <div className="taskcard-info-comment-area" id="editor">

@@ -8,9 +8,9 @@ import QuillEditor from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import styles from "./styles.module.css";
 
-const Editor = () => {
+const Editor = ({ value, setValue }) => {
   // Editor state
-  const [value, setValue] = useState("");
+  // const [value, setValue] = useState("");
 
   // Editor ref
   const quill = useRef();
