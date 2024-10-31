@@ -34,6 +34,8 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
   const priorityModalRef = useRef(null); // Ref for priority modal
   const [selectedDate, setSelectedDate] = useState(null);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [taskTitle, setTaskTitle] = useState("Task Title");
+  const [isTitleEditing, setIsTitleEditing] = useState(false);
 
   // Retrieve user info from Redux store
   const userInfo = useSelector((state) => state.auth.user);
@@ -73,6 +75,8 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
     setSelectedPriority(priority);
     setPriorityModalOpen(false);
   };
+
+  const handleSaveTitle = () => setIsTitleEditing(false);
 
   const getPriorityIcon = (priority) => {
     switch (priority) {
@@ -139,7 +143,20 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
         <div className="taskcard-info-lower-area">
           <div className="taskcard-info-left-lower">
             <div className="taskcard-info-title-area">
-              <p className="taskcard-info-title">Task Title</p>
+              {isTitleEditing ? (
+                <input
+                  type="text"
+                  value={taskTitle}
+                  onChange={(e) => setTaskTitle(e.target.value)}
+                  onBlur={handleSaveTitle}
+                  autoFocus
+                  className="task-title-input" // Add a custom class for styling
+                />
+              ) : (
+                <p className="taskcard-info-title" onClick={() => setIsTitleEditing(true)}>
+                  {taskTitle}
+                </p>
+              )}
             </div>
             {/* Description Section */}
             <div className="taskcard-info-description-area">

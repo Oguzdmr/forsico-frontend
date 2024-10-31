@@ -63,11 +63,29 @@
     padding: 1rem;
   }
 
-  .taskcard-info-title-area{
-    font-size: 32px;
-    margin: 0;
-    width: 100%;
-    height: 50px;
+  .taskcard-info-title-area {
+    font-size: 1.5rem; /* Daha uygun bir font boyutu */
+    font-weight: bold;
+    color: #000000; /* Başlık için daha belirgin bir renk */
+    padding: 10px 0; /* Üst ve alt boşluk */
+    cursor: pointer;
+  }
+
+  .taskcard-info-title-area input {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000000;
+    border: 1px solid rgba(241, 241, 241, 1);
+    border-radius: 8px;
+    padding: 8px;
+    outline: none;
+    width: auto; /* İçeriğe göre genişler */
+  }
+  
+  
+  .taskcard-info-title-area input:focus {
+    border-color: rgba(241, 241, 241, 1); /* Focus durumunda border rengi */
+    background-color: rgba(241, 241, 241, 1);
   }
 
   .taskcard-info-description-area{
@@ -524,20 +542,5 @@
   font-weight: 400; /* Optional: make the date bold */
 }
 
-.selected-priority {
-  display: flex;
-  align-items: center; /* Center align items vertically */
-  margin-left: 8px; /* Optional spacing between the elements */
-}
-
-.priority-flag {
-  margin-right: 4px; /* Space between icon and text */
-}
-
-.status-text {
-  color: #1C3C84;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif; 
-}
 
 
