@@ -21,10 +21,11 @@ import NormalFlag from "../../assets/taskcard-info-priority.svg";
 
 const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
   const [description, setDescription] = useState("Task description here...");
-  console.log("description", description);
   const [isDescriptionEditing, setIsDescriptionEditing] = useState(false);
   const [tempDescription, setTempDescription] = useState(description);
-  const [comment, setComment] = useState("Add a comment...");
+  const [comments, setComments] = useState([]);
+  console.log("comments", comments);
+  const [tempComment, setTempComment] = useState('');
   const [isCommentEditing, setIsCommentEditing] = useState(false);
   const [isAssigneeModalOpen, setAssigneeModalOpen] = useState(false);
   const [isStatusModalOpen, setStatusModalOpen] = useState(false);
@@ -54,9 +55,9 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
     if (tempDescription.trim() !== "") { // Check if the new description is not just whitespace
       setDescription(tempDescription); // Update the main description state
     }
-     setIsDescriptionEditing(false); // Exit editing mode
+    setIsDescriptionEditing(false); // Exit editing mode
   };
-  
+
   const handleSaveComment = () => setIsCommentEditing(false);
 
   const toggleAssigneeModal = () => {
@@ -87,7 +88,7 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
   const toggleDescriptionEditing = () => {
     setIsDescriptionEditing(prev => !prev); // Düzenleme modunu tersine çevir
   };
-  
+
 
 
   const handleSaveTitle = () => setIsTitleEditing(false);
@@ -112,6 +113,15 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
     setSelectedDate(date);
     setIsDatePickerOpen(false); // Close date picker after selection
   };
+
+  const handleAddComment = () => {
+    if (tempComment.trim()) {
+      setComments([...comments, tempComment]); // Yeni yorumu ekle
+      setTempComment(''); // Geçici durumu sıfırla
+      setIsCommentEditing(false); // Düzenleme modunu kapat
+    }
+  };
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -173,53 +183,71 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
               )}
             </div>
 
-{/* Description Section */}
-<div className="taskcard-info-description-area">
-      {isDescriptionEditing ? (
-        <div>
-          <TextEditor 
-            value={tempDescription} // Düzenleme alanındaki değer
-            setValue={setTempDescription} // Değeri güncelleme fonksiyonu
-          />
-        </div>
-      ) : (
-        <div
-          className="taskcard-info-textarea"
-          onClick={toggleDescriptionEditing} // Düzenleme moduna geçiş
-          dangerouslySetInnerHTML={{ __html: description }} // HTML içeriğini güvenli bir şekilde göster
-        />
-      )}
-  </div>
-      <button 
-        onClick={isDescriptionEditing ? handleSaveDescription : toggleDescriptionEditing} 
-        className="save-description-button"
-      >
-        {isDescriptionEditing ? 'Save' : 'Edit'} {/* Buton metni */}
-      </button>
-  
+            {/* Description Section */}
+            <div className="taskcard-info-description-area">
+              {isDescriptionEditing ? (
+                <div>
+                  <TextEditor
+                    value={tempDescription} // Düzenleme alanındaki değer
+                    setValue={setTempDescription} // Değeri güncelleme fonksiyonu
+                  />
+                  <button
+                    onClick={isDescriptionEditing ? handleSaveDescription : toggleDescriptionEditing}
+                    className="save-description-button"
+                  >
+                    {isDescriptionEditing ? 'Save' : 'Edit'} {/* Buton metni */}
+                  </button>
+                </div>
+              ) : (
+                <div
+                  className="taskcard-info-textarea"
+                  onClick={toggleDescriptionEditing} // Düzenleme moduna geçiş
+                  dangerouslySetInnerHTML={{ __html: description }} // HTML içeriğini güvenli bir şekilde göster
+                />
+              )}
+            </div>
 
 
 
 
             {/* Comment Section */}
-            <div className="taskcard-info-comment-area" id="editor">
+            <div className="taskcard-info-comment-area">
               {isCommentEditing ? (
                 <TextEditor
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  onBlur={handleSaveComment}
+                  value={tempComment} // Yorum yazma alanındaki değer
+                  setValue={setTempComment} // Değeri güncelleme fonksiyonu
                 />
               ) : (
-                <textarea
-                  className="taskcard-info-textarea"
-                  value={comment}
-                  onClick={() => setIsCommentEditing(true)}
-                  readOnly
-                />
+                <div className="taskcard-info-textarea" onClick={() => setIsCommentEditing(true)}>
+                  <div className="add-comment-prompt">Add New Comment!!</div>
+                </div>
               )}
+
+              {/* Save butonunu kaldırdık */}
+              {isCommentEditing && (
+                <button
+                  onClick={handleAddComment}
+                  className="save-description-button"
+                >
+                  Save
+                </button>
+              )}
+
+              {/* Yorumların tam listesini göstermek için ayrı bir alan */}
+              <div className="taskcard-info-comments-list">
+                {comments.map((comment, index) => (
+                  <div key={index} className="taskcard-info-textarea comment-item">
+                    <div dangerouslySetInnerHTML={{ __html: comment }} /> {/* Her yorumu göster */}
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="taskcard-info-subtask-area">
+
+
+
+
+            {/* <div className="taskcard-info-subtask-area">
               <div className="taskcard-info-subtask-inside">
                 <p className="taskcard-info-gray-letter">
                   Create subtask of this task
@@ -228,14 +256,14 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
                   Generate Subtask
                 </button>
               </div>
-            </div>
+            </div> */}
 
-            <div className="taskcard-info-checklist-area">
+            {/* <div className="taskcard-info-checklist-area">
               <input className="checklist-checkbox" type="checkbox" />
               <p className="taskcard-info-gray-letter">
                 Create a checklist for this task
               </p>
-            </div>
+            </div> */}
           </div>
 
           <div className="taskcard-info-right-lower">
