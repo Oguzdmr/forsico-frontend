@@ -123,28 +123,38 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
   };
 
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Close modals on outside click
-      if (assigneeModalRef.current && !assigneeModalRef.current.contains(event.target)) {
-        setAssigneeModalOpen(false);
-      }
-      if (statusModalRef.current && !statusModalRef.current.contains(event.target)) {
-        setStatusModalOpen(false);
-      }
-      if (priorityModalRef.current && !priorityModalRef.current.contains(event.target)) {
-        setPriorityModalOpen(false);
-      }
-      if (isDatePickerOpen && !event.target.closest(".datepicker-wrapper")) {
-        setIsDatePickerOpen(false); // Close date picker
-      }
-    };
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    // Close modals on outside click
+    if (assigneeModalRef.current && !assigneeModalRef.current.contains(event.target)) {
+      setAssigneeModalOpen(false);
+    }
+    if (statusModalRef.current && !statusModalRef.current.contains(event.target)) {
+      setStatusModalOpen(false);
+    }
+    if (priorityModalRef.current && !priorityModalRef.current.contains(event.target)) {
+      setPriorityModalOpen(false);
+    }
+    if (isDatePickerOpen && !event.target.closest(".datepicker-wrapper")) {
+      setIsDatePickerOpen(false); // Close date picker
+    }
+    
+    // Check if clicking outside the description or comment editing areas
+    if (!event.target.closest('.taskcard-info-description-area') && isDescriptionEditing) {
+      setIsDescriptionEditing(false); // Exit description editing mode
+    }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [assigneeModalRef, statusModalRef, priorityModalRef, isDatePickerOpen]);
+    if (!event.target.closest('.taskcard-info-comment-area') && isCommentEditing) {
+      setIsCommentEditing(false); // Exit comment editing mode
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [assigneeModalRef, statusModalRef, priorityModalRef, isDatePickerOpen, isDescriptionEditing, isCommentEditing]);
+
 
   return (
     <div className="modal-wrapper">
