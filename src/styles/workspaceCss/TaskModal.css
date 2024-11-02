@@ -32,6 +32,7 @@
   .taskcard-infor-right-upper{
     display: flex;
     gap: 1rem;
+    position: relative;
   }
 
   .taskcard-info-line{
@@ -126,10 +127,14 @@
     align-items: center;
     text-align: center;
     width: 100%;
-    height: 150px;
+    min-height: 150px;
+    max-height: 500px;
     border: 1px solid rgba(241, 241, 241, 1);
     background-color: rgba(241, 241, 241, 1);
     border-radius: 1rem;
+    padding: 10px;
+    position: relative;
+    overflow: auto;
   }
 
   .taskcard-info-subtack-inside{
@@ -177,6 +182,7 @@
 .taskcard-info-assignees,.taskcard-info-due-date,.taskcard-info-status,.taskcard-info-priority,.taskcard-info-features{
   display: flex;
   justify-content: space-between;
+  position: relative;
 }
 
 .td-none{
@@ -218,17 +224,44 @@
 
 
 .assignee-modal {
-  position: absolute; /* Use absolute positioning */
-  top: 20%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust positioning */
-  background-color: white; /* Modal background color */
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
-  padding: 20px; /* Padding inside the modal */
-  z-index: 2000; /* Ensure it appears above other elements */
-  width: 300px; /* Set a fixed width for the modal */
-  max-width: 90%; /* Responsive width */
+  position: absolute;
+  top: 100%; /* Positions it directly below the a tag */
+  left: 0;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 2000;
+  width: 300px;
+  max-width: 90%;
+}
+
+.selected-assignee {
+  display: flex;
+  align-items: left;
+  gap: 0.5rem; /* Avatar ve isim arasındaki boşluk */
+  font-size: 1rem; /* Assignees başlığı ile aynı font boyutu */
+  color: rgba(148, 163, 184, 1); /* Başlıkla uyumlu renk */
+}
+
+
+.selected-assignee-avatar {
+  width: 24px; /* Avatar sabit genişlikte */
+  height: 24px;
+  border-radius: 50%; /* Yuvarlak avatar */
+  margin-left: 8px; /* Assignees yazısından sağa boşluk bırak */
+}
+
+.assignee-avatar-icon {
+  width: 24px; /* Avatar boyutu */
+  height: 24px;
+  border-radius: 50%; /* Yuvarlak avatar */
+}
+
+.assignee-name {
+  font-size: 1rem;
+  color: rgba(148, 163, 184, 1);
+  font-weight: 500;
 }
 
 .assignee-modal-header {
@@ -239,19 +272,20 @@
 
 .assignee-modal-title {
   margin: 0;
-  font-size: 18px; /* Font size for title */
+  font-size: 18px;
 }
 
 .assignee-modal-divider {
-  margin: 10px 0; /* Space between header and content */
-  border-top: 1px solid #ddd; /* Divider line */
+  margin: 10px 0;
+  border-top: 1px solid #ddd;
 }
 
 .assignee-modal-content {
   display: flex;
   align-items: center;
-  margin: 10px 0; /* Space between assignees */
+  margin: 10px 0;
 }
+
 
 .assignee-avatar {
   width: 40px; /* Avatar size */
@@ -315,17 +349,16 @@
 
 /* Status Modal Styles */
 .status-modal {
-  position: absolute; /* Use absolute positioning */
-  top: 20%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust positioning */
-  background-color: white; /* Modal background color */
-  border-radius: 8px; /* Slightly smaller rounded corners */
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow effect */
-  padding: 15px; /* Reduced padding inside the modal */
-  z-index: 2000; /* Ensure it appears above other elements */
-  width: 250px; /* Set a smaller fixed width for the modal */
-  max-width: 90%; /* Responsive width */
+  position: absolute;
+  top: 100%; /* Tetikleyici öğenin hemen altında */
+  left: 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  z-index: 2000;
+  width: 250px;
+  max-width: 90%;
 }
 
 /* Header Style */
@@ -374,17 +407,16 @@
 
 /* Priority Modal Styles */
 .priority-modal {
-  position: absolute; /* Use absolute positioning */
-  top: 20%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust positioning */
-  background-color: white; /* Modal background color */
-  border-radius: 8px; /* Slightly smaller rounded corners */
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow effect */
-  padding: 15px; /* Reduced padding inside the modal */
-  z-index: 2000; /* Ensure it appears above other elements */
-  width: 250px; /* Set a smaller fixed width for the modal */
-  max-width: 90%; /* Responsive width */
+  position: absolute;
+  top: 100%; /* Tetikleyici öğenin hemen altında */
+  left: 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  z-index: 2000;
+  width: 250px;
+  max-width: 90%;
 }
 
 .priority-modal-header {
@@ -432,6 +464,21 @@
   font-family: 'Inter', sans-serif;
 }
 
+.priority-label {
+  font-size: 1rem; /* Başlıkla aynı boyutta */
+  color: #1C3C84; /* Başlık rengiyle aynı */
+  font-weight: 400; /* Başlık font ağırlığıyla aynı */
+}
+
+.selected-priority {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* İkon ve metin arasındaki boşluk */
+  font-size: 1rem; /* Priority başlığı ile aynı font boyutu */
+  color: #1C3C84; /* Change to your desired color */
+  font-weight: 400;
+}
+
 .options-flag {
   display: inline-flex;
   align-items: center;
@@ -442,19 +489,20 @@
 /* CSS Özelleştirmeleri */
 /* Wrapper for the DatePicker */
 .datepicker-wrapper {
-  position: absolute; /* Use absolute positioning */
-  top: 30%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust positioning */
-  background-color: white; /* Modal background color */
-  border-radius: 8px; /* Slightly smaller rounded corners */
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); /* Slightly reduced shadow effect */
-  padding: 15px; /* Reduced padding inside the modal */
-  z-index: 2000; /* Ensure it appears above other elements */
-  width: 340px; /* Set a smaller fixed width for the modal */
-  max-width: 90%; /* Responsive width */
-
+  position: absolute;
+  top: 100%; /* Tetikleyici öğenin hemen altında */
+  right: 0; /* Sağ kenara hizalar */
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  z-index: 2000;
+  width: 340px;
+  max-width: calc(100vw - 20px); /* Ekran genişliğine göre küçülür */
+  max-height: calc(100vh - 20px); /* Ekran yüksekliğine göre sınırlandırır */
+  overflow-y: auto; /* Taşmayı önlemek için kaydırma ekler */
 }
+
 
 /* Header styles for the DatePicker */
 .react-datepicker__header {
@@ -576,4 +624,193 @@
 
 .taskcard-info-comment-area {
   margin-top: 20px; /* Alanın üstüne boşluk ekler */
+}
+
+/* Right Arrow Modal Styles */
+.right-arrow-modal {
+  top: 100%; /* Position below the trigger icon */
+  right: 0; /* Align to the right */
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  z-index: 2000;
+  width: 318px;
+  max-width: 90%;
+}
+
+.right-arrow-modal-header {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+}
+
+.right-arrow-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1C3C84;
+}
+
+.right-arrow-modal-divider {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 10px 0;
+}
+
+.right-arrow-options {
+  padding: 10px;
+}
+
+.right-arrow-option {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.875rem;
+  color: #1C3C84;
+  font-weight: 400;
+}
+
+.right-arrow-option:hover {
+  color: #36C5F0;
+}
+
+.save-description-button {
+  background-color: #36C5F0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 8px;
+  position: relative;
+}
+
+.comment-icons {
+  position: relative;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.taskcard-info-subtask-inside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Style for the subtask input and button */
+.subtask-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.subtask-input {
+  width: 90%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.generate-subtask-button {
+  align-self: flex-end; /* Positions button to the bottom right */
+  padding: 8px 16px;
+  background-color: #36C5F0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.generate-subtask-button:hover {
+  background-color: #28A0DB; /* Button color change on hover */
+}
+
+/* Container for generated subtasks */
+.workspaceAi-message {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Subtask card styling */
+.workspaceAi-task {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  transition: transform 0.2s, opacity 0.5s;
+}
+
+.workspaceAi-task:hover {
+  transform: scale(1.02);
+}
+
+.rejected-task {
+  opacity: 0.4 !important; /* Semi-transparent for rejected subtasks */
+}
+
+/* Title styling for each task */
+.workspaceAi-response-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1C3C84;
+  margin-bottom: 0.5rem;
+}
+
+/* Subtask card header and description */
+.workspaceAi-task-card .task-header {
+  font-size: 16px;
+  color: #1C3C84;
+  font-weight: 600;
+}
+
+.workspaceAi-task-card .task-desc {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Tags styling for assignee and type */
+.task-tags {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.task-tag {
+  background-color: #E0F7FA;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #00796B;
+}
+
+/* Task action icons (approve/reject) */
+.task-icons {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.task-icon {
+  width: 20px;
+  height: 20px;
 }
