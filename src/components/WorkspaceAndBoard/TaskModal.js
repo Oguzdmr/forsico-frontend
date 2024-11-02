@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ForsicoAiApi from "../../api/ForsicoAiApi/forsicoai.js";
-import DatePicker from 'react-datepicker';
-import { format } from 'date-fns';
+import DatePicker from "react-datepicker";
+import { format } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../styles/workspaceCss/TaskModal.css";
 import Plus from "../../assets/sidebar-plus-icon.svg";
 import Assignees from "../../assets/taskcard-info-assignees.svg";
 import DueDate from "../../assets/taskcard-info-duedate.svg";
-import DeleteIcon from "../../assets/delete-comment.svg"; 
+import DeleteIcon from "../../assets/delete-comment.svg";
 import EditIcon from "../../assets/edit-comment.svg";
 import Status from "../../assets/taskcard-info-status.svg";
 import Priority from "../../assets/taskcard-info-priority.svg";
@@ -24,39 +24,98 @@ import NormalFlag from "../../assets/taskcard-info-priority.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import Tickİcon from "../../assets/ai-message-tick-icon.svg";
 import Crossİcon from "../../assets/ai-message-cross-icon.svg";
+import { fetchTask, updateTaskStatus } from "../../store/taskSlice.js";
+import { RotatingLines } from "react-loader-spinner";
+import TaskApi from "../../api/BoardApi/task.js"
 
+const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
 
-const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
-  const [description, setDescription] = useState("Task description here...");
+  const taskApi = new TaskApi();
+
+  const {
+    entities,
+    status = "idle",
+    error,
+  } = useSelector((state) => {
+    return state.task || {};
+  });
+
+  const priorityOptions = [
+    { label: "Urgent", icon: UrgentFlag },
+    { label: "High", icon: HighFlag },
+    { label: "Normal", icon: NormalFlag },
+  ];
+  const board = useSelector((state) => state.board.entities);
+  const selectedTask = entities.selectedtask || {};
+  const [description, setDescription] = useState(
+    entities.selectedtask?.description || ""
+  );
   const [isDescriptionEditing, setIsDescriptionEditing] = useState(false);
   const [subtaskStates, setSubtaskStates] = useState({});
   const [generatedSubtasks, setGeneratedSubtasks] = useState([]);
   const [visibleSubtasks, setVisibleSubtasks] = useState([]);
-  const [subtaskTitle, setSubtaskTitle] = useState('');
+  const [subtaskTitle, setSubtaskTitle] = useState("");
   const [tempDescription, setTempDescription] = useState(description);
   const [isGeneratingSubtask, setIsGeneratingSubtask] = useState(false);
   const [comments, setComments] = useState([]);
   console.log("comments", comments);
-  const [tempComment, setTempComment] = useState('');
+  const [tempComment, setTempComment] = useState("");
   const [isCommentEditing, setIsCommentEditing] = useState(false);
   const [isAssigneeModalOpen, setAssigneeModalOpen] = useState(false);
   const [isStatusModalOpen, setStatusModalOpen] = useState(false);
   const [isPriorityModalOpen, setPriorityModalOpen] = useState(false); // New state for Priority Modal
   const [isRightArrowModalOpen, setIsRightArrowModalOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState("");
-  const [selectedAssignee, setSelectedAssignee] = useState({ avatar: "", name: "" });
-  const [selectedPriority, setSelectedPriority] = useState({ label: "", icon: "" });
+  const [selectedStatus, setSelectedStatus] = useState(
+    entities.selectedtask?.statusId?.name || ""
+  );
+  const [selectedAssignee, setSelectedAssignee] = useState({
+    id : entities.selectedtask?.assignee?._id || "",
+    avatar: entities.selectedtask?.assignee?.profilePicture || "",
+    name: entities.selectedtask?.assignee?.firstName || "",
+  });
+  const [selectedPriority, setSelectedPriority] = useState(
+    entities.selectedtask?.priority
+      ? priorityOptions[entities.selectedtask.priority]
+      : { label: "", icon: "" }
+  );
   const assigneeModalRef = useRef(null);
   const statusModalRef = useRef(null);
   const priorityModalRef = useRef(null); // Ref for priority modal
   const rightArrowModalRef = useRef(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(
+    entities.selectedtask.dueDate || null
+  );
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [taskTitle, setTaskTitle] = useState("Task Title");
+  const [taskTitle, setTaskTitle] = useState(entities.selectedtask?.name || "");
   const [isTitleEditing, setIsTitleEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null); // Track index of comment being edited
-  const [editedComment, setEditedComment] = useState('');
+  const [editedComment, setEditedComment] = useState("");
   const forsicoAiApi = new ForsicoAiApi();
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token.token || "");
+
+  useEffect(() => {
+    setDescription(selectedTask.description || "");
+    setTaskTitle(selectedTask.name || "");
+    setSelectedStatus(selectedTask.statusId?.name || "");
+    setSelectedAssignee({
+      id: selectedTask.assignee?._id || "",
+      avatar: selectedTask.assignee?.profilePicture || "",
+      name: selectedTask.assignee?.firstName || "",
+    });
+    setSelectedPriority(selectedTask.priority || "");
+    setSelectedDate(selectedTask.dueDate || null);
+  }, [selectedTask]);
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchTask({ token, workspaceId, taskId }));
+    }
+  }, [dispatch, status]);
+
+  useEffect(() => {
+    dispatch(updateTaskStatus({ status: "idle" }));
+  }, [taskId]);
 
   const generateSubtasks = async () => {
     // Eğer kullanıcıdan veri alıp almadığınızı kontrol etmek istiyorsanız aşağıdaki koşulu ekleyebilirsiniz.
@@ -64,9 +123,9 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
       console.log("Please enter a valid subtask title");
       return; // Boşsa, kullanıcıya bilgi vererek fonksiyondan çıkabiliriz.
     }
-  
+
     // Kullanıcı tarafından girilen veriyi API'ye gönderiyoruz.
-    let response = await forsicoAiApi.generateAzureAIContent(subtaskTitle); 
+    let response = await forsicoAiApi.generateAzureAIContent(subtaskTitle);
     if (response.success) {
       setGeneratedSubtasks(response.data.result.tasks);
       setVisibleSubtasks([]); // Görüntülenen alt görev listesini sıfırlıyoruz.
@@ -74,7 +133,6 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
       console.error("Error in generating subtasks:", response.error);
     }
   };
-  
 
   const staggerAnimation = {
     visible: {
@@ -83,26 +141,33 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
       },
     },
   };
-  
+
   const cardAnimation = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0 },
   };
   // Retrieve user info from Redux store
-  const userInfo = useSelector((state) => state.auth.user);
-  console.log("userInfo.profilePictureUrl", userInfo.profilePictureUrl);
+  const boardMembers = useSelector((state) => state.board.entities.members);
 
-  const statusOptions = ["To Do", "In progress", "Done"]; // Status options
+  const statusOptions = board.lists.map((list) => {
+    return list.name;
+  }); // Status options
   const sendOptions = ["UX/UI Board", "Markenting Board", "Social Media Board"]; // Status options
-  const priorityOptions = [
-    { label: "Urgent", icon: UrgentFlag },
-    { label: "High", icon: HighFlag },
-    { label: "Normal", icon: NormalFlag },
-  ];
+
+  const handleFieldUpdate = async (field, value) => {
+    try {
+      await taskApi.updateTask(token, workspaceId, taskId, { [field]: value });
+      dispatch(fetchTask({ token, workspaceId, taskId })); 
+    } catch (error) {
+      console.error(`Error updating task ${field}:`, error);
+    }
+  };
 
   const handleSaveDescription = () => {
-    if (tempDescription.trim() !== "") { // Check if the new description is not just whitespace
+    if (tempDescription.trim() !== "") {
+      // Check if the new description is not just whitespace
       setDescription(tempDescription); // Update the main description state
+      handleFieldUpdate("description", tempDescription);
     }
     setIsDescriptionEditing(false); // Exit editing mode
   };
@@ -113,7 +178,6 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
     console.log("Generated Subtask:", subtaskTitle); // Here, you can add logic to save the subtask
     setIsGeneratingSubtask(false); // Close input box after generating
   };
-
 
   const toggleAssigneeModal = () => {
     console.log("Toggled Assignee Modal");
@@ -135,8 +199,7 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
     setStatusModalOpen(false);
   };
 
-  const handleRoot = () => {
-  };
+  const handleRoot = () => {};
 
   const handlePrioritySelect = (priority) => {
     setSelectedPriority(priority); // Save both label and icon
@@ -144,11 +207,16 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
   };
 
   const toggleDescriptionEditing = () => {
-    setIsDescriptionEditing(prev => !prev); // Düzenleme modunu tersine çevir
+    setIsDescriptionEditing((prev) => !prev); // Düzenleme modunu tersine çevir
   };
 
-  const handleAssigneeSelect = () => {
-    setSelectedAssignee({ avatar: userInfo.profilePictureUrl, name: `${userInfo.firstName} ${userInfo.lastName}` });
+  const handleAssigneeSelect = (userInfo) => {
+    handleFieldUpdate("assignee", userInfo._id)
+    setSelectedAssignee({
+      id: userInfo._id,
+      avatar: userInfo.profilePicture,
+      name: `${userInfo.firstName} ${userInfo.lastName}`,
+    });
     setAssigneeModalOpen(false);
   };
 
@@ -158,11 +226,14 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
 
   const handleToggleSubtaskGeneration = () => {
     setIsGeneratingSubtask((prev) => !prev);
-    setSubtaskTitle('');
+    setSubtaskTitle("");
     console.log("Subtask generation toggled:", !isGeneratingSubtask); // Log to confirm toggle
   };
 
-  const handleSaveTitle = () => setIsTitleEditing(false);
+  const handleSaveTitle = (name) =>{
+    handleFieldUpdate("name", name)
+    setIsTitleEditing(false);
+  } 
 
   const getPriorityIcon = (priority) => {
     switch (priority) {
@@ -181,6 +252,7 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
   };
 
   const handleDateChange = (date) => {
+    handleFieldUpdate("dueDate",date)
     setSelectedDate(date);
     setIsDatePickerOpen(false); // Close date picker after selection
   };
@@ -188,7 +260,7 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
   const handleAddComment = () => {
     if (tempComment.trim()) {
       setComments([...comments, tempComment]); // Yeni yorumu ekle
-      setTempComment(''); // Geçici durumu sıfırla
+      setTempComment(""); // Geçici durumu sıfırla
       setIsCommentEditing(false); // Düzenleme modunu kapat
     }
   };
@@ -204,7 +276,7 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
     );
     setComments(updatedComments); // Update the comments list
     setEditingIndex(null); // Exit edit mode
-    setEditedComment(''); // Clear temp storage
+    setEditedComment(""); // Clear temp storage
   };
 
   const handleDeleteComment = (index) => {
@@ -236,16 +308,28 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       // Close modals on outside click
-      if (assigneeModalRef.current && !assigneeModalRef.current.contains(event.target)) {
+      if (
+        assigneeModalRef.current &&
+        !assigneeModalRef.current.contains(event.target)
+      ) {
         setAssigneeModalOpen(false);
       }
-      if (statusModalRef.current && !statusModalRef.current.contains(event.target)) {
+      if (
+        statusModalRef.current &&
+        !statusModalRef.current.contains(event.target)
+      ) {
         setStatusModalOpen(false);
       }
-      if (priorityModalRef.current && !priorityModalRef.current.contains(event.target)) {
+      if (
+        priorityModalRef.current &&
+        !priorityModalRef.current.contains(event.target)
+      ) {
         setPriorityModalOpen(false);
       }
-      if (rightArrowModalRef.current && !rightArrowModalRef.current.contains(event.target)) {
+      if (
+        rightArrowModalRef.current &&
+        !rightArrowModalRef.current.contains(event.target)
+      ) {
         setIsRightArrowModalOpen(false); // Close Right Arrow modal
       }
       if (isDatePickerOpen && !event.target.closest(".datepicker-wrapper")) {
@@ -253,11 +337,17 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
       }
 
       // Check if clicking outside the description or comment editing areas
-      if (!event.target.closest('.taskcard-info-description-area') && isDescriptionEditing) {
+      if (
+        !event.target.closest(".taskcard-info-description-area") &&
+        isDescriptionEditing
+      ) {
         setIsDescriptionEditing(false); // Exit description editing mode
       }
 
-      if (!event.target.closest('.taskcard-info-comment-area') && isCommentEditing) {
+      if (
+        !event.target.closest(".taskcard-info-comment-area") &&
+        isCommentEditing
+      ) {
         setIsCommentEditing(false); // Exit comment editing mode
       }
     };
@@ -276,6 +366,17 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
     isCommentEditing,
   ]);
 
+  if (status === "loading") {
+    return (
+      <div className="modal-wrapper">
+        <div className="modal-content-trello">
+          <div className="loader-container">
+            <RotatingLines height="50" width="50" strokeColor="#36C5F0" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="modal-wrapper">
@@ -285,29 +386,39 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
             <span>Forsico/General</span>
           </div>
           <div className="taskcard-info-right-upper">
-  <img src={RightArrow} alt="taskcard-info-right-arrow" onClick={toggleRightArrowModal} />
-  <img
-    src={Cross}
-    alt="taskcard-info-cross"
-    onClick={() => setIsTaskModalOpen(false)}
-    style={{ cursor: "pointer" }}
-  />
+            <img
+              src={RightArrow}
+              alt="taskcard-info-right-arrow"
+              onClick={toggleRightArrowModal}
+            />
+            <img
+              src={Cross}
+              alt="taskcard-info-cross"
+              onClick={() => setIsTaskModalOpen(false)}
+              style={{ cursor: "pointer" }}
+            />
 
-  {isRightArrowModalOpen && (
-    <div className="right-arrow-modal" ref={rightArrowModalRef}>
-      <div className="right-arrow-modal-header">
-        <h3 className="right-arrow-modal-title">Send from board General to...</h3>
-      </div>
-      <div className="right-arrow-options">
-        {sendOptions.map((board) => (
-          <div key={board} className="right-arrow-option" onClick={() => handleRoot(board)}>
-            {board}
+            {isRightArrowModalOpen && (
+              <div className="right-arrow-modal" ref={rightArrowModalRef}>
+                <div className="right-arrow-modal-header">
+                  <h3 className="right-arrow-modal-title">
+                    Send from board General to...
+                  </h3>
+                </div>
+                <div className="right-arrow-options">
+                  {sendOptions.map((board) => (
+                    <div
+                      key={board}
+                      className="right-arrow-option"
+                      onClick={() => handleRoot(board)}
+                    >
+                      {board}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        ))}
-      </div>
-    </div>
-  )}
-</div>
         </div>
         <div className="taskcard-info-line"></div>
         <div className="taskcard-info-lower-area">
@@ -318,12 +429,15 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
                   type="text"
                   value={taskTitle}
                   onChange={(e) => setTaskTitle(e.target.value)}
-                  onBlur={handleSaveTitle}
+                  onBlur={(e)=>handleSaveTitle(e.target.value)}
                   autoFocus
                   className="task-title-input" // Add a custom class for styling
                 />
               ) : (
-                <p className="taskcard-info-title" onClick={() => setIsTitleEditing(true)}>
+                <p
+                  className="taskcard-info-title"
+                  onClick={() => setIsTitleEditing(true)}
+                >
                   {taskTitle}
                 </p>
               )}
@@ -338,10 +452,14 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
                     setValue={setTempDescription} // Değeri güncelleme fonksiyonu
                   />
                   <button
-                    onClick={isDescriptionEditing ? handleSaveDescription : toggleDescriptionEditing}
+                    onClick={
+                      isDescriptionEditing
+                        ? handleSaveDescription
+                        : toggleDescriptionEditing
+                    }
                     className="save-description-button"
                   >
-                    {isDescriptionEditing ? 'Save' : 'Edit'} {/* Buton metni */}
+                    {isDescriptionEditing ? "Save" : "Edit"} {/* Buton metni */}
                   </button>
                 </div>
               ) : (
@@ -353,141 +471,161 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
               )}
             </div>
 
-
-
-
             {/* Comment Section */}
             <div className="taskcard-info-comment-area">
-          {isCommentEditing ? (
-            <TextEditor value={tempComment} setValue={setTempComment} />
-          ) : (
-            <div className="taskcard-info-textarea" onClick={() => setIsCommentEditing(true)}>
-              <div className="add-comment-prompt">Add New Comment!!</div>
+              {isCommentEditing ? (
+                <TextEditor value={tempComment} setValue={setTempComment} />
+              ) : (
+                <div
+                  className="taskcard-info-textarea"
+                  onClick={() => setIsCommentEditing(true)}
+                >
+                  <div className="add-comment-prompt">Add New Comment!!</div>
+                </div>
+              )}
+
+              {isCommentEditing && (
+                <button
+                  onClick={handleAddComment}
+                  className="save-description-button"
+                >
+                  Save
+                </button>
+              )}
+
+              {/* Comments section title */}
+              <h3 className="comments-title">Comments</h3>
+
+              {/* Display list of comments */}
+              <div className="taskcard-info-comments-list">
+                {comments.map((comment, index) => (
+                  <div
+                    key={index}
+                    className="taskcard-info-textarea comment-item"
+                  >
+                    {editingIndex === index ? (
+                      <>
+                        <TextEditor
+                          value={editedComment}
+                          setValue={setEditedComment}
+                        />
+                        <button
+                          onClick={() => handleSaveEditedComment(index)}
+                          className="save-description-button"
+                        >
+                          Save
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <div
+                          className="comment-content"
+                          dangerouslySetInnerHTML={{ __html: comment }}
+                        />
+                        <div className="comment-icons">
+                          <img
+                            src={EditIcon}
+                            alt="edit icon"
+                            className="comment-icon"
+                            onClick={() => handleEditComment(index)}
+                          />
+                          <img
+                            src={DeleteIcon}
+                            alt="delete icon"
+                            className="comment-icon"
+                            onClick={() => handleDeleteComment(index)}
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
 
-          {isCommentEditing && (
-            <button onClick={handleAddComment} className="save-description-button">
-              Save
-            </button>
-          )}
+            {/* Render Generated Subtasks */}
+            {/* Subtask Generation Section */}
+            <div className="taskcard-info-subtask-area">
+              {isGeneratingSubtask ? (
+                <div className="subtask-input-wrapper">
+                  <input
+                    type="text"
+                    value={subtaskTitle}
+                    onChange={(e) => setSubtaskTitle(e.target.value)}
+                    placeholder="Enter subtask title..."
+                    className="subtask-input"
+                  />
+                  <button
+                    onClick={generateSubtasks}
+                    className="generate-subtask-button"
+                  >
+                    Generate
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={handleToggleSubtaskGeneration}
+                  className="generate-subtask-button"
+                >
+                  Generate Subtasks
+                </button>
+              )}
 
-          {/* Comments section title */}
-          <h3 className="comments-title">Comments</h3>
+              {/* Display generated subtasks */}
+              <motion.div
+                className="workspaceAi-message"
+                variants={staggerAnimation}
+                initial="hidden"
+                animate="visible"
+              >
+                <AnimatePresence>
+                  {visibleSubtasks.map((task) => (
+                    <div key={task.id}>
+                      <h1 className="workspaceAi-response-title">
+                        {task.name}
+                      </h1>
 
-          {/* Display list of comments */}
-          <div className="taskcard-info-comments-list">
-            {comments.map((comment, index) => (
-              <div key={index} className="taskcard-info-textarea comment-item">
-                {editingIndex === index ? (
-                  <>
-                    <TextEditor
-                      value={editedComment}
-                      setValue={setEditedComment}
-                    />
-                    <button
-                      onClick={() => handleSaveEditedComment(index)}
-                      className="save-description-button"
-                    >
-                      Save
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <div className="comment-content" dangerouslySetInnerHTML={{ __html: comment }} />
-                    <div className="comment-icons">
-                      <img
-                        src={EditIcon}
-                        alt="edit icon"
-                        className="comment-icon"
-                        onClick={() => handleEditComment(index)}
-                      />
-                      <img
-                        src={DeleteIcon}
-                        alt="delete icon"
-                        className="comment-icon"
-                        onClick={() => handleDeleteComment(index)}
-                      />
+                      <motion.div
+                        key={task.id}
+                        variants={cardAnimation}
+                        exit={{ opacity: 0, scale: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className={`workspaceAi-task ${
+                          subtaskStates[task.id] === "rejected"
+                            ? "rejected-task"
+                            : ""
+                        }`}
+                      >
+                        <div className="workspaceAi-task-card">
+                          <div className="task-header">{task.name}</div>
+                          <div className="task-desc">{task.description}</div>
+                          <div className="task-tags">
+                            <span className="task-tag">{task.type}</span>
+                            <span className="task-tag">{task.assignee}</span>
+                          </div>
+                        </div>
+                        <div className="task-icons">
+                          <span
+                            className="task-icon"
+                            onClick={() => handleReject(task.id)}
+                          >
+                            <img src={Crossİcon} alt="Reject" />
+                          </span>
+                          <span
+                            className="task-icon"
+                            onClick={() => handleApprove(task)}
+                          >
+                            <img src={Tickİcon} alt="Approve" />
+                          </span>
+                        </div>
+                      </motion.div>
                     </div>
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-
-{/* Render Generated Subtasks */}
-{/* Subtask Generation Section */}
-<div className="taskcard-info-subtask-area">
-  {isGeneratingSubtask ? (
-    <div className="subtask-input-wrapper">
-      <input
-        type="text"
-        value={subtaskTitle}
-        onChange={(e) => setSubtaskTitle(e.target.value)}
-        placeholder="Enter subtask title..."
-        className="subtask-input"
-      />
-      <button onClick={generateSubtasks} className="generate-subtask-button">
-        Generate
-      </button>
-    </div>
-  ) : (
-    <button onClick={handleToggleSubtaskGeneration} className="generate-subtask-button">
-      Generate Subtasks
-    </button>
-  )}
-
-  {/* Display generated subtasks */}
-  <motion.div
-  className="workspaceAi-message"
-  variants={staggerAnimation}
-  initial="hidden"
-  animate="visible"
->
-  <AnimatePresence>
-    {visibleSubtasks.map((task) => (
-      <div key={task.id}>
-        <h1 className="workspaceAi-response-title">{task.name}</h1>
-
-        
-          <motion.div
-            key={task.id}
-            variants={cardAnimation}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.5 }}
-            className={`workspaceAi-task ${
-              subtaskStates[task.id] === "rejected" ? "rejected-task" : ""
-            }`}
-          >
-            <div className="workspaceAi-task-card">
-              <div className="task-header">{task.name}</div>
-              <div className="task-desc">{task.description}</div>
-              <div className="task-tags">
-                <span className="task-tag">{task.type}</span>
-                <span className="task-tag">{task.assignee}</span>
-              </div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
             </div>
-            <div className="task-icons">
-              <span className="task-icon" onClick={() => handleReject(task.id)}>
-                <img src={Crossİcon} alt="Reject" />
-              </span>
-              <span className="task-icon" onClick={() => handleApprove(task)}>
-                <img src={Tickİcon} alt="Approve" />
-              </span>
-            </div>
-          </motion.div>
-        
-      </div>
-    ))}
-  </AnimatePresence>
-</motion.div>
-</div>
 
-
-
-             <div className="taskcard-info-checklist-area">
+            <div className="taskcard-info-checklist-area">
               <input className="checklist-checkbox" type="checkbox" />
               <p className="taskcard-info-gray-letter">
                 Create a checklist for this task
@@ -496,57 +634,80 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
           </div>
 
           <div className="taskcard-info-right-lower">
+            <div className="taskcard-info-assignees">
+              <a className="td-none" href="#" onClick={toggleAssigneeModal}>
+                <img
+                  src={Assignees}
+                  alt="assignees"
+                  className="assignees-icon"
+                />
+                Assignees
+              </a>
 
-          <div className="taskcard-info-assignees">
-  <a className="td-none" href="#" onClick={toggleAssigneeModal}>
-    <img src={Assignees} alt="assignees" className="assignees-icon" />
-    Assignees
-  </a>
-  
-  {selectedAssignee.avatar ? (
-    <img src={selectedAssignee.avatar} alt="selected assignee avatar" className="selected-assignee-avatar" />
-  ) : (
-    <img src={Plus} alt="plus" onClick={toggleAssigneeModal} />
-  )}
+              {selectedAssignee.avatar ? (
+                <img
+                  src={selectedAssignee.avatar}
+                  alt="selected assignee avatar"
+                  className="selected-assignee-avatar"
+                />
+              ) : (
+                <img src={Plus} alt="plus" onClick={toggleAssigneeModal} />
+              )}
 
-  {isAssigneeModalOpen && (
-    <div className="assignee-modal" ref={assigneeModalRef}>
-      <div className="assignee-modal-header">
-        <h3 className="assignee-modal-title">Assignees</h3>
-        <img
-          src={AddMemberIcon}
-          alt="Add Member"
-          className="add-member-icon"
-          onClick={() => setAssigneeModalOpen(false)}
-        />
-      </div>
-      <div className="assignee-modal-divider"></div>
-      <div className="assignee-modal-content" onClick={handleAssigneeSelect}>
-        <img src={userInfo.profilePictureUrl} alt="Profile" className="assignee-avatar" />
-        <div className="assignee-name">
-          {userInfo.firstName} {userInfo.lastName}
-        </div>
-      </div>
-    </div>
-  )}
-</div>
-
-
-
-
-
+              {isAssigneeModalOpen && (
+                <div className="assignee-modal" ref={assigneeModalRef}>
+                  <div className="assignee-modal-header">
+                    <h3 className="assignee-modal-title">Assignees</h3>
+                    <img
+                      src={AddMemberIcon}
+                      alt="Add Member"
+                      className="add-member-icon"
+                      onClick={() => setAssigneeModalOpen(false)}
+                    />
+                  </div>
+                  <div className="assignee-modal-divider"></div>
+                  {boardMembers.map((member)=>(
+                    <div
+                    className="assignee-modal-content"
+                    onClick={()=>handleAssigneeSelect(member)}
+                  >
+                    <img
+                      src={member.profilePicture}
+                      alt="Profile"
+                      className="assignee-avatar"
+                    />
+                    <div className="assignee-name">
+                      {member.firstName} {member.lastName}
+                    </div>
+                  </div>
+                  ))}
+                  
+                </div>
+              )}
+            </div>
 
             <div className="taskcard-info-due-date">
-              <a className="td-none" href="#" onClick={() => setIsDatePickerOpen(true)}>
+              <a
+                className="td-none"
+                href="#"
+                onClick={() => setIsDatePickerOpen(true)}
+              >
                 <img src={DueDate} alt="duedate" />
                 Due Date
               </a>
               {selectedDate ? (
-                <a className="taskmodal-selected-date" onClick={() => setIsDatePickerOpen(true)}>
+                <a
+                  className="taskmodal-selected-date"
+                  onClick={() => setIsDatePickerOpen(true)}
+                >
                   {format(selectedDate, "MMMM dd")}
                 </a>
               ) : (
-                <img src={Plus} alt="plus" onClick={() => setIsDatePickerOpen(true)} />
+                <img
+                  src={Plus}
+                  alt="plus"
+                  onClick={() => setIsDatePickerOpen(true)}
+                />
               )}
               {isDatePickerOpen && (
                 <div className="datepicker-wrapper">
@@ -581,7 +742,11 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
                   <div className="status-modal-divider"></div>
                   <div className="status-options">
                     {statusOptions.map((status) => (
-                      <div key={status} className="status-option" onClick={() => handleStatusSelect(status)}>
+                      <div
+                        key={status}
+                        className="status-option"
+                        onClick={() => handleStatusSelect(status)}
+                      >
                         {status}
                       </div>
                     ))}
@@ -598,8 +763,15 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
 
               {selectedPriority.label ? (
                 <div className="selected-priority">
-                  <img src={selectedPriority.icon} alt="selected priority icon" className="priority-icon" />
-                  <span className="priority-label">{selectedPriority.label}</span> {/* Show the priority label */}
+                  <img
+                    src={selectedPriority.icon}
+                    alt="selected priority icon"
+                    className="priority-icon"
+                  />
+                  <span className="priority-label">
+                    {selectedPriority.label}
+                  </span>{" "}
+                  {/* Show the priority label */}
                 </div>
               ) : (
                 <img src={Plus} alt="plus" onClick={togglePriorityModal} />
@@ -613,8 +785,15 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
                   <div className="priority-modal-divider"></div>
                   <div className="priority-options">
                     {priorityOptions.map((priority) => (
-                      <div key={priority.label} className="priority-option" onClick={() => handlePrioritySelect(priority)}>
-                        <img src={priority.icon} alt={`${priority.label} icon`} />
+                      <div
+                        key={priority.label}
+                        className="priority-option"
+                        onClick={() => handlePrioritySelect(priority)}
+                      >
+                        <img
+                          src={priority.icon}
+                          alt={`${priority.label} icon`}
+                        />
                         {priority.label}
                       </div>
                     ))}
@@ -622,8 +801,6 @@ const TaskModal = ({ taskIndex, colIndex, setIsTaskModalOpen }) => {
                 </div>
               )}
             </div>
-
-
           </div>
         </div>
       </div>

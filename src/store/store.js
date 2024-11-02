@@ -6,6 +6,7 @@ import selectedComponentReducer from "./selectedComponentSlice";
 import boardReducer from "./boardSlice";
 import searchReducer from "./searchSlice";
 import myTasksReducer from "./myTasksSlice";
+import taskSliceReducer from "./taskSlice";
 //import boardsSlice from "./boardsSlice";
 //boards: boardsSlice.reducer,
 
@@ -17,6 +18,7 @@ export const store = configureStore({
     notifications: notificationReducer,
     board: boardReducer,
     searchResults: searchReducer,
-    myTasks: myTasksReducer
+    myTasks: myTasksReducer,
+    task: taskSliceReducer
   },
 });

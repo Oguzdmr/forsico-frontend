@@ -347,4 +347,10 @@
   .workspaceAi-task-card .task-desc {
     font-size: 14px;
   }
-  
+  .workspaceAi-error{
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ED1E5A;
+  }

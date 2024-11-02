@@ -12,7 +12,7 @@ import downArrow from '../../assets/down-arrow.svg';
 import upArrow from '../../assets/up-arrow.svg';
 import moment from 'moment';
 
-function TaskCard({ list, task, colIndex, taskIndex, color }) {
+function TaskCard({ list, task, colIndex,workspaceId, taskIndex, color }) {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isSubtasksVisible, setIsSubtasksVisible] = useState(false);
   console.log("list",list);
@@ -117,8 +117,9 @@ console.log(subtasks)
 
       {isTaskModalOpen && (
         <TaskModal
-          colIndex={colIndex}
-          taskIndex={taskIndex}
+          listId={colIndex}
+          taskId={taskIndex}
+          workspaceId={workspaceId}
           setIsTaskModalOpen={setIsTaskModalOpen}
         />
       )}

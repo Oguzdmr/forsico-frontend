@@ -1,7 +1,7 @@
 const config = require("../../config");
 
 class Task {
-  async geTask(token, workspaceId, taskId) {
+  async getTask(token, workspaceId, taskId) {
     const myHeaders = new Headers();
     myHeaders.append("x-workspace-id", workspaceId);
     myHeaders.append("Authorization", `Bearer ${token}`);
@@ -14,7 +14,7 @@ class Task {
 
     try {
       const response = await fetch(
-        `${config.boardApiBaseUrl}/task/${listId}`,
+        `${config.boardApiBaseUrl}/task/${taskId}`,
         requestOptions
       );
       const result = await response.json();

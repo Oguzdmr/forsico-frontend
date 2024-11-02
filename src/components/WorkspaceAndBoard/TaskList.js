@@ -10,7 +10,7 @@ function TaskList({ list, colIndex, workspaceId, boardId }) {
   const token =  useSelector((state) => {
     return state.auth.token.token || "";
   })
-
+  
   const taskData = {
    
     workspaceId: workspaceId,
@@ -66,7 +66,7 @@ function TaskList({ list, colIndex, workspaceId, boardId }) {
       {(list.tasks || []).map((task, index) => {
         if(!task.parentTask){
           return (
-            <TaskCard key={index} list={list} task={task} taskIndex={task._id} colIndex={list._id} color={list.color} />
+            <TaskCard key={index} list={list} task={task} taskIndex={task._id} workspaceId={workspaceId} colIndex={list._id} color={list.color} />
           )
         }
       })}

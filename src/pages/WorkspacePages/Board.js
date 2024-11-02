@@ -4,16 +4,14 @@ import VectorIcon from "../../assets/Vector.png";
 import MembersIcon from "../../assets/memberIcon.svg";
 import ShareIcon from "../../assets/shareIcon.svg";
 import FilterBoardIcon from "../../assets/filterBoard.svg";
-import AiIcon from "../../assets/aiIcon.svg"
-import shareCopyIcon from"../../assets/shareCopyIcon.svg"
+import AiIcon from "../../assets/aiIcon.svg";
+import shareCopyIcon from "../../assets/shareCopyIcon.svg";
 import AddMemberIcon from "../../assets/addMemberIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/workspaceCss/board.css";
 import { fetchBoard, updateStatus } from "../../store/boardSlice";
-import { useLocation, Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CreateListModal from "../../components/WorkspaceAndBoard/CreateListModal";
-import AddMemberModal from "../../components/WorkspaceAndBoard/AddMemberModal"
 import InviteTeamModal from "../../components/WorkspaceAndBoard/InviteTeamModal";
 import { RotatingLines } from "react-loader-spinner";
 
@@ -23,17 +21,13 @@ function Board() {
     window.innerHeight,
   ]);
   const dispatch = useDispatch();
-
   const {
     entities,
     status = "idle",
     error,
-  } = useSelector((state) => {
-    return state.board || {};
-  });
+  } = useSelector((state) => state.board || {});
 
-  const { workspaceId } = useParams();
-  const { boardId } = useParams();
+  const { workspaceId, boardId } = useParams();
   const memberModalRef = useRef(null);
   const shareModalRef = useRef(null);
 
@@ -42,50 +36,38 @@ function Board() {
   const [isAddMemberModalOpen, setAddMemberModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     dispatch(updateStatus({ status: "idle" }));
   }, [boardId]);
 
   useEffect(() => {
     if (status === "idle") {
-      dispatch(fetchBoard({ workspaceId, boardId }));
-      setIsLoading(false)
+      dispatch(fetchBoard({ workspaceId, boardId })).finally(() => {
+        setIsLoading(false);
+      });
     }
-  }, [dispatch, status]);
+  }, [dispatch, status, workspaceId, boardId]);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleClickOutside = (event) => {
-    if (
-      memberModalRef.current &&
-      !memberModalRef.current.contains(event.target)
-    ) {
+    if (memberModalRef.current && !memberModalRef.current.contains(event.target)) {
       setIsModalOpen(false);
     }
-    if (
-      shareModalRef.current &&
-      !shareModalRef.current.contains(event.target)
-    ) {
+    if (shareModalRef.current && !shareModalRef.current.contains(event.target)) {
       setIsShareModalOpen(false);
     }
   };
 
   const [isListModalOpen, setIsListModalOpen] = useState(false);
-
   const board = useSelector((state) => state.board.entities);
-
-  const [isSideBarOpen, setIsSideBarOpen] = useState(true);
-
-  const [copySuccess, setCopySuccess] = useState(false); 
+  const [copySuccess, setCopySuccess] = useState(false);
   const linkInputRef = useRef(null);
 
   const handleCopyClick = async () => {
@@ -93,7 +75,6 @@ function Board() {
       if (linkInputRef.current) {
         await navigator.clipboard.writeText(linkInputRef.current.value);
         setCopySuccess(true);
-
         setTimeout(() => setCopySuccess(false), 2000);
       }
     } catch (err) {
@@ -101,30 +82,26 @@ function Board() {
     }
   };
 
-
   return (
     <div className="board-page">
       <div className="board-header">
         <div className="board-title">
-          <h1>{board?.name}</h1>
+        {isLoading ? (
+            <h1></h1>
+          ) : (
+            <h1>{board?.name}</h1>
+        )}
         </div>
-
         <div className="board-button-group">
-        <div className="board-ai">
-            <Link to={"/workspaces/ai/" + workspaceId} >
-            <img src={AiIcon} alt="AI" />
+          <div className="board-ai">
+            <Link to={`/workspaces/ai/${workspaceId}`}>
+              <img src={AiIcon} alt="AI" />
             </Link>
-           
           </div>
-          {/* <div className="board-filter">
-            <img src={FilterBoardIcon} alt="Filter" />
-          </div> */}
-
           <div className="board-members" onClick={toggleModal}>
             <img src={MembersIcon} alt="Members" />
           </div>
-
-          <div className="board-share" onClick={()=> setIsShareModalOpen(!isShareModalOpen)} >
+          <div className="board-share" onClick={() => setIsShareModalOpen(!isShareModalOpen)}>
             <img src={ShareIcon} alt="Share" />
           </div>
         </div>
@@ -133,16 +110,15 @@ function Board() {
           <div className="member-modal" ref={memberModalRef}>
             <div className="member-modal-title">
               <h1>Members</h1>
-              <div onClick={()=>setAddMemberModalOpen(true)}>
-              <img src={AddMemberIcon} alt="Add Member" />
+              <div onClick={() => setAddMemberModalOpen(true)}>
+                <img src={AddMemberIcon} alt="Add Member" />
               </div>
-              
             </div>
             <div className="member-modal-line"></div>
             <div className="member-modal-content">
               {entities?.members.map((member) => (
                 <div className="member" key={member._id}>
-                  <img src={member?.profilePicture} alt="Member 1" />
+                  <img src={member?.profilePicture} alt="Member" />
                   <span>
                     {member.firstName} {member.lastName}
                   </span>
@@ -154,117 +130,63 @@ function Board() {
 
         {isShareModalOpen && (
           <div className="share-modal" ref={shareModalRef}>
-          <div className="share-modal-title">
-            <h1>Share the board</h1>
-          </div>
-          <div className="share-modal-line"></div>
-        
-          <div className="share-modal-content">
-            {/* <div className="email-input-wrapper">
-              <input
-                type="text"
-                placeholder="E-mail address or name"
-                className="email-input"
-              />
-              <button className="send-button">Send</button>
-            </div> */}
-        
-            <div className="share-connection-link-wrapper">
-              <label>Share with connection link</label>
-              <div className="share-link-input-container">
-                <input
-                  type="text"
-                  value={window.location.href.split("?")[0]}
-                  readOnly
-                  className="share-link-input"
-                  ref={linkInputRef}
-                />
-                <button className="share-copy-button" onClick={()=>handleCopyClick()}>
-                  <img
-                    src={shareCopyIcon}
-                    alt="Copy"
-                    className="share-copy-icon"
+            <div className="share-modal-title">
+              <h1>Share the board</h1>
+            </div>
+            <div className="share-modal-line"></div>
+            <div className="share-modal-content">
+              <div className="share-connection-link-wrapper">
+                <label>Share with connection link</label>
+                <div className="share-link-input-container">
+                  <input
+                    type="text"
+                    value={window.location.href.split("?")[0]}
+                    readOnly
+                    className="share-link-input"
+                    ref={linkInputRef}
                   />
-                </button>
+                  <button className="share-copy-button" onClick={handleCopyClick}>
+                    <img src={shareCopyIcon} alt="Copy" className="share-copy-icon" />
+                  </button>
+                </div>
+                {copySuccess && <span className="share-copy-success">Copied!</span>}
               </div>
-              {copySuccess && (
-                <span className="share-copy-success">Copied!</span> 
-              )}
             </div>
           </div>
-        </div>
-        
         )}
       </div>
+
       {isLoading ? (
-          <div className={`board-container scrollbar-hide`}>
+        <div className="loader-container">
+          <RotatingLines height="40" width="40" radius="9" strokeColor="#36C5F0" ariaLabel="loading" />
+        </div>
+      ) : (
+        <div className="board-container scrollbar-hide">
           <div className="board-top-line"></div>
           <div className="board-content">
-        <RotatingLines
-          height="40"
-          width="40"
-          radius="9"
-          strokeColor="#36C5F0"
-          ariaLabel="loading"
-          wrapperStyle
-          wrapperClass
-        />
-        </div></div>
-      ):(
-        <div className={`board-container scrollbar-hide`}>
-        <div className="board-top-line"></div>
-        <div className="board-content">
-          {entities?.lists?.length > 0 ? (
-            <>
-              {entities.lists.map((list, index) => (
-                <TaskList
-                  key={index}
-                  list={list}
-                  colIndex={list._id}
-                  workspaceId={workspaceId}
-                  boardId={boardId}
-                />
-              ))}
-              <div
-                onClick={() => {
-                  setIsListModalOpen(true);
-                }}
-                className="new-column-button"
-              >
+            {entities?.lists?.length > 0 ? (
+              <>
+                {entities.lists.map((list, index) => (
+                  <TaskList key={index} list={list} colIndex={list._id} workspaceId={workspaceId} boardId={boardId} />
+                ))}
+                <div onClick={() => setIsListModalOpen(true)} className="new-column-button">
+                  <img src={VectorIcon} alt="New Column" />
+                </div>
+              </>
+            ) : (
+              <div onClick={() => setIsListModalOpen(true)} className="new-column-button">
                 <img src={VectorIcon} alt="New Column" />
               </div>
-            </>
-          ) : (
-            <>
-              <div
-                onClick={() => {
-                  setIsListModalOpen(true);
-                }}
-                className="new-column-button"
-              >
-                <img src={VectorIcon} alt="New Column" />
-              </div>
-            </>
-          )}
-          {isListModalOpen && (
-            <CreateListModal
-              onClose={() => setIsListModalOpen(false)}
-              workspaceId={workspaceId}
-              boardId={boardId}
-            />
-          )}
-          
-          <button className="add-task-button">Add Task +</button>
+            )}
+            {isListModalOpen && (
+              <CreateListModal onClose={() => setIsListModalOpen(false)} workspaceId={workspaceId} boardId={boardId} />
+            )}
+            <button className="add-task-button">Add Task +</button>
+          </div>
         </div>
-        
-      </div>
       )}
-      {isAddMemberModalOpen && (
-            <InviteTeamModal
-              onClose={()=>setAddMemberModalOpen(false)}
-              
-            />
-          )}
+
+      {isAddMemberModalOpen && <InviteTeamModal onClose={() => setAddMemberModalOpen(false)} />}
     </div>
   );
 }
