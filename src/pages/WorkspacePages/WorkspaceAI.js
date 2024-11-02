@@ -76,7 +76,9 @@ const WorkspaceAIPage = () => {
   const getAiTasks = async () => {
     let res = await forsicoAiApi.generateAzureAIContent(workspaceDescription);
     if (res.success) {
+      setVisibleTasks([])
       setAiTasks(res.data.result.tasks);
+
     }
   };
 
@@ -245,8 +247,10 @@ const WorkspaceAIPage = () => {
                   {task.name}
                 </h1>
 
-                {task.subtasks.map((subtask) => (
-                  <motion.div
+                {task.subtasks? (
+                  <>
+                  {task.subtasks.map((subtask)=>(
+                    <motion.div
                     key={subtask.id}
                     variants={cardAnimation}
                     exit={{ opacity: 0, scale: 0 }}
@@ -298,7 +302,62 @@ const WorkspaceAIPage = () => {
                       )}
                     </div>
                   </motion.div>
-                ))}
+                  ))}
+                  </>
+                ):(
+                  <motion.div
+                    key={task.id}
+                    variants={cardAnimation}
+                    exit={{ opacity: 0, scale: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className={`workspaceAi-task ${
+                      taskStates[task.id] === "rejected"
+                        ? "rejected-task"
+                        : ""
+                    }`}
+                  >
+                    <div className="workspaceAi-task-card">
+                      <div className="task-header">
+                        <Typewriter
+                          words={[task.name]}
+                          cursor={false}
+                          typeSpeed={10}
+                        />
+                      </div>
+                      <div className="task-desc">
+                        <Typewriter
+                          words={[task.description]}
+                          cursor={false}
+                          typeSpeed={10}
+                        />
+                      </div>
+                      <div className="task-tags">
+                        <span className="task-tag">
+                          {task.type?.replace(/[^A-Z,a-z]/g, " ")}
+                        </span>
+                        <span className="task-tag">{task.assignee}</span>
+                      </div>
+                    </div>
+                    <div className="task-icons">
+                      {taskStates[task.id] !== "approved" && (
+                        <span
+                          className="task-icon"
+                          onClick={() => handleReject(task.id)}
+                        >
+                          <img src={Crossİcon} alt="cross" />
+                        </span>
+                      )}
+                      {taskStates[task.id] !== "rejected" && (
+                        <span
+                          className="task-icon"
+                          onClick={() => handleApprove(task)}
+                        >
+                          <img src={Tickİcon} alt="tick" />
+                        </span>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
               </div>
             ))}
           </AnimatePresence>

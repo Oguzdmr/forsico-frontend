@@ -267,6 +267,9 @@
     font-weight: 800;
     line-height: 24.2px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .login-submit-btn:hover {

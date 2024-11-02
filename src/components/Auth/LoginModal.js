@@ -5,24 +5,21 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/loginModal.css';
 import Authentication from '../../api/AuthApi/authentication.js';
 const config = require("../../config");
-import Cross from "../../assets/close.svg"
-import Google from "../../assets/google.svg"
-import Microsoft from "../../assets/microsoft.svg"
-import Password from "../../assets/passwordInput.svg"
-import Email from "../../assets/emailInput.svg"
-import InputError from "../../assets/input-error-icon.svg"
-import PasswordInputEye from "../../assets/passwordInputEye.svg"
-
-
-
-
-
+import Cross from "../../assets/close.svg";
+import Google from "../../assets/google.svg";
+import Microsoft from "../../assets/microsoft.svg";
+import Password from "../../assets/passwordInput.svg";
+import Email from "../../assets/emailInput.svg";
+import InputError from "../../assets/input-error-icon.svg";
+import PasswordInputEye from "../../assets/passwordInputEye.svg";
+import { TailSpin } from 'react-loader-spinner';
 
 const LoginModal = ({ onClose, signUp, forgotPassword }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [errorMessage, setErrorMessage] = useState(''); // Error mesajı state
+    const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false); 
     const modalRef = useRef(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -45,7 +42,9 @@ const LoginModal = ({ onClose, signUp, forgotPassword }) => {
             return;
         }
 
+        setLoading(true);
         const response = await authentication.login(email, password);
+        setLoading(false);
 
         if (response.success) {
             dispatch(
@@ -84,8 +83,6 @@ const LoginModal = ({ onClose, signUp, forgotPassword }) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-
-    
 
     return (
         <div className='login-modal-container'>
@@ -199,8 +196,22 @@ const LoginModal = ({ onClose, signUp, forgotPassword }) => {
                     </a>
                 </div>
                 <div className='login-modal-action'>
-                    <button type='button' className='login-submit-btn' onClick={handleLogin}>
-                        Login
+                    <button
+                        type='button'
+                        className='login-submit-btn'
+                        onClick={handleLogin}
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <TailSpin
+                                height="25"
+                                width="25"
+                                color="#ffffff"
+                                ariaLabel="loading-indicator"
+                            />
+                        ) : (
+                            "Login"
+                        )}
                     </button>
                 </div>
                 <div>

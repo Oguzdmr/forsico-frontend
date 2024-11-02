@@ -2,23 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "../../styles/workspaceCss/createboardmodal.css";
+import { TailSpin } from "react-loader-spinner";
 import BoardApi from "../../api/BoardApi/board.js";
-const config = require("../../config");
 import Cross from "../../assets/close.svg";
+import PenIcon from "../../assets/homepage-pen-icon.svg";
+import DescIcon from "../../assets/create-board-modal-desc.svg";
 import { fetchWorkspaces } from "../../store/workspaceSlice";
-import Penİcon from "../../assets/homepage-pen-icon.svg"
-import Descİcon from "../../assets/create-board-modal-desc.svg"
 
 const CreateBoardModal = ({ onClose, workspaceId }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [errorMessage, setErrorMessage] = useState(''); // Error mesajı state
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const modalRef = useRef(null);
 
   const dispatch = useDispatch();
-  const token = useSelector((state) => {
-    return state.auth.token.token || "";
-  });
+  const token = useSelector((state) => state.auth.token.token || "");
   const navigate = useNavigate();
   const boardApi = new BoardApi();
 
@@ -29,20 +28,34 @@ const CreateBoardModal = ({ onClose, workspaceId }) => {
   };
 
   useEffect(() => {
-    console.log("modal")
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const handleClickCreate = async () => {
-    let response = await boardApi.createBoard(token, workspaceId, name, description);
-    if (response.status === true) {
-      dispatch(fetchWorkspaces());
-      onClose();
-      navigate("/workspaces/board/" + workspaceId + "/" + response.data._id)
+    if (!name || !description) {
+      setErrorMessage("Please provide both a board name and description.");
+      return;
+    }
+
+    setLoading(true);
+    setErrorMessage("");
+    
+    try {
+      const response = await boardApi.createBoard(token, workspaceId, name, description);
+      if (response.status === true) {
+        dispatch(fetchWorkspaces());
+        onClose();
+        navigate(`/workspaces/board/${workspaceId}/${response.data._id}`);
+      } else {
+        setErrorMessage("Failed to create board. Please try again.");
+      }
+    } catch (error) {
+      setErrorMessage("An unexpected error occurred.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,12 +79,12 @@ const CreateBoardModal = ({ onClose, workspaceId }) => {
         </div>
         <br />
 
-        <div className={`create-board-modal-input`}>
+        <div className="create-board-modal-input">
           <div className="input-icon-wrapper create-board-name">
-            <img className="create-board-pen-icon" src={Penİcon} alt="Pen" />
+            <img className="create-board-pen-icon" src={PenIcon} alt="Pen" />
             <input
-              className={`create-board-input-email`}
-              type="email"
+              className="create-board-input-email"
+              type="text"
               name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -82,12 +95,10 @@ const CreateBoardModal = ({ onClose, workspaceId }) => {
         </div>
         <div className="create-board-modal-input">
           <div className="input-icon-wrapper create-board-desc-area">
-            <img className="create-board-desc-icon" src={Descİcon} alt="Desc" />
-
+            <img className="create-board-desc-icon" src={DescIcon} alt="Desc" />
             <textarea
               id="board-description-input"
               className="create-board-input-password"
-              type="text"
               name="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -108,8 +119,13 @@ const CreateBoardModal = ({ onClose, workspaceId }) => {
             type="button"
             className="create-board-submit-btn"
             onClick={handleClickCreate}
+            disabled={loading}
           >
-            Create
+            {loading ? (
+              <TailSpin height="24" width="24" color="#fff" ariaLabel="loading" />
+            ) : (
+              "Create"
+            )}
           </button>
         </div>
       </div>

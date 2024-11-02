@@ -116,9 +116,9 @@ function Board() {
             </Link>
            
           </div>
-          <div className="board-filter">
+          {/* <div className="board-filter">
             <img src={FilterBoardIcon} alt="Filter" />
-          </div>
+          </div> */}
 
           <div className="board-members" onClick={toggleModal}>
             <img src={MembersIcon} alt="Members" />

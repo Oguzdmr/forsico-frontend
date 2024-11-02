@@ -90,6 +90,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    margin: 15px;
   }
   .invite-team-emails-label{
   font-size: 15px;
@@ -101,19 +102,19 @@
   .invite-team-email-item {
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: #6D6D6D;
     padding: 3px 18px;
     border-radius: 15px;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 600;
     line-height: 18px;
-    margin-top: 20px;
     color: #ffff;
     gap: 5px;
   }
   
   .invite-team-email-item button {
-    background-color: #ffff;
+    background-color: #6D6D6D;
     border-radius: 999px;
     width: 24px;
     height: 24px;
@@ -125,16 +126,29 @@
   
   .invite-team-email-input-form {
     display: flex;
+    border-radius: 15px;
+    height: 60px;
+    border: 1.5px solid #6D6D6D;
+    padding: 16px;
     gap: 10px;
   }
-  
-  .invite-team-email-input-form input {
-    flex: 1;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
+  .invite-team-email-input-form img{
+  width: 18px;
+  height: 14px;
   }
-  
+  .invite-team-email-input-form textarea {
+    flex: 1;
+    padding: 3px;
+   border: none;
+    
+  }
+  .invite-team-email-input-form textarea:focus {
+    outline: 0;
+  }
+  .invite-team-error{
+    font-size: 12px;
+    color: rgba(237, 30, 90, 1);
+  }
   .invite-team-email-input-form button {
     background-color: #36c5f0;
     color: white;
@@ -146,7 +160,7 @@
   
   .invite-team-modal-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 10px;
   }
   
@@ -160,11 +174,19 @@
   }
   
   .invite-team-continue-button {
-    background-color: #36c5f0;
-    color: white;
+    background-color: #36C5F0;
     border: none;
-    padding: 8px;
-    border-radius: 5px;
+    color: #fff;
     cursor: pointer;
+    width: 300px;
+    height: 50px;
+    padding: 12px 20px 12px 20px;
+    gap: 10px;
+    border-radius: 25px;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 24.2px;
+    text-align: center;
+    align-items: center;
   }
   

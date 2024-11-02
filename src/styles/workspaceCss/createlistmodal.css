@@ -1,0 +1,125 @@
+.create-list-modal-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2); 
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.create-list-modal-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 30em;
+    height: 40em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    position: relative;
+}
+
+.create-list-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.create-list-modal-close-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.create-list-modal-header {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 15%;
+}
+
+.create-list-modal-title {
+    font-size: 36px;
+    color: #ED1E5A;
+    text-align: center;
+}
+
+.create-list-modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.create-list-input-email {
+    width: 250px;
+    height: 50px;
+    padding: 10px;
+    border: 1.5px solid #6D6D6D;
+    border-radius: 15px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.create-list-input-email::placeholder {
+    color: #6D6D6D;
+    font-size: 14px;
+}
+
+.create-list-modal-input-group{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.color-preview {
+    width: 250px;
+    height: 40px;
+    margin-top: 10px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.create-list-modal-action {
+    margin-bottom: 80px;
+}
+
+.create-list-submit-btn {
+    background-color: #36C5F0;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    width: 250px;
+    height: 50px;
+    border-radius: 25px;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 24.2px;
+    text-align: center;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-list-submit-btn:hover {
+    background: #5ED0F3;
+}
+
+.create-list-error-message {
+    color: #ED1E5A;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}

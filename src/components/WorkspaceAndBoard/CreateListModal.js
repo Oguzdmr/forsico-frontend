@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import "../../styles/loginModal.css";
 import { HexColorPicker } from "react-colorful";
+import { useNavigate } from "react-router-dom";
+import "../../styles/workspaceCss/createlistmodal.css";
+import { TailSpin } from "react-loader-spinner";
 import Cross from "../../assets/close.svg";
-import ListApi from "../../api/BoardApi/list.js"; // API dosyanızı ayarlayın
+import ListApi from "../../api/BoardApi/list.js";
 import { addList } from "../../store/boardSlice";
 
 const CreateListModal = ({ onClose, workspaceId, boardId }) => {
-  const [name, setName] = useState(""); // Liste ismi
-  const [description, setDescription] = useState("test"); // Liste açıklaması
-  const [color, setColor] = useState("#aabbcc"); // Liste rengi
-  const [errorMessage, setErrorMessage] = useState(""); // Hata mesajı
-  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false); // Renk seçici durumu
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("test");
+  const [color, setColor] = useState("#aabbcc");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const modalRef = useRef(null);
-  const colorPickerRef = useRef(null); // Renk seçici için ref
+  const colorPickerRef = useRef(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const listApi = new ListApi();
-
-  // Token'i Redux Store'dan almak
   const token = useSelector((state) => state.auth.token.token);
 
   const handleClickOutside = (event) => {
@@ -43,6 +43,9 @@ const CreateListModal = ({ onClose, workspaceId, boardId }) => {
       return;
     }
 
+    setLoading(true);
+    setErrorMessage("");
+
     try {
       const response = await listApi.createList(
         token,
@@ -52,11 +55,8 @@ const CreateListModal = ({ onClose, workspaceId, boardId }) => {
         boardId,
         color
       );
-        console.log("create list response",response)
       if (response.status === true) {
-        dispatch(
-          addList({ name:response.data.name, _id:response.data._id , color:response.data.color})
-        );
+        dispatch(addList({ name: response.data.name, _id: response.data._id, color: response.data.color }));
         onClose();
       } else {
         setErrorMessage("Liste oluşturulurken hata oluştu.");
@@ -64,70 +64,76 @@ const CreateListModal = ({ onClose, workspaceId, boardId }) => {
     } catch (error) {
       console.error("Liste oluşturulurken hata:", error);
       setErrorMessage("Beklenmeyen bir hata oluştu.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-modal-container">
-      <div className="login-modal-card" ref={modalRef}>
-        <div className="login-modal-close">
+    <div className="create-list-modal-container">
+      <div className="create-list-modal-card" ref={modalRef}>
+        <div className="create-list-modal-close">
           <img
-            className="login-modal-close-icon"
+            className="create-list-modal-close-icon"
             src={Cross}
             alt="Close"
             onClick={onClose}
           />
         </div>
-        <div className="login-modal-header">
-          <span className="login-modal-title">Create List</span>
+        <div className="create-list-modal-header">
+          <span className="create-list-modal-title">Create List</span>
         </div>
-
-        <div className="login-modal-input">
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Liste İsmi Giriniz..."
-            required
-            className="login-input-email"
-          />
-        </div>
-
-        <div className="login-modal-input">
-          <span className="color-picker-label">Select Color:</span>
-
-          <div
-            className="color-preview"
-            onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}
-            style={{
-              backgroundColor: color,
-              width: "250px",
-              height: "40px",
-              marginTop: "10px",
-              cursor: "pointer",
-            }}
-          />
+        <div className="create-list-modal-input-group">
+          <div className="create-list-modal-input">
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Liste İsmi Giriniz..."
+              required
+              className="create-list-input-email"
+            />
+          </div>
+          <div className="create-list-modal-input">
+            <span className="color-picker-label">Select Color:</span>
+            <div
+              className="color-preview"
+              onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}
+              style={{
+                backgroundColor: color,
+                width: "250px",
+                height: "40px",
+                marginTop: "10px",
+                cursor: "pointer",
+              }}
+            />
+          </div>
         </div>
 
         {isColorPickerOpen && (
-          <div ref={colorPickerRef} style={{ marginTop: "10px", marginBottom:"10px", width:"250px" }}>
-            <HexColorPicker style={{width:"250px"}} color={color} onChange={setColor} />
+          <div ref={colorPickerRef} style={{ marginTop: "10px", marginBottom: "10px", width: "250px" }}>
+            <HexColorPicker style={{ width: "250px" }} color={color} onChange={setColor} />
           </div>
         )}
 
         {errorMessage && (
-          <div className="login-error-message">
+          <div className="create-list-error-message">
             <p>{errorMessage}</p>
           </div>
         )}
 
-        <div className="login-modal-action">
+        <div className="create-list-modal-action">
           <button
             type="button"
-            className="login-submit-btn"
+            className="create-list-submit-btn"
             onClick={handleClickCreate}
+            disabled={loading}
           >
-            Create
+            {loading ? (
+              <TailSpin height="24" width="24" color="#fff" ariaLabel="loading" />
+            ) : (
+              "Create"
+            )}
           </button>
         </div>
       </div>

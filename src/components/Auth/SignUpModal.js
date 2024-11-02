@@ -1,14 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../styles/signUp.css';
-import Authentication from '../../api/AuthApi/authentication'
-import Cross from "../../assets/cross-icon.svg"
-import Google from "../../assets/google.svg"
-import Microsoft from "../../assets/microsoft.svg"
-import Username from "../../assets/fullNameInput.svg"
-import Email from "../../assets/emailInput.svg"
-import Password from "../../assets/passwordInput.svg"
-import PasswordInputEye from "../../assets/passwordInputEye.svg"
-
+import { TailSpin } from 'react-loader-spinner';
+import Authentication from '../../api/AuthApi/authentication';
+import Cross from "../../assets/cross-icon.svg";
+import Google from "../../assets/google.svg";
+import Microsoft from "../../assets/microsoft.svg";
+import Username from "../../assets/fullNameInput.svg";
+import Email from "../../assets/emailInput.svg";
+import Password from "../../assets/passwordInput.svg";
+import PasswordInputEye from "../../assets/passwordInputEye.svg";
 
 const config = require("../../config");
 
@@ -19,6 +19,7 @@ const SignUpModal = ({ onClose, login }) => {
     const [password, setPassword] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const authentication = new Authentication();
     const modalRef = useRef(null);
 
@@ -30,7 +31,7 @@ const SignUpModal = ({ onClose, login }) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
     };
-    
+
     const validateForm = () => {
         if (!userName || !fullName || !email || !password) {
             setErrorMessage('Tüm alanları doldurun');
@@ -44,24 +45,29 @@ const SignUpModal = ({ onClose, login }) => {
     };
 
     const handleRegister = async () => {
-    if (!validateForm()) return;
+        if (!validateForm()) return;
 
-    const nameParts = fullName.trim().split(' ');
-    const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(' ');
+        setLoading(true);
+        setErrorMessage("");
 
-    try {
-        const result = await authentication.register(userName, email, password, firstName, lastName);
+        const nameParts = fullName.trim().split(' ');
+        const firstName = nameParts[0];
+        const lastName = nameParts.slice(1).join(' ');
 
-        if (result.status === true) {
-            onClose();
-        } else {
-            setErrorMessage(result.errors[0].errorMessage);
+        try {
+            const result = await authentication.register(userName, email, password, firstName, lastName);
+            if (result.status === true) {
+                onClose();
+            } else {
+                setErrorMessage(result.errors[0].errorMessage);
+            }
+        } catch (error) {
+            setErrorMessage(error.message);
+        } finally {
+            setLoading(false);
         }
-    } catch (error) {
-        setErrorMessage(error.message);
-    }
-};
+    };
+
     const handleClickOutside = (event) => {
         if (modalRef.current && !modalRef.current.contains(event.target)) {
             onClose();
@@ -102,7 +108,7 @@ const SignUpModal = ({ onClose, login }) => {
                     </div>
                 </div>
                 <div className='signup-modal-auth-options'>
-                    <button className='signup-google-auth' onClick={handleGoogleButtonClick} >
+                    <button className='signup-google-auth' onClick={handleGoogleButtonClick}>
                         <span><img className='signup-google-icon' src={Google} alt="Google"></img></span>
                     </button>
                     <span style={{ width: '20px' }}></span>
@@ -127,7 +133,6 @@ const SignUpModal = ({ onClose, login }) => {
                         />
                     </div>
                 </div>
-
                 <div className='signup-modal-input'>
                     <div className='input-icon-wrapper'>
                         <img src={Username} className='input-icon' alt='Full Name Icon' />
@@ -193,7 +198,18 @@ const SignUpModal = ({ onClose, login }) => {
                     </p>
                 </div>
                 <div className='signup-modal-action'>
-                    <button type='button' className='signup-submit-btn' onClick={handleRegister}>Sign Up</button>
+                    <button
+                        type='button'
+                        className='signup-submit-btn'
+                        onClick={handleRegister}
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <TailSpin height="24" width="24" color="#fff" ariaLabel="loading" />
+                        ) : (
+                            "Sign Up"
+                        )}
+                    </button>
                 </div>
             </div>
         </div>

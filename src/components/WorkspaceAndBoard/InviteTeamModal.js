@@ -1,21 +1,41 @@
 import React, { useState, useRef } from "react";
-import "../../styles/workspaceCss/inviteteammodal.css"; // CSS dosyası için uygun yol
+import "../../styles/workspaceCss/inviteteammodal.css"; 
 import shareCopyIcon from"../../assets/shareCopyIcon.svg"
+import cancelIcon from"../../assets/cancel.svg"
+import emailIcon from"../../assets/emailIcon.svg"
 
 const InviteTeamModal = ({ onClose }) => {
-  const [emailInput, setEmailInput] = useState(""); // Input alanı
-  const [emails, setEmails] = useState([]); // Eklenen email listesi
+  const [emailInput, setEmailInput] = useState(""); 
+  const [emails, setEmails] = useState([]); 
+  const [error, setError] = useState("");
 
   const handleAddEmail = (e) => {
     e.preventDefault();
-    if (emailInput && !emails.includes(emailInput)) {
-      setEmails([...emails, emailInput]); // Yeni e-posta ekleme
-      setEmailInput(""); // Input'u sıfırlama
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailInput) return; 
+    if (!emailRegex.test(emailInput)) {
+      setError("Geçerli bir e-posta adresi girin.");
+      return;
+    }
+    if (emails.includes(emailInput)) {
+      setError("Bu e-posta zaten eklenmiş.");
+      return;
+    }
+
+    setEmails([...emails, emailInput]); 
+    setEmailInput(""); 
+    setError(""); 
+  };
+  const handleEnterPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault(); 
+      handleAddEmail(e)
+      
     }
   };
-
   const handleRemoveEmail = (emailToRemove) => {
-    setEmails(emails.filter((email) => email !== emailToRemove)); // E-posta silme
+    setEmails(emails.filter((email) => email !== emailToRemove)); 
   };
   const linkInputRef = useRef(null);
 
@@ -64,28 +84,29 @@ const InviteTeamModal = ({ onClose }) => {
               <div key={index} className="invite-team-email-item">
                 <span>{email}</span>
                 <button onClick={() => handleRemoveEmail(email)}>
-                  <img src="" alt="" />
+                  <img src={cancelIcon} alt="" />
                 </button>
               </div>
             ))}
           </div>
 
-          <form onSubmit={handleAddEmail} className="invite-team-email-input-form">
-            <input
+          <form className="invite-team-email-input-form">
+            <img src={emailIcon} alt="" />
+            <textarea
               type="email"
               placeholder="Enter one or more email addresses"
               value={emailInput}
+              onKeyDown={(e)=>handleEnterPress(e)}
               onChange={(e) => setEmailInput(e.target.value)}
             />
-            <button type="submit">Add</button>
+            
           </form>
+          {error && <p className="invite-team-error">{error}</p>}
         </div>
 
         <div className="invite-team-modal-footer">
-          <button className="invite-team-back-button" onClick={onClose}>
-            Back
-          </button>
-          <button className="invite-team-continue-button">Continue</button>
+         
+          <button className="invite-team-continue-button">Add Members</button>
         </div>
       </div>
     </div>
