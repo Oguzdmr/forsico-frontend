@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Authentication from '../../api/AuthApi/authentication';
 import '../../styles/loginModal.css';
+import CrossIcon from "../../assets/cross-icon.svg"
+import EmailIcon from "../../assets/emailInput.svg"
 
-const ForgotPasswordModal = ({ onClose }) => {
+const ForgotPasswordModal = ({ onClose, login, signup }) => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState(''); 
     const authentication = new Authentication();
@@ -39,20 +41,21 @@ const ForgotPasswordModal = ({ onClose }) => {
     }, []);
 
     return (
-        <div className='login-modal-container'>
-            <div className='login-modal-card' ref={modalRef}>
+        <div className='forgotpassword-modal-container'>
+            <div className='forgotpassword-modal-card' ref={modalRef}>
                 <div className='login-modal-close'>
-                    <span><img className='login-modal-close-icon' src='./cross-icon.svg' alt="Close" onClick={onClose}></img></span>
+                    <span><img className='login-modal-close-icon' src={CrossIcon} alt="Close" onClick={onClose}></img></span>
                 </div>
                 <div className='login-modal-header'>
-                    <div className='login-modal-title'>
-                        <span>Forgot</span>
-                        <span>Password</span>
+                    <div className='forgotpassword-modal-title'>
+                        <span className='forgotpassword-title'>Forgot</span>
+                        <span className='forgotpassword-title'>Password</span>
                     </div>
                 </div>
-                <div className='login-modal-input'>
+                <div className='forgotpassword-subtitle'><span className='gray-letter'>Please enter the email you use to sign in to forsico</span></div>
+                <div className='forgotpassword-modal-input'>
                     <div className='input-icon-wrapper'>
-                        <img src='./emailInput.svg' className='input-icon' alt='Email Icon' />
+                        <img src={EmailIcon} className='input-icon' alt='Email Icon' />
                         <input
                             className='login-input-email'
                             type='email'
@@ -71,12 +74,16 @@ const ForgotPasswordModal = ({ onClose }) => {
                     </div>
                 )}
 
-                <div className='login-modal-action'>
-                    <button type='button' className='login-submit-btn' onClick={handleForgotPassword}>Send Email</button>
+                <div className='forgotpassword-modal-action'>
+                    <button type='button' className='forgot-password-btn' onClick={handleForgotPassword}>Send Email</button>
+                </div>
+                <div className='forgotpassword-line'></div>
+                <div className='button-lower-area'>
+                    <span className='gray-letter'>Already have an account?<a className='signup-modal-login-link' >Login</a></span>
+                    <span className='gray-letter'>Don't have an account yet?<a className='signup-modal-login-link'>Sign Up</a></span>
                 </div>
             </div>
         </div>
     );
 };
-
 export default ForgotPasswordModal;

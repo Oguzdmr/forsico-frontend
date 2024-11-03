@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Authentication from '../api/AuthApi/authentication';
 import '../styles/resetPasswordPage.css';
+import Logo from "../assets/forsico-logo.svg"
 
 const ResetPasswordPage = () => {
     const [email, setEmail] = useState('');
@@ -28,22 +29,10 @@ const ResetPasswordPage = () => {
     return (
         <div className='reset-password-container'>
             <div className='reset-password-card'>
-                <h2>Reset Your Password</h2>
+                <div><img src={Logo} alt="" /></div>
+                <h2 className='reset-password-title'>Reset Your Password</h2>
                 <form onSubmit={handleResetPassword}>
                     <div className='input-group'>
-                        <label>Email Address</label>
-                        <input
-                            className='input-email'
-                            type='email'
-                            name='email'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                            placeholder='Work e-mail address'
-                        />
-                    </div>
-                    <div className='input-group'>
-                        <label>New Password</label>
                         <input
                             className='input-password'
                             type='password'
@@ -52,18 +41,6 @@ const ResetPasswordPage = () => {
                             onChange={(e) => setNewPassword(e.target.value)}
                             required
                             placeholder='New Password'
-                        />
-                    </div>
-                    <div className='input-group'>
-                        <label>Reset Token</label>
-                        <input
-                            className='input-token'
-                            type='text'
-                            name='token'
-                            value={token}
-                            onChange={(e) => setToken(e.target.value)}
-                            required
-                            placeholder='Enter the reset token'
                         />
                     </div>
 
