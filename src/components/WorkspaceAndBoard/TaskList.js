@@ -66,7 +66,7 @@ function TaskList({ list, colIndex, workspaceId, boardId }) {
       {(list.tasks || []).map((task, index) => {
         if(!task.parentTask){
           return (
-            <TaskCard key={index} list={list} task={task} taskIndex={task._id} workspaceId={workspaceId} colIndex={list._id} color={list.color} />
+            <TaskCard key={index} list={list} task={task} taskIndex={task._id} workspaceId={workspaceId} boardId={boardId} colIndex={list._id} color={list.color} />
           )
         }
       })}

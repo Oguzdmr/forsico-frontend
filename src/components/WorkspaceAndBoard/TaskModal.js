@@ -28,10 +28,10 @@ import { fetchTask, updateTaskStatus } from "../../store/taskSlice.js";
 import { RotatingLines } from "react-loader-spinner";
 import TaskApi from "../../api/BoardApi/task.js"
 
-const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
+const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen }) => {
 
   const taskApi = new TaskApi();
-
+  
   const {
     entities,
     status = "idle",
@@ -91,6 +91,8 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
   const [isTitleEditing, setIsTitleEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null); // Track index of comment being edited
   const [editedComment, setEditedComment] = useState("");
+  
+  const [statusOptions, setStatusOptions] = useState([]);
   const forsicoAiApi = new ForsicoAiApi();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token.token || "");
@@ -116,8 +118,52 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
 
   useEffect(() => {
     dispatch(updateTaskStatus({ status: "idle" }));
+    getTaskStatuses();
+    getComments();
+
   }, [taskId]);
 
+  const getTaskStatuses = async () => {
+    try {
+      if(taskId){
+        let statuses = await taskApi.getTaskStatus(token, workspaceId, boardId);
+        if(statuses.status){
+          setStatusOptions(statuses.data)
+        }
+        
+        console.log("statuses", statuses)
+        
+      }
+      
+    } catch (error) {
+     
+    }
+  }
+
+  const getComments = async () => {
+    try {
+      
+      if(taskId){
+        
+        let commentsApi = await taskApi.getTaskComments(token, workspaceId, taskId);
+        if(commentsApi.status){
+          setComments(commentsApi.data)
+        }
+        
+        console.log("comments",commentsApi)
+      }
+    } catch (error) {
+      console.log("comment error")
+    }
+  }
+
+  const addComment = (newComment) => {
+    try {
+      taskApi.postTaskComment(token, workspaceId, taskId, newComment)
+    } catch (error) {
+      
+    }
+  }
   const generateSubtasks = async (subtaskTitle) => {
     if (!subtaskTitle.trim()) {
       console.log("Please enter a valid subtask title");
@@ -155,9 +201,7 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
   // Retrieve user info from Redux store
   const boardMembers = useSelector((state) => state.board.entities.members);
 
-  const statusOptions = board.lists.map((list) => {
-    return list.name;
-  }); // Status options
+
   const sendOptions = ["UX/UI Board", "Markenting Board", "Social Media Board"]; // Status options
 
   const handleFieldUpdate = async (field, value) => {
@@ -201,7 +245,8 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
   };
 
   const handleStatusSelect = (status) => {
-    setSelectedStatus(status);
+    setSelectedStatus(status.name);
+    handleFieldUpdate("statusId", status._id)
     setStatusModalOpen(false);
   };
 
@@ -267,6 +312,7 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
 
   const handleAddComment = () => {
     if (tempComment.trim()) {
+      addComment(tempComment);
       setComments([...comments, tempComment]); // Yeni yorumu ekle
       setTempComment(""); // Geçici durumu sıfırla
       setIsCommentEditing(false); // Düzenleme modunu kapat
@@ -528,7 +574,7 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
                       <>
                         <div
                           className="comment-content"
-                          dangerouslySetInnerHTML={{ __html: comment }}
+                          dangerouslySetInnerHTML={{ __html: comment.content }}
                         />
                         <div className="comment-icons">
                           <img
@@ -737,11 +783,11 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
                   <div className="status-options">
                     {statusOptions.map((status) => (
                       <div
-                        key={status}
+                        key={status._id}
                         className="status-option"
                         onClick={() => handleStatusSelect(status)}
                       >
-                        {status}
+                        {status.name}
                       </div>
                     ))}
                   </div>

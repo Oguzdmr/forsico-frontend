@@ -187,6 +187,87 @@ class Task {
     }
   }
 
+
+  async getTaskStatus(token, workspaceId, boardId) {
+    const myHeaders = new Headers();
+    myHeaders.append("x-workspace-id", workspaceId);
+    myHeaders.append("Authorization", `Bearer ${token}`);
+  
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+  
+    try {
+      const response = await fetch(
+        `${config.boardApiBaseUrl}/taskstatus/board/${boardId}`,
+        requestOptions
+      );
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Error fetching task status:", error);
+      throw error;
+    }
+  }
+
+  async getTaskComments(token, workspaceId, taskId) {
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${token}`);
+    myHeaders.append("x-workspace-id", workspaceId);
+  
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+  
+    try {
+      const response = await fetch(
+        `${config.boardApiBaseUrl}/comment/task/${taskId}/comments`,
+        requestOptions
+      );
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Error fetching task comments:", error);
+      throw error;
+    }
+  }
+
+  async postTaskComment(token, workspaceId, taskId, content, fileUrls = []) {
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${token}`);
+    myHeaders.append("x-workspace-id", workspaceId);
+    myHeaders.append("Content-Type", "application/json");
+  
+    const raw = JSON.stringify({
+      content: content,
+      fileUrls: fileUrls,
+    });
+  
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+  
+    try {
+      const response = await fetch(
+        `${config.boardApiBaseUrl}/comment/task/${taskId}/comment`,
+        requestOptions
+      );
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Error posting task comment:", error);
+      throw error;
+    }
+  }
+
+  
   async searchTasks(token, workspaceIds, query, page = 1, limit = 10) {
     const myHeaders = new Headers();
     myHeaders.append("x-workspace-id", workspaceIds[0]);
