@@ -58,18 +58,19 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
   const [tempDescription, setTempDescription] = useState(description);
   const [isGeneratingSubtask, setIsGeneratingSubtask] = useState(false);
   const [comments, setComments] = useState([]);
-  console.log("comments", comments);
   const [tempComment, setTempComment] = useState("");
   const [isCommentEditing, setIsCommentEditing] = useState(false);
   const [isAssigneeModalOpen, setAssigneeModalOpen] = useState(false);
   const [isStatusModalOpen, setStatusModalOpen] = useState(false);
   const [isPriorityModalOpen, setPriorityModalOpen] = useState(false); // New state for Priority Modal
   const [isRightArrowModalOpen, setIsRightArrowModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSubtaskMessage, setShowSubtaskMessage] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState(
     entities.selectedtask?.statusId?.name || ""
   );
   const [selectedAssignee, setSelectedAssignee] = useState({
-    id : entities.selectedtask?.assignee?._id || "",
+    id: entities.selectedtask?.assignee?._id || "",
     avatar: entities.selectedtask?.assignee?.profilePicture || "",
     name: entities.selectedtask?.assignee?.firstName || "",
   });
@@ -117,20 +118,25 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
     dispatch(updateTaskStatus({ status: "idle" }));
   }, [taskId]);
 
-  const generateSubtasks = async () => {
-    // Eğer kullanıcıdan veri alıp almadığınızı kontrol etmek istiyorsanız aşağıdaki koşulu ekleyebilirsiniz.
-    if (subtaskTitle.trim() === "") {
+  const generateSubtasks = async (subtaskTitle) => {
+    if (!subtaskTitle.trim()) {
       console.log("Please enter a valid subtask title");
-      return; // Boşsa, kullanıcıya bilgi vererek fonksiyondan çıkabiliriz.
+      setIsLoading(false); // Hata durumunda loading'i false yap
+      return;
     }
 
-    // Kullanıcı tarafından girilen veriyi API'ye gönderiyoruz.
-    let response = await forsicoAiApi.generateAzureAIContent(subtaskTitle);
-    if (response.success) {
-      setGeneratedSubtasks(response.data.result.tasks);
-      setVisibleSubtasks([]); // Görüntülenen alt görev listesini sıfırlıyoruz.
-    } else {
-      console.error("Error in generating subtasks:", response.error);
+    try {
+      let response = await forsicoAiApi.generateAzureAIContent(subtaskTitle);
+      if (response.success) {
+        setGeneratedSubtasks(response.data.result.tasks);
+        setVisibleSubtasks([]); // Yeni cevap geldiğinde listeyi temizle
+      } else {
+        console.error("Error in generating subtasks:", response.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false); // Cevap geldiğinde loading durumunu false yap
     }
   };
 
@@ -157,7 +163,7 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
   const handleFieldUpdate = async (field, value) => {
     try {
       await taskApi.updateTask(token, workspaceId, taskId, { [field]: value });
-      dispatch(fetchTask({ token, workspaceId, taskId })); 
+      dispatch(fetchTask({ token, workspaceId, taskId }));
     } catch (error) {
       console.error(`Error updating task ${field}:`, error);
     }
@@ -174,10 +180,10 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
 
   const handleSaveComment = () => setIsCommentEditing(false);
 
-  const handleGenerateSubtask = () => {
-    console.log("Generated Subtask:", subtaskTitle); // Here, you can add logic to save the subtask
-    setIsGeneratingSubtask(false); // Close input box after generating
-  };
+  // const handleGenerateSubtask = () => {
+  //   console.log("Generated Subtask:", subtaskTitle); // Here, you can add logic to save the subtask
+  //   setIsGeneratingSubtask(false); // Close input box after generating
+  // };
 
   const toggleAssigneeModal = () => {
     console.log("Toggled Assignee Modal");
@@ -199,7 +205,7 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
     setStatusModalOpen(false);
   };
 
-  const handleRoot = () => {};
+  const handleRoot = () => { };
 
   const handlePrioritySelect = (priority) => {
     setSelectedPriority(priority); // Save both label and icon
@@ -225,15 +231,17 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
   };
 
   const handleToggleSubtaskGeneration = () => {
-    setIsGeneratingSubtask((prev) => !prev);
-    setSubtaskTitle("");
-    console.log("Subtask generation toggled:", !isGeneratingSubtask); // Log to confirm toggle
+    setIsLoading(true); // Butona tıklanınca loading durumunu true yap
+    setShowSubtaskMessage(false); // Butona tıklanınca mesaj kaybolsun
+    setVisibleSubtasks([]); // Önceki cevapları temizle
+    generateSubtasks(description); // Description alanındaki değeri kullanarak generateSubtasks fonksiyonunu çağır
+    console.log("Subtask generation triggered with description:", description);
   };
 
-  const handleSaveTitle = (name) =>{
+  const handleSaveTitle = (name) => {
     handleFieldUpdate("name", name)
     setIsTitleEditing(false);
-  } 
+  }
 
   const getPriorityIcon = (priority) => {
     switch (priority) {
@@ -252,7 +260,7 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
   };
 
   const handleDateChange = (date) => {
-    handleFieldUpdate("dueDate",date)
+    handleFieldUpdate("dueDate", date)
     setSelectedDate(date);
     setIsDatePickerOpen(false); // Close date picker after selection
   };
@@ -429,7 +437,7 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
                   type="text"
                   value={taskTitle}
                   onChange={(e) => setTaskTitle(e.target.value)}
-                  onBlur={(e)=>handleSaveTitle(e.target.value)}
+                  onBlur={(e) => handleSaveTitle(e.target.value)}
                   autoFocus
                   className="task-title-input" // Add a custom class for styling
                 />
@@ -546,21 +554,12 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
             {/* Render Generated Subtasks */}
             {/* Subtask Generation Section */}
             <div className="taskcard-info-subtask-area">
-              {isGeneratingSubtask ? (
-                <div className="subtask-input-wrapper">
-                  <input
-                    type="text"
-                    value={subtaskTitle}
-                    onChange={(e) => setSubtaskTitle(e.target.value)}
-                    placeholder="Enter subtask title..."
-                    className="subtask-input"
-                  />
-                  <button
-                    onClick={generateSubtasks}
-                    className="generate-subtask-button"
-                  >
-                    Generate
-                  </button>
+              {showSubtaskMessage && (
+                <p className="subtask-message">Create subtasks of this task</p>
+              )}
+              {isLoading ? (
+                <div className="loader-container-top-left">
+                  <RotatingLines height="30" width="30" strokeColor="#36C5F0" />
                 </div>
               ) : (
                 <button
@@ -581,20 +580,15 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
                 <AnimatePresence>
                   {visibleSubtasks.map((task) => (
                     <div key={task.id}>
-                      <h1 className="workspaceAi-response-title">
-                        {task.name}
-                      </h1>
-
                       <motion.div
                         key={task.id}
                         variants={cardAnimation}
                         exit={{ opacity: 0, scale: 0 }}
                         transition={{ duration: 0.5 }}
-                        className={`workspaceAi-task ${
-                          subtaskStates[task.id] === "rejected"
+                        className={`workspaceAi-task ${subtaskStates[task.id] === "rejected"
                             ? "rejected-task"
                             : ""
-                        }`}
+                          }`}
                       >
                         <div className="workspaceAi-task-card">
                           <div className="task-header">{task.name}</div>
@@ -666,22 +660,22 @@ const TaskModal = ({ taskId, listId, workspaceId, setIsTaskModalOpen }) => {
                     />
                   </div>
                   <div className="assignee-modal-divider"></div>
-                  {boardMembers.map((member)=>(
+                  {boardMembers.map((member) => (
                     <div
-                    className="assignee-modal-content"
-                    onClick={()=>handleAssigneeSelect(member)}
-                  >
-                    <img
-                      src={member.profilePicture}
-                      alt="Profile"
-                      className="assignee-avatar"
-                    />
-                    <div className="assignee-name">
-                      {member.firstName} {member.lastName}
+                      className="assignee-modal-content"
+                      onClick={() => handleAssigneeSelect(member)}
+                    >
+                      <img
+                        src={member.profilePicture}
+                        alt="Profile"
+                        className="assignee-avatar"
+                      />
+                      <div className="assignee-name">
+                        {member.firstName} {member.lastName}
+                      </div>
                     </div>
-                  </div>
                   ))}
-                  
+
                 </div>
               )}
             </div>
