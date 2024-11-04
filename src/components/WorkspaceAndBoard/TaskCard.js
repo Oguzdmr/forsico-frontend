@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import TaskModal from "./TaskModal";
 import SubTaskCard from "./SubTaskCard";
 import '../../styles/workspaceCss/TaskCard.css';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import rightButton from '../../assets/right-button.svg';
 import miniCalendar from '../../assets/mini-calendar.svg';
 import fork from '../../assets/fork-blue.svg';
@@ -11,6 +11,7 @@ import flag from '../../assets/flag.svg';
 import downArrow from '../../assets/down-arrow.svg';
 import upArrow from '../../assets/up-arrow.svg';
 import moment from 'moment';
+import { fetchBoard, updateStatus } from "../../store/boardSlice";
 
 function TaskCard({ list, task, colIndex,workspaceId,boardId, taskIndex, color }) {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
@@ -20,7 +21,7 @@ function TaskCard({ list, task, colIndex,workspaceId,boardId, taskIndex, color }
   }) || []);
   let completed = 0;
 
-
+  const dispatch = useDispatch();
   const handleOnDrag = (e) => {
     e.dataTransfer.setData(
       "text",
@@ -31,6 +32,7 @@ function TaskCard({ list, task, colIndex,workspaceId,boardId, taskIndex, color }
   const toggleSubtasks = () => {
     setIsSubtasksVisible(!isSubtasksVisible);
   };
+
 
   const hasSubtasks = subtasks?.length > 0;
 console.log(subtasks)
@@ -82,7 +84,7 @@ console.log(subtasks)
             <div className="stat-icon">
               <img src={people} alt="People icon" />
             </div>
-            <div className="stat-text">4</div>
+            <div className="stat-text">1</div>
           </div>
           <div className="task-extra">
             <img src={flag} alt="Right button" />

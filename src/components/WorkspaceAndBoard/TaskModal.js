@@ -22,11 +22,12 @@ import UrgentFlag from "../../assets/redFlag.svg";
 import HighFlag from "../../assets/blueFlag.svg";
 import NormalFlag from "../../assets/taskcard-info-priority.svg";
 import { motion, AnimatePresence } from "framer-motion";
-import Tickİcon from "../../assets/ai-message-tick-icon.svg";
-import Crossİcon from "../../assets/ai-message-cross-icon.svg";
+import TickIcon from "../../assets/ai-message-tick-icon.svg";
+import CrossIcon from "../../assets/ai-message-cross-icon.svg";
 import { fetchTask, updateTaskStatus } from "../../store/taskSlice.js";
 import { RotatingLines } from "react-loader-spinner";
 import TaskApi from "../../api/BoardApi/task.js"
+import {addTask} from "../../store/boardSlice.js"
 
 const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen }) => {
 
@@ -50,6 +51,9 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
   const [description, setDescription] = useState(
     entities.selectedtask?.description || ""
   );
+  const [loadingTasks, setLoadingTasks] = useState({});
+  const workspaceField = useSelector((state) => {return state.workspaces.entities})?.filter((x) => x._id === workspaceId)[0]
+  const userField = useSelector((state) => state.auth.user || {})
   const [isDescriptionEditing, setIsDescriptionEditing] = useState(false);
   const [subtaskStates, setSubtaskStates] = useState({});
   const [generatedSubtasks, setGeneratedSubtasks] = useState([]);
@@ -207,7 +211,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
   const handleFieldUpdate = async (field, value) => {
     try {
       await taskApi.updateTask(token, workspaceId, taskId, { [field]: value });
-      dispatch(fetchTask({ token, workspaceId, taskId }));
+      // dispatch(fetchTask({ token, workspaceId, taskId }));
     } catch (error) {
       console.error(`Error updating task ${field}:`, error);
     }
@@ -250,7 +254,10 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
     setStatusModalOpen(false);
   };
 
-  const handleRoot = () => { };
+  const handleRoot = async (newBoardField) => { 
+    await taskApi.updateTask(token, workspaceId, taskId, { listId: newBoardField.lists[0]._id, boardId: newBoardField._id });
+      // dispatch(fetchTask({ token, workspaceId, taskId }));
+   };
 
   const handlePrioritySelect = (priority) => {
     setSelectedPriority(priority); // Save both label and icon
@@ -337,8 +344,27 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
     console.log(`Delete comment at index ${index}`);
   };
 
-  const handleApprove = (subtask) => {
-    setSubtaskStates((prev) => ({ ...prev, [subtask.id]: "approved" }));
+  const handleApprove = async (subtask) => {
+    setLoadingTasks((prev) => ({ ...prev, [subtask.id]: true }));
+    let responseCreateSubtask = await taskApi.createTask(token, workspaceId, {
+      "name": subtask.name,
+      "description": subtask.description,
+      "boardId": selectedTask.boardId,
+      "listId": selectedTask.listId,
+      "assignee": userField.id,
+      "ownerId":userField.id,
+      "priority": 0,
+      "parentTask": selectedTask._id
+    }
+    )
+    console.log(subtask)
+    console.log("res subtask",responseCreateSubtask)
+    if(responseCreateSubtask.status){
+      setSubtaskStates((prev) => ({ ...prev, [subtask.id]: "approved" }));
+      setLoadingTasks((prev) => ({ ...prev, [subtask.id]: false }));
+      dispatch(addTask({ name: subtask.name, description: subtask.description, boardId: selectedTask.boardId , listId:selectedTask.listId, userId:userField.id, parentId:selectedTask._id, taskId:responseCreateSubtask.data._id}));
+    }
+    
   };
 
   const handleReject = (subtaskId) => {
@@ -437,7 +463,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
       <div className={`modal-content-trello`}>
         <div className="taskcard-info-upper-area">
           <div className="taskcard-info-left-upper">
-            <span>Forsico/General</span>
+            <span>{workspaceField?.name}</span>
           </div>
           <div className="taskcard-info-right-upper">
             <img
@@ -456,19 +482,23 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
               <div className="right-arrow-modal" ref={rightArrowModalRef}>
                 <div className="right-arrow-modal-header">
                   <h3 className="right-arrow-modal-title">
-                    Send from board General to...
+                    Send from board to...
                   </h3>
                 </div>
                 <div className="right-arrow-options">
-                  {sendOptions.map((board) => (
-                    <div
-                      key={board}
-                      className="right-arrow-option"
-                      onClick={() => handleRoot(board)}
-                    >
-                      {board}
-                    </div>
-                  ))}
+                  {workspaceField?.boards?.map((boardField) => {
+                    if(boardField.name !== board.name){
+                      return (
+                        <div
+                          key={boardField._id}
+                          className="right-arrow-option"
+                          onClick={() => handleRoot(boardField)}
+                        >
+                          {boardField.name}
+                        </div>
+                      )
+                    }
+                    })}
                 </div>
               </div>
             )}
@@ -645,7 +675,31 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
                           </div>
                         </div>
                         <div className="task-icons">
-                          <span
+                        {loadingTasks[task.id] ? (
+                          <RotatingLines height="20" width="20" strokeColor="#36C5F0" />
+                        ) : (
+                          <>
+                            {subtaskStates[task.id] === "approved" ? (
+                              <span className="task-icon" style={{ pointerEvents: "none" }}>
+                                <img src={TickIcon} alt="tick" />
+                              </span>
+                            ) : subtaskStates[task.id] === "rejected" ? (
+                              <span className="task-icon" style={{ pointerEvents: "none" }}>
+                                <img src={CrossIcon} alt="cross" />
+                              </span>
+                            ) : (
+                              <>
+                                <span className="task-icon" onClick={() => handleReject(task.id)}>
+                                  <img src={CrossIcon} alt="cross" />
+                                </span>
+                                <span className="task-icon" onClick={() => handleApprove(task)}>
+                                  <img src={TickIcon} alt="tick" />
+                                </span>
+                              </>
+                            )}
+                          </>
+                        )}
+                          {/* <span
                             className="task-icon"
                             onClick={() => handleReject(task.id)}
                           >
@@ -656,7 +710,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
                             onClick={() => handleApprove(task)}
                           >
                             <img src={Tickİcon} alt="Approve" />
-                          </span>
+                          </span> */}
                         </div>
                       </motion.div>
                     </div>
@@ -675,7 +729,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
 
           <div className="taskcard-info-right-lower">
             <div className="taskcard-info-assignees">
-              <a className="td-none" href="#" onClick={toggleAssigneeModal}>
+              <a className="td-none" onClick={toggleAssigneeModal}>
                 <img
                   src={Assignees}
                   alt="assignees"
@@ -729,7 +783,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
             <div className="taskcard-info-due-date">
               <a
                 className="td-none"
-                href="#"
+                
                 onClick={() => setIsDatePickerOpen(true)}
               >
                 <img src={DueDate} alt="duedate" />
@@ -764,7 +818,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
             </div>
 
             <div className="taskcard-info-status">
-              <a className="td-none" href="#" onClick={toggleStatusModal}>
+              <a className="td-none" onClick={toggleStatusModal}>
                 <img src={Status} alt="status" />
                 Status
               </a>

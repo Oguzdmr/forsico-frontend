@@ -43,18 +43,18 @@ const HomePage = () => {
   const userTasksStatus = useSelector((state) => state.myTasks.status);
 
   useEffect(() => {
-    if (userTasksStatus === "idle" && entities.length > 0) {
+    if (userTasksStatus === "idle" && entities?.length > 0) {
       dispatch(fetchMyTasks({ workspaceId: (entities || [])[0]?._id }));
     }
   }, [dispatch, userTasksStatus, entities]);
 
   useEffect(() => {
-    if (entities.length > 0) {
+    if (entities?.length > 0) {
       animateCounter(
         (completedTasks * 100) / taskCount,
         setPercentageForCompletedTasks
       );
-      animateCounter(entities.length, setPercentageForWorkSpaces);
+      animateCounter(entities?.length, setPercentageForWorkSpaces);
       animateCounter(taskCount, setPercentageForTasks);
     }
   }, [taskCount]);
@@ -118,7 +118,7 @@ const HomePage = () => {
               </span>
             </div>
 
-            {entities.map((workspace, index) => (
+            {entities?.map((workspace, index) => (
               <div key={index} className="workspace">
                 <span className="workspace-title blue-letter">
                   {workspace.name}

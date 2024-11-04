@@ -26,7 +26,7 @@ function Board() {
     status = "idle",
     error,
   } = useSelector((state) => state.board || {});
-
+  
   const { workspaceId, boardId } = useParams();
   const memberModalRef = useRef(null);
   const shareModalRef = useRef(null);

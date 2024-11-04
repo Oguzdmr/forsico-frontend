@@ -36,6 +36,21 @@ const boardSlice = createSlice({
         tasks: [],
       });
     },
+    addTask: (state, action) => {
+      state.entities.lists.filter((x) => x._id === action.payload.listId)[0].tasks.push({
+        "_id":action.payload.taskId,
+        "name": action.payload.name,
+        "description": action.payload.description,
+        "boardId": action.payload.boardId,
+        "listId": action.payload.listId,
+        "assignee": action.payload.userId,
+        "ownerId": action.payload.userId,
+        "priority": 0,
+        "parentTask": action.payload.parentId
+      });
+      state.entities.lists.filter((x) => x._id === action.payload.listId)[0].tasks.filter((y) => y._id === action.payload.parentId)[0].subtasks.push(action.payload.taskId);
+      state.status = "idle";
+    },
     dragTask: (state, action) => {
       const { colIndex, prevColIndex, taskIndex } = action.payload;
       const prevCol = state.entities.lists.find(
@@ -82,5 +97,5 @@ const boardSlice = createSlice({
   },
 });
 
-export const { updateStatus, dragTask, addList } = boardSlice.actions;
+export const { updateStatus, dragTask, addList, addTask } = boardSlice.actions;
 export default boardSlice.reducer;
