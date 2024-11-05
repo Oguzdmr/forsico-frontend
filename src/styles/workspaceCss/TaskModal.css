@@ -1,853 +1,853 @@
 
-  .modal-content-trello{
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    color: black;
-    font-weight: bold;
-    box-shadow: 0px 0px 8px 0px rgba(54, 78, 126, 0.1);
-    padding: 2rem;
-    border-radius: 1rem;
-    overflow-y: auto;
-    overflow-y: auto;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 16px 32px;
-    gap: 15px;
-    border-radius: 15px;
-    border: 1px solid rgba(28, 60, 132, 0.5);
-    opacity: 1;
-    z-index: 1000;
-    box-shadow: 8px rgba(0, 0, 0, 0.25);
-  }
-
-  .taskcard-info-upper-area{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .taskcard-infor-right-upper{
-    display: flex;
-    gap: 1rem;
-    position: relative;
-  }
-
-  .taskcard-info-line{
-    width: 100%;
-    border-bottom: 1px solid gray;
-  }
-
-  .taskcard-info-lower-area{
-    margin-top: 1rem;
-    display: flex;
-    gap: 3rem;
-  }
-
-  .taskcard-info-left-lower{
-    gap:1rem;
-    display: flex;
-    flex-direction: column;
-    width: 700px;
-  }
-
-  .taskcard-info-right-lower{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    width: 215px;
-    border: 1px solid rgba(241, 241, 241, 1);
-    background-color: rgba(241, 241, 241, 1);
-    border-radius: 1rem;
-    padding: 1rem;
-  }
-
-  .taskcard-info-title-area {
-    font-size: 1.5rem; /* Daha uygun bir font boyutu */
-    font-weight: 600;
-    color: #1C3C84; /* Başlık için daha belirgin bir renk */
-    padding: 10px 0; /* Üst ve alt boşluk */
-    cursor: pointer;
-  }
-
-  .taskcard-info-title-area input {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1C3C84;
-    border: 1px solid rgba(241, 241, 241, 1);
-    border-radius: 8px;
-    padding: 8px;
-    outline: none;
-    width: auto; /* İçeriğe göre genişler */
-  }
-  
-  
-  .taskcard-info-title-area input:focus {
-    border-color: rgba(241, 241, 241, 1); /* Focus durumunda border rengi */
-    background-color: rgba(241, 241, 241, 1);
-  }
-
-  .taskcard-info-description-area{
-    width: 100%;
-    height:250px ;
-    flex: 1;
-  }
-
-  .taskcard-info-comment-area{
-    margin-top: 1rem;
-    flex:1;
-    width: 100%;
-  }
-
-  .taskcard-info-description{
-    border: 1px solid rgba(241, 241, 241, 1);
-    background-color: rgba(241, 241, 241, 1);
-    border-radius: 1rem;
-    padding: 1rem;
-    width: 100%;
-    height: 90px;
-  }
-
-  .taskcard-info-comment{
-    padding: 1rem;
-    width: 100%;
-    height: 90px;
-    border: 1px solid rgba(241, 241, 241, 1);
-    background-color: rgba(241, 241, 241, 1);
-    border-radius: 1rem;
-
-  }
-
-  .taskcard-info-subtask-area {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    min-height: 150px;
-    max-height: 500px;
-    border: 1px solid rgba(241, 241, 241, 1);
-    background-color: rgba(241, 241, 241, 1);
-    border-radius: 1rem;
-    padding: 10px;
-    position: relative;
-    overflow-y: auto; /* İçerik taşarsa dikey kaydırma sağlar */
-    box-sizing: border-box;
-}
-
-  .taskcard-info-subtack-inside{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .taskcard-info-gray-letter{
-    font-size: 1rem;
-    font-weight: 500;
-    color: #ACACAC;
-  }
-
-  .subtask-message{
-    font-size: 1rem;
-    font-weight: 500;
-    color: #ACACAC;
-    margin-bottom: 2px;
-  } 
-
-  .generate-subtask-button {
-    position: sticky;
-    bottom: 10px; /* Alt kısımda 10px boşluk bırakır */
-    width: 156px;
-    height: 40px;
-    background-color: rgba(54, 197, 240, 1);
-    border: none;
-    border-radius: 25px;
-    color: rgba(255, 255, 255, 1);
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-
-  .checklist-checkbox{
-    width: 24px;
-    height: 24px;
-  }
-
-  .taskcard-info-checklist-area{
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100px;
-    border: 1px solid rgba(241, 241, 241, 1);
-    background-color: rgba(241, 241, 241, 1);
-    border-radius: 1rem;
-    margin-top: 1rem;
-  }
-
-.taskcard-info-assignees,.taskcard-info-due-date,.taskcard-info-status,.taskcard-info-priority,.taskcard-info-features{
+.modal-content-trello{
   display: flex;
+  flex-direction: column;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0px 0px 8px 0px rgba(54, 78, 126, 0.1);
+  padding: 2rem;
+  border-radius: 1rem;
+  overflow-y: auto;
+  overflow-y: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 32px;
+  gap: 15px;
+  border-radius: 15px;
+  border: 1px solid rgba(28, 60, 132, 0.5);
+  opacity: 1;
+  z-index: 1000;
+  box-shadow: 8px rgba(0, 0, 0, 0.25);
+}
+
+.taskcard-info-upper-area{
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
+}
+
+.taskcard-infor-right-upper{
+  display: flex;
+  gap: 1rem;
   position: relative;
 }
 
-.td-none{
-  text-decoration: none;
-  color: rgba(148, 163, 184, 1);
-  text-align: center;
+.taskcard-info-line{
+  width: 100%;
+  border-bottom: 1px solid gray;
+}
+
+.taskcard-info-lower-area{
+  margin-top: 1rem;
   display: flex;
-  gap: 1rem;
+  gap: 3rem;
 }
 
-.modal-wrapper{
+.taskcard-info-left-lower{
+  gap:1rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  width: 700px;
 }
 
-.modal-content-trello {
-  width: 80vw; /* Ekran genişliğinin %90'ı */
-  max-width: 1000px; /* En fazla 1000px genişliğinde */
-  height: 85vh; /* Ekran yüksekliğinin %90'ı */
-  max-height: 850px; /* En fazla 850px yüksekliğinde */
-  background-color: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 0 8px rgba(54, 78, 126, 0.1);
-  overflow-y: auto; /* İçerik taşarsa kaydırma ekler */
+.taskcard-info-right-lower{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 215px;
+  border: 1px solid rgba(241, 241, 241, 1);
+  background-color: rgba(241, 241, 241, 1);
+  border-radius: 1rem;
+  padding: 1rem;
 }
 
-.taskcard-info-textarea {
-  width: 90%;
+.taskcard-info-title-area {
+  font-size: 1.5rem; /* Daha uygun bir font boyutu */
+  font-weight: 600;
+  color: #1C3C84; /* Başlık için daha belirgin bir renk */
+  padding: 10px 0; /* Üst ve alt boşluk */
+  cursor: pointer;
+}
+
+.taskcard-info-title-area input {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1C3C84;
+  border: 1px solid rgba(241, 241, 241, 1);
+  border-radius: 8px;
+  padding: 8px;
+  outline: none;
+  width: auto; /* İçeriğe göre genişler */
+}
+
+
+.taskcard-info-title-area input:focus {
+  border-color: rgba(241, 241, 241, 1); /* Focus durumunda border rengi */
+  background-color: rgba(241, 241, 241, 1);
+}
+
+.taskcard-info-description-area{
+  width: 100%;
+  height:250px ;
+  flex: 1;
+}
+
+.taskcard-info-comment-area{
+  margin-top: 1rem;
+  flex:1;
+  width: 100%;
+}
+
+.taskcard-info-description{
+  border: 1px solid rgba(241, 241, 241, 1);
+  background-color: rgba(241, 241, 241, 1);
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 100%;
+  height: 90px;
+}
+
+.taskcard-info-comment{
+  padding: 1rem;
+  width: 100%;
   height: 90px;
   border: 1px solid rgba(241, 241, 241, 1);
   background-color: rgba(241, 241, 241, 1);
   border-radius: 1rem;
-  padding: 2rem;
-  font-size: 14px;
-  resize: none;
-  cursor: pointer;
-  margin-bottom: 1rem;
+
+}
+
+.taskcard-info-subtask-area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  min-height: 150px;
+  max-height: 500px;
+  border: 1px solid rgba(241, 241, 241, 1);
+  background-color: rgba(241, 241, 241, 1);
+  border-radius: 1rem;
+  padding: 10px;
+  position: relative;
+  overflow-y: auto; /* İçerik taşarsa dikey kaydırma sağlar */
+  box-sizing: border-box;
+}
+
+.taskcard-info-subtack-inside{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.taskcard-info-gray-letter{
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ACACAC;
+}
+
+.subtask-message{
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ACACAC;
+  margin-bottom: 2px;
+} 
+
+.generate-subtask-button {
+  position: sticky;
+  bottom: 10px; /* Alt kısımda 10px boşluk bırakır */
+  width: 156px;
+  height: 40px;
+  background-color: rgba(54, 197, 240, 1);
+  border: none;
+  border-radius: 25px;
+  color: rgba(255, 255, 255, 1);
+  font-weight: 600;
+}
+
+
+.checklist-checkbox{
+  width: 24px;
+  height: 24px;
+}
+
+.taskcard-info-checklist-area{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100px;
+  border: 1px solid rgba(241, 241, 241, 1);
+  background-color: rgba(241, 241, 241, 1);
+  border-radius: 1rem;
+  margin-top: 1rem;
+}
+
+.taskcard-info-assignees,.taskcard-info-due-date,.taskcard-info-status,.taskcard-info-priority,.taskcard-info-features{
+display: flex;
+justify-content: space-between;
+position: relative;
+}
+
+.td-none{
+text-decoration: none;
+color: rgba(148, 163, 184, 1);
+text-align: center;
+display: flex;
+gap: 1rem;
+}
+
+.modal-wrapper{
+display: flex;
+justify-content: center;
+}
+
+.modal-content-trello {
+width: 80vw; /* Ekran genişliğinin %90'ı */
+max-width: 1000px; /* En fazla 1000px genişliğinde */
+height: 85vh; /* Ekran yüksekliğinin %90'ı */
+max-height: 850px; /* En fazla 850px yüksekliğinde */
+background-color: white;
+border-radius: 16px;
+padding: 32px;
+box-shadow: 0 0 8px rgba(54, 78, 126, 0.1);
+overflow-y: auto; /* İçerik taşarsa kaydırma ekler */
+}
+
+.taskcard-info-textarea {
+width: 90%;
+height: 90px;
+border: 1px solid rgba(241, 241, 241, 1);
+background-color: rgba(241, 241, 241, 1);
+border-radius: 1rem;
+padding: 2rem;
+font-size: 14px;
+resize: none;
+cursor: pointer;
+margin-bottom: 1rem;
 }
 
 
 .taskcard-info-right-upper {
-  display: flex;
-  gap: 8px; /* İkonlar arasındaki boşluk */
-  position: relative;
+display: flex;
+gap: 8px; /* İkonlar arasındaki boşluk */
+position: relative;
 }
 
 
 .assignee-modal {
-  position: absolute;
-  top: 100%; /* Positions it directly below the a tag */
-  left: 0;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  z-index: 2000;
-  width: 300px;
-  max-width: 90%;
+position: absolute;
+top: 100%; /* Positions it directly below the a tag */
+left: 0;
+background-color: white;
+border-radius: 10px;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+padding: 20px;
+z-index: 2000;
+width: 300px;
+max-width: 90%;
 }
 
 .selected-assignee {
-  display: flex;
-  align-items: left;
-  gap: 0.5rem; /* Avatar ve isim arasındaki boşluk */
-  font-size: 1rem; /* Assignees başlığı ile aynı font boyutu */
-  color: rgba(148, 163, 184, 1); /* Başlıkla uyumlu renk */
+display: flex;
+align-items: left;
+gap: 0.5rem; /* Avatar ve isim arasındaki boşluk */
+font-size: 1rem; /* Assignees başlığı ile aynı font boyutu */
+color: rgba(148, 163, 184, 1); /* Başlıkla uyumlu renk */
 }
 
 
 .selected-assignee-avatar {
-  width: 24px; /* Avatar sabit genişlikte */
-  height: 24px;
-  border-radius: 50%; /* Yuvarlak avatar */
-  margin-left: 8px; /* Assignees yazısından sağa boşluk bırak */
+width: 24px; /* Avatar sabit genişlikte */
+height: 24px;
+border-radius: 50%; /* Yuvarlak avatar */
+margin-left: 8px; /* Assignees yazısından sağa boşluk bırak */
 }
 
 .assignee-avatar-icon {
-  width: 24px; /* Avatar boyutu */
-  height: 24px;
-  border-radius: 50%; /* Yuvarlak avatar */
+width: 24px; /* Avatar boyutu */
+height: 24px;
+border-radius: 50%; /* Yuvarlak avatar */
 }
 
 .assignee-name {
-  font-size: 1rem;
-  color: rgba(148, 163, 184, 1);
-  font-weight: 500;
+font-size: 1rem;
+color: rgba(148, 163, 184, 1);
+font-weight: 500;
 }
 
 .assignee-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
 .assignee-modal-title {
-  margin: 0;
-  font-size: 18px;
+margin: 0;
+font-size: 18px;
 }
 
 .assignee-modal-divider {
-  margin: 10px 0;
-  border-top: 1px solid #ddd;
+margin: 10px 0;
+border-top: 1px solid #ddd;
 }
 
 .assignee-modal-content {
-  display: flex;
-  align-items: center;
-  margin: 10px 0;
+display: flex;
+align-items: center;
+margin: 10px 0;
 }
 
 
 .assignee-avatar {
-  width: 40px; /* Avatar size */
-  height: 40px; /* Avatar size */
-  border-radius: 50%; /* Circular avatar */
-  margin-right: 10px; /* Space between avatar and name */
+width: 40px; /* Avatar size */
+height: 40px; /* Avatar size */
+border-radius: 50%; /* Circular avatar */
+margin-right: 10px; /* Space between avatar and name */
 }
 
 
 .assignee-name {
-  font-size: 14px; /* Font size for names */
+font-size: 14px; /* Font size for names */
 }
 
 
 .assignee-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
 .assignee-modal-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1C3C84; /* Adjust as needed */
+font-size: 18px;
+font-weight: 700;
+color: #1C3C84; /* Adjust as needed */
 }
 
 .assignee-modal-close-button {
-  background: none;
-  border: none;
-  color: #1C3C84; /* Adjust as needed */
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 500;
+background: none;
+border: none;
+color: #1C3C84; /* Adjust as needed */
+cursor: pointer;
+font-size: 15px;
+font-weight: 500;
 }
 
 .assignee-modal-divider {
-  width: 100%;
-  height: 1px; /* Tek çizgi için 1px */
-  background-color: #F2F2F2;
-  margin: 10px 0; /* Üst ve alt boşluk */
+width: 100%;
+height: 1px; /* Tek çizgi için 1px */
+background-color: #F2F2F2;
+margin: 10px 0; /* Üst ve alt boşluk */
 }
 
 .assignee-modal-content {
-  display: flex;
-  align-items: center;
-  margin-top: 10px; /* Adjust margin as needed */
+display: flex;
+align-items: center;
+margin-top: 10px; /* Adjust margin as needed */
 }
 
 .assignee-avatar {
-  width: 40px; /* Adjust size as needed */
-  height: 40px; /* Adjust size as needed */
-  border-radius: 50%; /* Make it circular */
-  margin-right: 10px; /* Space between avatar and name */
+width: 40px; /* Adjust size as needed */
+height: 40px; /* Adjust size as needed */
+border-radius: 50%; /* Make it circular */
+margin-right: 10px; /* Space between avatar and name */
 }
 
 .assignee-name {
-  font-size: 0.875rem; /* Smaller font size */
-  color: #1C3C84; /* Color remains the same */
-  font-weight: 400; /* Lighter font weight */
+font-size: 0.875rem; /* Smaller font size */
+color: #1C3C84; /* Color remains the same */
+font-weight: 400; /* Lighter font weight */
 }
 
 /* Status Modal Styles */
 .status-modal {
-  position: absolute;
-  top: 100%; /* Tetikleyici öğenin hemen altında */
-  left: 0;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  z-index: 2000;
-  width: 250px;
-  max-width: 90%;
+position: absolute;
+top: 100%; /* Tetikleyici öğenin hemen altında */
+left: 0;
+background-color: white;
+border-radius: 8px;
+box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+padding: 15px;
+z-index: 2000;
+width: 250px;
+max-width: 90%;
 }
 
 /* Header Style */
 .status-modal-header {
-  padding: 10px 15px; /* Padding around the header */
-  border-bottom: 1px solid #eee; /* Bottom border */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+padding: 10px 15px; /* Padding around the header */
+border-bottom: 1px solid #eee; /* Bottom border */
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
 .status-modal-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1C3C84; /* Adjust as needed */
+font-size: 18px;
+font-weight: 700;
+color: #1C3C84; /* Adjust as needed */
 }
 
 
 
 /* Individual Status Option Style */
 .status-option {
-  padding: 10px; /* Padding for each option */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth background transition */
-  font-size: 0.875rem; /* Smaller font size */
-  color: #1C3C84; /* Color remains the same */
-  font-weight: 400; /* Lighter font weight */
+padding: 10px; /* Padding for each option */
+cursor: pointer; /* Pointer cursor on hover */
+transition: background-color 0.3s; /* Smooth background transition */
+font-size: 0.875rem; /* Smaller font size */
+color: #1C3C84; /* Color remains the same */
+font-weight: 400; /* Lighter font weight */
 }
 
 .status-option:hover {
-  color: #36C5F0; /* Highlight on hover */
+color: #36C5F0; /* Highlight on hover */
 }
 
 /* styles.css */
 .status-text {
-  color: #1C3C84;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif; /* Inter fontunu kullanabilmek için fontun projenize dahil edilmesi gerektiğini unutmayın. */
+color: #1C3C84;
+font-weight: 500;
+font-family: 'Inter', sans-serif; /* Inter fontunu kullanabilmek için fontun projenize dahil edilmesi gerektiğini unutmayın. */
 }
 
 .priorty-text {
-  color: #1C3C84;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif; /* Inter fontunu kullanabilmek için fontun projenize dahil edilmesi gerektiğini unutmayın. */
+color: #1C3C84;
+font-weight: 500;
+font-family: 'Inter', sans-serif; /* Inter fontunu kullanabilmek için fontun projenize dahil edilmesi gerektiğini unutmayın. */
 }
 
 /* Priority Modal Styles */
 .priority-modal {
-  position: absolute;
-  top: 100%; /* Tetikleyici öğenin hemen altında */
-  left: 0;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  z-index: 2000;
-  width: 250px;
-  max-width: 90%;
+position: absolute;
+top: 100%; /* Tetikleyici öğenin hemen altında */
+left: 0;
+background-color: white;
+border-radius: 8px;
+box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+padding: 15px;
+z-index: 2000;
+width: 250px;
+max-width: 90%;
 }
 
 .priority-modal-header {
-  padding: 10px 15px; /* Padding around the header */
-  border-bottom: 1px solid #eee; /* Bottom border */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+padding: 10px 15px; /* Padding around the header */
+border-bottom: 1px solid #eee; /* Bottom border */
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
 .priority-modal-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1C3C84; /* Adjust as needed */
+font-size: 18px;
+font-weight: 700;
+color: #1C3C84; /* Adjust as needed */
 }
 
 .priority-modal-divider {
-  height: 1px;
-  background-color: #e0e0e0;
+height: 1px;
+background-color: #e0e0e0;
 }
 
 .priority-options {
-  padding: 10px;
+padding: 10px;
 }
 
 .priority-option {
-  padding: 10px; /* Padding for each option */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth background transition */
-  font-size: 0.875rem; /* Smaller font size */
-  color: #1C3C84; /* Color remains the same */
-  font-weight: 400; /* Lighter font weight */
-  display: flex;
-  align-items: center;
-  gap: 0.5rem; /* Bayrak ve yazı arasındaki boşluk için */
+padding: 10px; /* Padding for each option */
+cursor: pointer; /* Pointer cursor on hover */
+transition: background-color 0.3s; /* Smooth background transition */
+font-size: 0.875rem; /* Smaller font size */
+color: #1C3C84; /* Color remains the same */
+font-weight: 400; /* Lighter font weight */
+display: flex;
+align-items: center;
+gap: 0.5rem; /* Bayrak ve yazı arasındaki boşluk için */
 }
 
 .priority-option:hover {
-  color: #36C5F0; /* Highlight on hover */
+color: #36C5F0; /* Highlight on hover */
 }
 
 .priority-text {
-  color: #1C3C84;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif;
+color: #1C3C84;
+font-weight: 500;
+font-family: 'Inter', sans-serif;
 }
 
 .priority-label {
-  font-size: 1rem; /* Başlıkla aynı boyutta */
-  color: #1C3C84; /* Başlık rengiyle aynı */
-  font-weight: 400; /* Başlık font ağırlığıyla aynı */
+font-size: 1rem; /* Başlıkla aynı boyutta */
+color: #1C3C84; /* Başlık rengiyle aynı */
+font-weight: 400; /* Başlık font ağırlığıyla aynı */
 }
 
 .selected-priority {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem; /* İkon ve metin arasındaki boşluk */
-  font-size: 1rem; /* Priority başlığı ile aynı font boyutu */
-  color: #1C3C84; /* Change to your desired color */
-  font-weight: 400;
+display: flex;
+align-items: center;
+gap: 0.5rem; /* İkon ve metin arasındaki boşluk */
+font-size: 1rem; /* Priority başlığı ile aynı font boyutu */
+color: #1C3C84; /* Change to your desired color */
+font-weight: 400;
 }
 
 .options-flag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem; /* Space between flag and text */
-  vertical-align: middle;
+display: inline-flex;
+align-items: center;
+gap: 0.25rem; /* Space between flag and text */
+vertical-align: middle;
 }
 
 /* CSS Özelleştirmeleri */
 /* Wrapper for the DatePicker */
 .datepicker-wrapper {
-  position: absolute;
-  top: 100%; /* Tetikleyici öğenin hemen altında */
-  right: 0; /* Sağ kenara hizalar */
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  z-index: 2000;
-  width: 340px;
-  max-width: calc(100vw - 20px); /* Ekran genişliğine göre küçülür */
-  max-height: calc(100vh - 20px); /* Ekran yüksekliğine göre sınırlandırır */
-  overflow-y: auto; /* Taşmayı önlemek için kaydırma ekler */
+position: absolute;
+top: 100%; /* Tetikleyici öğenin hemen altında */
+right: 0; /* Sağ kenara hizalar */
+background-color: white;
+border-radius: 8px;
+box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+padding: 15px;
+z-index: 2000;
+width: 340px;
+max-width: calc(100vw - 20px); /* Ekran genişliğine göre küçülür */
+max-height: calc(100vh - 20px); /* Ekran yüksekliğine göre sınırlandırır */
+overflow-y: auto; /* Taşmayı önlemek için kaydırma ekler */
 }
 
 
 /* Header styles for the DatePicker */
 .react-datepicker__header {
-  background-color: #f0f0f0; /* Header background */
-  border-bottom: 1px solid #ddd; /* Bottom border */
-  text-align: center; /* Center align header text */
+background-color: #f0f0f0; /* Header background */
+border-bottom: 1px solid #ddd; /* Bottom border */
+text-align: center; /* Center align header text */
 }
 
 .custom-picker input {
-  visibility: hidden;
+visibility: hidden;
 }
 
 /* Day styles */
 .react-datepicker__day {
-  width: 40px; /* Set fixed width for days */
-  line-height: 40px; /* Center text vertically */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor */
+width: 40px; /* Set fixed width for days */
+line-height: 40px; /* Center text vertically */
+border-radius: 5px; /* Rounded corners */
+cursor: pointer; /* Pointer cursor */
 }
 
 /* Styles for highlighted day on hover */
 .react-datepicker__day:hover {
-  background-color: #e0e0e0; /* Background color on hover */
+background-color: #e0e0e0; /* Background color on hover */
 }
 
 /* Selected day styles */
 .react-datepicker__day--selected {
-  background-color: #007bff; /* Background for selected day */
-  color: #fff; /* Text color for selected day */
+background-color: #007bff; /* Background for selected day */
+color: #fff; /* Text color for selected day */
 }
 
 /* Today’s date styles */
 .react-datepicker__day--today {
-  font-weight: bold; /* Bold font for today's date */
+font-weight: bold; /* Bold font for today's date */
 }
 
 /* Month navigation styles */
 .react-datepicker__navigation {
-  top: 8px; /* Positioning */
-  border: none; /* Remove default border */
+top: 8px; /* Positioning */
+border: none; /* Remove default border */
 }
 
 /* Navigation button styles */
 .react-datepicker__navigation--previous {
-  left: 10px; /* Positioning */
+left: 10px; /* Positioning */
 }
 
 .react-datepicker__navigation--next {
-  right: 10px; /* Positioning */
+right: 10px; /* Positioning */
 }
 
 /* Month styles */
 .react-datepicker__month {
-  margin: 0; /* Remove margin */
+margin: 0; /* Remove margin */
 }
 
 /* Custom styles for the year dropdown */
 .react-datepicker__select {
-  margin: 0 5px; /* Spacing around select */
-  padding: 4px; /* Padding for select */
-  border-radius: 4px; /* Rounded corners */
-  border: 1px solid #ddd; /* Border for select */
+margin: 0 5px; /* Spacing around select */
+padding: 4px; /* Padding for select */
+border-radius: 4px; /* Rounded corners */
+border: 1px solid #ddd; /* Border for select */
 }
 
 /* Styles for the year select */
 .react-datepicker__year-select {
-  margin: 0 5px; /* Spacing around year select */
-  padding: 4px; /* Padding for year select */
-  border-radius: 4px; /* Rounded corners */
-  border: 1px solid #ddd; /* Border for year select */
+margin: 0 5px; /* Spacing around year select */
+padding: 4px; /* Padding for year select */
+border-radius: 4px; /* Rounded corners */
+border: 1px solid #ddd; /* Border for year select */
 }
 
 /* Additional spacing for date picker content */
 .react-datepicker__month-container {
-  padding: 10px; /* Padding inside month container */
+padding: 10px; /* Padding inside month container */
 }
 
 
 .selected-date {
-  color: #007bff; /* Change to your desired color */
-  font-weight: bold; /* Optional: make the date bold */
+color: #007bff; /* Change to your desired color */
+font-weight: bold; /* Optional: make the date bold */
 }
 .taskmodal-selected-date {
-  color: #1C3C84; /* Change to your desired color */
-  font-weight: 400; /* Optional: make the date bold */
+color: #1C3C84; /* Change to your desired color */
+font-weight: 400; /* Optional: make the date bold */
 }
 
 
 .save-description-button, .save-commit-button {
-  background-color: #36C5F0; /* Butonun arka plan rengi */
-  color: white; /* Yazı rengi */
-  border: none; /* Kenarlık yok */
-  border-radius: 8px; /* Köşeleri yuvarlaştır */
-  padding: 10px 20px; /* İç boşluklar */
-  font-size: 16px; /* Yazı boyutu */
-  font-weight: bold; /* Kalın yazı */
-  cursor: pointer; /* Pointer imleci */
-  transition: background-color 0.3s; /* Arka plan rengi geçişi */
-  z-index: 1001; /* Diğer elementlerin üstünde görünmesi için */
-  margin-top: -15px;
+background-color: #36C5F0; /* Butonun arka plan rengi */
+color: white; /* Yazı rengi */
+border: none; /* Kenarlık yok */
+border-radius: 8px; /* Köşeleri yuvarlaştır */
+padding: 10px 20px; /* İç boşluklar */
+font-size: 16px; /* Yazı boyutu */
+font-weight: bold; /* Kalın yazı */
+cursor: pointer; /* Pointer imleci */
+transition: background-color 0.3s; /* Arka plan rengi geçişi */
+z-index: 1001; /* Diğer elementlerin üstünde görünmesi için */
+margin-top: -15px;
 }
 
 .save-description-button:hover, .save-commit-button:hover {
-  background-color: #28A0DB; /* Üzerine gelince arka plan rengi değişimi */
+background-color: #28A0DB; /* Üzerine gelince arka plan rengi değişimi */
 }
 
 
 .comments-list {
-  margin-top: 1rem; /* Yorum alanı ile yukarıdaki alan arasında boşluk */
+margin-top: 1rem; /* Yorum alanı ile yukarıdaki alan arasında boşluk */
 }
 
 .comment-item {
-  padding: 10px;
-  border: 1px solid rgba(241, 241, 241, 1);
-  border-radius: 8px;
-  margin-bottom: 10px; /* Her yorum arasında boşluk */
-  background-color: rgba(241, 241, 241, 0.8);
+padding: 10px;
+border: 1px solid rgba(241, 241, 241, 1);
+border-radius: 8px;
+margin-bottom: 10px; /* Her yorum arasında boşluk */
+background-color: rgba(241, 241, 241, 0.8);
 }
 
 .taskcard-info-comment-area {
-  margin-top: 20px; /* Alanın üstüne boşluk ekler */
+margin-top: 20px; /* Alanın üstüne boşluk ekler */
 }
 
 /* Right Arrow Modal Styles */
 .right-arrow-modal {
-  position: absolute;
-  top: calc(100% + 8px); /* İkonun hemen altında, biraz daha aşağıda */
-  right: -10px; /* Sola doğru 10px kaydır */
-  transform: translateX(0); /* Sağ üst köşeyi hizalar */
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  z-index: 3000; /* En üst katmanda görünmesi için yüksek z-index */
-  width: 340px; /* Genişlik */
-  overflow-y: auto; /* İçerik taşarsa dikey kaydırma ekler */
+position: absolute;
+top: calc(100% + 8px); /* İkonun hemen altında, biraz daha aşağıda */
+right: -10px; /* Sola doğru 10px kaydır */
+transform: translateX(0); /* Sağ üst köşeyi hizalar */
+background-color: white;
+border-radius: 8px;
+box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+padding: 15px;
+z-index: 3000; /* En üst katmanda görünmesi için yüksek z-index */
+width: 340px; /* Genişlik */
+overflow-y: auto; /* İçerik taşarsa dikey kaydırma ekler */
 }
 
 
 
 
 .right-arrow-modal-header {
-  padding: 10px 15px;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  align-items: center;
+padding: 10px 15px;
+border-bottom: 1px solid #eee;
+display: flex;
+align-items: center;
 }
 
 .right-arrow-modal-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1C3C84;
+font-size: 18px;
+font-weight: 700;
+color: #1C3C84;
 }
 
 .right-arrow-modal-divider {
-  height: 1px;
-  background-color: #e0e0e0;
-  margin: 10px 0;
+height: 1px;
+background-color: #e0e0e0;
+margin: 10px 0;
 }
 
 .right-arrow-options {
-  padding: 10px;
+padding: 10px;
 }
 
 .right-arrow-option {
-  padding: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-size: 0.875rem;
-  color: #1C3C84;
-  font-weight: 400;
+padding: 10px;
+cursor: pointer;
+transition: background-color 0.3s;
+font-size: 0.875rem;
+color: #1C3C84;
+font-weight: 400;
 }
 
 .right-arrow-option:hover {
-  color: #36C5F0;
+color: #36C5F0;
 }
 
 .save-description-button {
-  background-color: #36C5F0;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: 8px;
-  position: relative;
+background-color: #36C5F0;
+color: white;
+border: none;
+border-radius: 8px;
+padding: 8px 16px;
+cursor: pointer;
+font-weight: bold;
+margin-top: 6px;
+position: relative;
 }
 
 .comment-icons {
-  position: relative;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  gap: 8px;
+position: relative;
+top: 10px;
+right: 10px;
+left:4px;
+display: flex;
+gap: 8px;
 }
 
 .taskcard-info-subtask-inside {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 1rem;
 }
 
 /* Style for the subtask input and button */
 .subtask-input-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  gap: 10px;
-  justify-content: space-between;
+display: flex;
+flex-direction: column;
+width: 100%;
+height: 100%;
+padding: 10px;
+gap: 10px;
+justify-content: space-between;
 }
 
 .subtask-input {
-  width: 90%;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: white;
+width: 90%;
+padding: 10px;
+font-size: 1rem;
+border: 1px solid #ddd;
+border-radius: 8px;
+background-color: white;
 }
 
 .generate-subtask-button {
-  padding: 8px 16px;
-  background-color: #36C5F0;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s;
+padding: 8px 16px;
+background-color: #36C5F0;
+color: white;
+border: none;
+border-radius: 25px;
+cursor: pointer;
+font-weight: bold;
+transition: background-color 0.3s;
 }
 
 .generate-subtask-button:hover {
-  background-color: #28A0DB; /* Button color change on hover */
+background-color: #28A0DB; /* Button color change on hover */
 }
 
 /* Container for generated subtasks */
 .workspaceAi-message {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
-  width: 100%; /* Alanın tamamını kaplayacak şekilde genişlik */
-  box-sizing: border-box; /* İç kenar boşlukları genişliğe dahil edilsin */
-  padding: 0 10px; /* Kenarlardan içeriyi taşırmayacak şekilde padding */
+display: flex;
+flex-direction: column;
+gap: 1rem;
+margin-top: 1rem;
+width: 100%; /* Alanın tamamını kaplayacak şekilde genişlik */
+box-sizing: border-box; /* İç kenar boşlukları genişliğe dahil edilsin */
+padding: 0 10px; /* Kenarlardan içeriyi taşırmayacak şekilde padding */
 }
 
 /* Subtask card styling */
 .workspaceAi-task {
-  width: 95%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  transition: transform 0.2s, opacity 0.5s;
+width: 95%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+background-color: #ffffff;
+border-radius: 10px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+padding: 15px;
+transition: transform 0.2s, opacity 0.5s;
 }
 
 .workspaceAi-task:hover {
-  transform: scale(1.02);
+transform: scale(1.02);
 }
 
 .rejected-task {
-  opacity: 0.4 !important; /* Semi-transparent for rejected subtasks */
+opacity: 0.4 !important; /* Semi-transparent for rejected subtasks */
 }
 
 /* Title styling for each task */
 .workspaceAi-response-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1C3C84;
-  margin-bottom: 0.5rem;
+font-size: 20px;
+font-weight: 700;
+color: #1C3C84;
+margin-bottom: 0.5rem;
 }
 
 /* Subtask card header and description */
 .workspaceAi-task-card .task-header {
-  font-size: 16px;
-  color: #1C3C84;
-  font-weight: 600;
+font-size: 16px;
+color: #1C3C84;
+font-weight: 600;
 }
 
 .workspaceAi-task-card .task-desc {
-  font-size: 14px;
-  color: #333;
+font-size: 14px;
+color: #333;
 }
 
 /* Tags styling for assignee and type */
 .task-tags {
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
+margin-top: 1rem;
+display: flex;
+gap: 1rem;
 }
 
 .task-tag {
-  background-color: #E0F7FA;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  color: #00796B;
+background-color: #E0F7FA;
+padding: 5px 10px;
+border-radius: 20px;
+font-size: 12px;
+color: #00796B;
 }
 
 /* Task action icons (approve/reject) */
 .task-icons {
-  display: flex;
-  gap: 15px;
-  cursor: pointer;
+display: flex;
+gap: 15px;
+cursor: pointer;
 }
 
 .task-icon {
-  width: 20px;
-  height: 20px;
+width: 20px;
+height: 20px;
 }
 
 .comments-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #1C3C84;
-  margin-bottom: 1rem;
+font-size: 1.3rem;
+font-weight: 600;
+color: #1C3C84;
+margin: 1rem;
 }
 
 .taskcard-info-left-upper {
@@ -856,7 +856,58 @@ color: #94A3B8;
 }
 
 .add-comment-prompt {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #ACACAC;
+font-size: 1rem;
+font-weight: 500;
+color: #ACACAC;
 }
+
+.ql-container.ql-snow {
+border: none !important;
+}
+
+.ql-toolbar.ql-snow {
+border: none !important;
+border-bottom: 1px solid #ccc !important; 
+}
+
+.styles_wrapper__S2FZZ {
+border-radius: 1rem;
+}
+
+/* styles.module.css */
+
+.ql-editor {
+background-color: rgba(241, 241, 241, 1);
+border-radius: 1rem;
+}
+
+.taskcard-info-comments-list {
+display: flex;
+flex-direction: column; /* Yorumları dikey sırala */
+gap: 1rem; /* Yorumlar arasında boşluk */
+}
+
+
+/* Normal yorumlar arasındaki boşluk */
+.comment-item {
+margin-bottom: 1rem;
+}
+
+.comment-item .styles_editor__HxSbq {
+height: 70px !important;
+transform: translateY(-15px);
+}
+
+/* Assigne iconu büyüdüğü için*/
+.taskcard-info-assignees .td-none {
+display: inline !important;
+
+}
+
+.taskcard-info-assignees .assignees-icon {
+margin-right: 14px; /* Space between icon and text */
+}
+
+
+
+

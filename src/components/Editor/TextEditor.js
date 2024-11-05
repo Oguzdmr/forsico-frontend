@@ -98,9 +98,9 @@ const Editor = ({ value, setValue }) => {
         modules={modules}
         onChange={(value) => setValue(value)}
       />
-      <button onClick={handler} className={styles.btn}>
+      {/* <button onClick={handler} className={styles.btn}>
         Submit
-      </button>
+      </button> */}
     </div>
   );
 };

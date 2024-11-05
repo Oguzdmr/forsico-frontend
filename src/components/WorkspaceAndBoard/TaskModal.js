@@ -22,17 +22,16 @@ import UrgentFlag from "../../assets/redFlag.svg";
 import HighFlag from "../../assets/blueFlag.svg";
 import NormalFlag from "../../assets/taskcard-info-priority.svg";
 import { motion, AnimatePresence } from "framer-motion";
-import TickIcon from "../../assets/ai-message-tick-icon.svg";
-import CrossIcon from "../../assets/ai-message-cross-icon.svg";
+import Tickİcon from "../../assets/ai-message-tick-icon.svg";
+import Crossİcon from "../../assets/ai-message-cross-icon.svg";
 import { fetchTask, updateTaskStatus } from "../../store/taskSlice.js";
 import { RotatingLines } from "react-loader-spinner";
 import TaskApi from "../../api/BoardApi/task.js"
-import {addTask} from "../../store/boardSlice.js"
 
 const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen }) => {
 
   const taskApi = new TaskApi();
-  
+
   const {
     entities,
     status = "idle",
@@ -51,9 +50,6 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
   const [description, setDescription] = useState(
     entities.selectedtask?.description || ""
   );
-  const [loadingTasks, setLoadingTasks] = useState({});
-  const workspaceField = useSelector((state) => {return state.workspaces.entities})?.filter((x) => x._id === workspaceId)[0]
-  const userField = useSelector((state) => state.auth.user || {})
   const [isDescriptionEditing, setIsDescriptionEditing] = useState(false);
   const [subtaskStates, setSubtaskStates] = useState({});
   const [generatedSubtasks, setGeneratedSubtasks] = useState([]);
@@ -95,7 +91,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
   const [isTitleEditing, setIsTitleEditing] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null); // Track index of comment being edited
   const [editedComment, setEditedComment] = useState("");
-  
+
   const [statusOptions, setStatusOptions] = useState([]);
   const forsicoAiApi = new ForsicoAiApi();
   const dispatch = useDispatch();
@@ -129,32 +125,32 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
 
   const getTaskStatuses = async () => {
     try {
-      if(taskId){
+      if (taskId) {
         let statuses = await taskApi.getTaskStatus(token, workspaceId, boardId);
-        if(statuses.status){
+        if (statuses.status) {
           setStatusOptions(statuses.data)
         }
-        
+
         console.log("statuses", statuses)
-        
+
       }
-      
+
     } catch (error) {
-     
+
     }
   }
 
   const getComments = async () => {
     try {
-      
-      if(taskId){
-        
+
+      if (taskId) {
+
         let commentsApi = await taskApi.getTaskComments(token, workspaceId, taskId);
-        if(commentsApi.status){
+        if (commentsApi.status) {
           setComments(commentsApi.data)
         }
-        
-        console.log("comments",commentsApi)
+
+        console.log("comments", commentsApi)
       }
     } catch (error) {
       console.log("comment error")
@@ -165,7 +161,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
     try {
       taskApi.postTaskComment(token, workspaceId, taskId, newComment)
     } catch (error) {
-      
+
     }
   }
   const generateSubtasks = async (subtaskTitle) => {
@@ -211,7 +207,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
   const handleFieldUpdate = async (field, value) => {
     try {
       await taskApi.updateTask(token, workspaceId, taskId, { [field]: value });
-      // dispatch(fetchTask({ token, workspaceId, taskId }));
+      dispatch(fetchTask({ token, workspaceId, taskId }));
     } catch (error) {
       console.error(`Error updating task ${field}:`, error);
     }
@@ -254,10 +250,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
     setStatusModalOpen(false);
   };
 
-  const handleRoot = async (newBoardField) => { 
-    await taskApi.updateTask(token, workspaceId, taskId, { listId: newBoardField.lists[0]._id, boardId: newBoardField._id });
-      // dispatch(fetchTask({ token, workspaceId, taskId }));
-   };
+  const handleRoot = () => { };
 
   const handlePrioritySelect = (priority) => {
     setSelectedPriority(priority); // Save both label and icon
@@ -326,10 +319,17 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
     }
   };
 
-  const handleEditComment = (index) => {
+const handleEditComment = (index) => {
+  const comment = comments[index];
+  // Comment nesnesinin tanımlı olup olmadığını kontrol edin
+  if (comment && comment.content) {
     setEditingIndex(index); // Set the comment to edit mode
-    setEditedComment(comments[index]); // Load the existing comment text into temp storage
-  };
+    setEditedComment(comment.content); // Load the existing comment text into temp storage
+  } else {
+    console.warn(`Comment at index ${index} is undefined or has no content`);
+  }
+};
+
 
   const handleSaveEditedComment = (index) => {
     const updatedComments = comments.map((comment, i) =>
@@ -344,27 +344,8 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
     console.log(`Delete comment at index ${index}`);
   };
 
-  const handleApprove = async (subtask) => {
-    setLoadingTasks((prev) => ({ ...prev, [subtask.id]: true }));
-    let responseCreateSubtask = await taskApi.createTask(token, workspaceId, {
-      "name": subtask.name,
-      "description": subtask.description,
-      "boardId": selectedTask.boardId,
-      "listId": selectedTask.listId,
-      "assignee": userField.id,
-      "ownerId":userField.id,
-      "priority": 0,
-      "parentTask": selectedTask._id
-    }
-    )
-    console.log(subtask)
-    console.log("res subtask",responseCreateSubtask)
-    if(responseCreateSubtask.status){
-      setSubtaskStates((prev) => ({ ...prev, [subtask.id]: "approved" }));
-      setLoadingTasks((prev) => ({ ...prev, [subtask.id]: false }));
-      dispatch(addTask({ name: subtask.name, description: subtask.description, boardId: selectedTask.boardId , listId:selectedTask.listId, userId:userField.id, parentId:selectedTask._id, taskId:responseCreateSubtask.data._id}));
-    }
-    
+  const handleApprove = (subtask) => {
+    setSubtaskStates((prev) => ({ ...prev, [subtask.id]: "approved" }));
   };
 
   const handleReject = (subtaskId) => {
@@ -463,7 +444,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
       <div className={`modal-content-trello`}>
         <div className="taskcard-info-upper-area">
           <div className="taskcard-info-left-upper">
-            <span>{workspaceField?.name}</span>
+            <span>Forsico/General</span>
           </div>
           <div className="taskcard-info-right-upper">
             <img
@@ -482,23 +463,19 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
               <div className="right-arrow-modal" ref={rightArrowModalRef}>
                 <div className="right-arrow-modal-header">
                   <h3 className="right-arrow-modal-title">
-                    Send from board to...
+                    Send from board General to...
                   </h3>
                 </div>
                 <div className="right-arrow-options">
-                  {workspaceField?.boards?.map((boardField) => {
-                    if(boardField.name !== board.name){
-                      return (
-                        <div
-                          key={boardField._id}
-                          className="right-arrow-option"
-                          onClick={() => handleRoot(boardField)}
-                        >
-                          {boardField.name}
-                        </div>
-                      )
-                    }
-                    })}
+                  {sendOptions.map((board) => (
+                    <div
+                      key={board}
+                      className="right-arrow-option"
+                      onClick={() => handleRoot(board)}
+                    >
+                      {board}
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -582,49 +559,53 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
 
               {/* Display list of comments */}
               <div className="taskcard-info-comments-list">
-                {comments.map((comment, index) => (
-                  <div
-                    key={index}
-                    className="taskcard-info-textarea comment-item"
-                  >
-                    {editingIndex === index ? (
-                      <>
-                        <TextEditor
-                          value={editedComment}
-                          setValue={setEditedComment}
-                        />
-                        <button
-                          onClick={() => handleSaveEditedComment(index)}
-                          className="save-description-button"
-                        >
-                          Save
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <div
-                          className="comment-content"
-                          dangerouslySetInnerHTML={{ __html: comment.content }}
-                        />
-                        <div className="comment-icons">
-                          <img
-                            src={EditIcon}
-                            alt="edit icon"
-                            className="comment-icon"
-                            onClick={() => handleEditComment(index)}
-                          />
-                          <img
-                            src={DeleteIcon}
-                            alt="delete icon"
-                            className="comment-icon"
-                            onClick={() => handleDeleteComment(index)}
-                          />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))}
-              </div>
+  {comments.map((comment, index) => (
+    <div
+      key={index}
+      className={`taskcard-info-textarea comment-item ${editingIndex === index ? "comment-editing" : ""}`}
+    >
+      {editingIndex === index ? (
+        <>
+          {/* Düzenleme modu: TextEditor gösteriliyor */}
+          <TextEditor value={editedComment} setValue={setEditedComment} />
+          <button
+            onClick={() => handleSaveEditedComment(index)}
+            className="save-description-button"
+          >
+            Save
+          </button>
+        </>
+      ) : (
+        <>
+          {/* Normal görünüm: Yorum içeriği gösteriliyor, null kontrolü yapılır */}
+          {comment && comment.content ? (
+            <div
+              className="comment-content"
+              dangerouslySetInnerHTML={{ __html: comment.content }}
+            />
+          ) : (
+            <div className="comment-content">No content available</div> // İçerik yoksa gösterilecek alternatif
+          )}
+          <div className="comment-icons">
+            <img
+              src={EditIcon}
+              alt="edit icon"
+              className="comment-icon"
+              onClick={() => handleEditComment(index)}
+            />
+            <img
+              src={DeleteIcon}
+              alt="delete icon"
+              className="comment-icon"
+              onClick={() => handleDeleteComment(index)}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  ))}
+</div>
+
             </div>
 
             {/* Render Generated Subtasks */}
@@ -641,6 +622,9 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
                 <button
                   onClick={handleToggleSubtaskGeneration}
                   className="generate-subtask-button"
+                  style={{
+                    marginTop: visibleSubtasks.length > 3 ? '50px' : '10px'
+                  }}
                 >
                   Generate Subtasks
                 </button>
@@ -662,8 +646,8 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
                         exit={{ opacity: 0, scale: 0 }}
                         transition={{ duration: 0.5 }}
                         className={`workspaceAi-task ${subtaskStates[task.id] === "rejected"
-                            ? "rejected-task"
-                            : ""
+                          ? "rejected-task"
+                          : ""
                           }`}
                       >
                         <div className="workspaceAi-task-card">
@@ -675,31 +659,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
                           </div>
                         </div>
                         <div className="task-icons">
-                        {loadingTasks[task.id] ? (
-                          <RotatingLines height="20" width="20" strokeColor="#36C5F0" />
-                        ) : (
-                          <>
-                            {subtaskStates[task.id] === "approved" ? (
-                              <span className="task-icon" style={{ pointerEvents: "none" }}>
-                                <img src={TickIcon} alt="tick" />
-                              </span>
-                            ) : subtaskStates[task.id] === "rejected" ? (
-                              <span className="task-icon" style={{ pointerEvents: "none" }}>
-                                <img src={CrossIcon} alt="cross" />
-                              </span>
-                            ) : (
-                              <>
-                                <span className="task-icon" onClick={() => handleReject(task.id)}>
-                                  <img src={CrossIcon} alt="cross" />
-                                </span>
-                                <span className="task-icon" onClick={() => handleApprove(task)}>
-                                  <img src={TickIcon} alt="tick" />
-                                </span>
-                              </>
-                            )}
-                          </>
-                        )}
-                          {/* <span
+                          <span
                             className="task-icon"
                             onClick={() => handleReject(task.id)}
                           >
@@ -710,7 +670,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
                             onClick={() => handleApprove(task)}
                           >
                             <img src={Tickİcon} alt="Approve" />
-                          </span> */}
+                          </span>
                         </div>
                       </motion.div>
                     </div>
@@ -729,7 +689,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
 
           <div className="taskcard-info-right-lower">
             <div className="taskcard-info-assignees">
-              <a className="td-none" onClick={toggleAssigneeModal}>
+              <a className="td-none" href="#" onClick={toggleAssigneeModal}>
                 <img
                   src={Assignees}
                   alt="assignees"
@@ -783,7 +743,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
             <div className="taskcard-info-due-date">
               <a
                 className="td-none"
-                
+                href="#"
                 onClick={() => setIsDatePickerOpen(true)}
               >
                 <img src={DueDate} alt="duedate" />
@@ -818,7 +778,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
             </div>
 
             <div className="taskcard-info-status">
-              <a className="td-none" onClick={toggleStatusModal}>
+              <a className="td-none" href="#" onClick={toggleStatusModal}>
                 <img src={Status} alt="status" />
                 Status
               </a>
