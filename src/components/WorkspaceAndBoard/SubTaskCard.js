@@ -7,13 +7,13 @@ import miniCalendar from '../../assets/mini-calendar.svg';
 import people from '../../assets/people-blue.svg';
 import flag from '../../assets/flag.svg';
 
-function SubTaskCard({ colIndex, taskIndex, subtask, color }) { // subtask'ı prop olarak alıyoruz
+function SubTaskCard({listId, taskId, subtask, workspaceId, boardId, color }) { // subtask'ı prop olarak alıyoruz
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
   const handleOnDrag = (e) => {
     e.dataTransfer.setData(
       "text",
-      JSON.stringify({ taskIndex, prevColIndex: colIndex })
+      JSON.stringify({ taskId, prevColIndex: listId })
     );
   };
 
@@ -62,8 +62,10 @@ function SubTaskCard({ colIndex, taskIndex, subtask, color }) { // subtask'ı pr
 
       {isTaskModalOpen && (
         <TaskModal
-          colIndex={colIndex}
-          taskIndex={taskIndex}
+          listId={listId}
+          taskId={subtask._id}
+          workspaceId={workspaceId}
+          boardId={boardId}
           setIsTaskModalOpen={setIsTaskModalOpen}
         />
       )}

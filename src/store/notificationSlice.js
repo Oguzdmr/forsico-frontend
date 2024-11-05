@@ -81,11 +81,12 @@ export const handleNotification = (notification) => async (dispatch, getState) =
   const userId = getState().auth?.user?.id;
 
   if(notification.user?.id === userId) return;
-
+  console.log("notification",notification)
   switch (notification.action) {
     case "newTask":
     case "statusChange":
     case "updateTask":
+    case "assigneeChange": 
       if (
         window.location.pathname.indexOf(
         `/workspaces/board/${notification.workspaceId}/${notification.boardId}`) === 0
@@ -95,6 +96,21 @@ export const handleNotification = (notification) => async (dispatch, getState) =
           dispatch,
           notification.workspaceId,
           notification.boardId
+        );
+      }
+      break;
+    case "boardChange":
+      if (
+        window.location.pathname.indexOf(
+        `/workspaces/board/${notification.workspaceId}`) === 0
+      ) {
+        console.log("called debounced fetch board");
+        const currentBoardId = getState().board?.entities?._id;
+        console.log("currentBoardId",currentBoardId)
+        debouncedFetchBoard(
+          dispatch,
+          notification.workspaceId,
+          currentBoardId
         );
       }
       break;

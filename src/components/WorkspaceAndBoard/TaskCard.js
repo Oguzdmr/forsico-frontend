@@ -106,9 +106,11 @@ console.log(subtasks)
           {subtasks?.map((subtask, index) => (
             <SubTaskCard
               key={index}
-              colIndex={colIndex}
-              taskIndex={taskIndex}
+              listId={colIndex}
+              taskId={taskIndex}
               subtask={subtask}
+              workspaceId={workspaceId}
+              boardId={boardId}
               color={color}
             />
           ))}
