@@ -521,6 +521,19 @@ width: 340px;
 max-width: calc(100vw - 20px); /* Ekran genişliğine göre küçülür */
 max-height: calc(100vh - 20px); /* Ekran yüksekliğine göre sınırlandırır */
 overflow-y: auto; /* Taşmayı önlemek için kaydırma ekler */
+font-family: 'Inter', sans-serif;
+color: #1C3C84;
+}
+
+.react-datepicker__current-month {
+  color:#1C3C84;
+  font-weight: 500 ;
+  
+}
+
+.react-datepicker__day-name {
+  color: #36C5F0;
+  font-weight: 500;
 }
 
 
@@ -541,6 +554,8 @@ width: 40px; /* Set fixed width for days */
 line-height: 40px; /* Center text vertically */
 border-radius: 5px; /* Rounded corners */
 cursor: pointer; /* Pointer cursor */
+font-weight: 400;
+color: #616161;
 }
 
 /* Styles for highlighted day on hover */
@@ -550,9 +565,10 @@ background-color: #e0e0e0; /* Background color on hover */
 
 /* Selected day styles */
 .react-datepicker__day--selected {
-background-color: #007bff; /* Background for selected day */
-color: #fff; /* Text color for selected day */
+  background-color: #36C5F0;
+  color: #fff;
 }
+
 
 /* Today’s date styles */
 .react-datepicker__day--today {
