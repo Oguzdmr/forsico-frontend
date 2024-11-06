@@ -86,7 +86,7 @@ const TaskModal = ({
   );
   const assigneeModalRef = useRef(null);
   const statusModalRef = useRef(null);
-  const priorityModalRef = useRef(null); // Ref for priority modal
+  const priorityModalRef = useRef(null);
   const rightArrowModalRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState(
     entities.selectedtask.dueDate || null
@@ -94,7 +94,7 @@ const TaskModal = ({
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [taskTitle, setTaskTitle] = useState(entities.selectedtask?.name || "");
   const [isTitleEditing, setIsTitleEditing] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null); // Track index of comment being edited
+  const [editingIndex, setEditingIndex] = useState(null);
   const [editedComment, setEditedComment] = useState("");
 
   const [statusOptions, setStatusOptions] = useState([]);
@@ -215,11 +215,10 @@ const TaskModal = ({
 
   const handleSaveDescription = () => {
     if (tempDescription.trim() !== "") {
-      // Check if the new description is not just whitespace
-      setDescription(tempDescription); // Update the main description state
+      setDescription(tempDescription);
       handleFieldUpdate("description", tempDescription);
     }
-    setIsDescriptionEditing(false); // Exit editing mode
+    setIsDescriptionEditing(false);
   };
 
   const handleSaveComment = () => setIsCommentEditing(false);
@@ -367,7 +366,6 @@ const TaskModal = ({
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close modals on outside click
       if (
         assigneeModalRef.current &&
         !assigneeModalRef.current.contains(event.target)
@@ -390,25 +388,24 @@ const TaskModal = ({
         rightArrowModalRef.current &&
         !rightArrowModalRef.current.contains(event.target)
       ) {
-        setIsRightArrowModalOpen(false); // Close Right Arrow modal
+        setIsRightArrowModalOpen(false);
       }
       if (isDatePickerOpen && !event.target.closest(".datepicker-wrapper")) {
-        setIsDatePickerOpen(false); // Close date picker
+        setIsDatePickerOpen(false);
       }
 
-      // Check if clicking outside the description or comment editing areas
       if (
         !event.target.closest(".taskcard-info-description-area") &&
         isDescriptionEditing
       ) {
-        setIsDescriptionEditing(false); // Exit description editing mode
+        setIsDescriptionEditing(false);
       }
 
       if (
         !event.target.closest(".taskcard-info-comment-area") &&
         isCommentEditing
       ) {
-        setIsCommentEditing(false); // Exit comment editing mode
+        setIsCommentEditing(false);
       }
     };
 
@@ -429,7 +426,7 @@ const TaskModal = ({
   if (status === "loading") {
     return (
       <div className="modal-wrapper">
-        <div className="modal-content-trello">
+        <div className="modal-content-task">
           <div className="loader-container">
             <RotatingLines height="50" width="50" strokeColor="#36C5F0" />
           </div>
@@ -440,7 +437,7 @@ const TaskModal = ({
 
   return (
     <div className="modal-wrapper">
-      <div className={`modal-content-trello`}>
+      <div className={`modal-content-task`}>
         <div className="taskcard-info-upper-area">
           <div className="taskcard-info-left-upper">
             <span>Forsico/General</span>
@@ -504,27 +501,31 @@ const TaskModal = ({
             </div>
 
             {/* Description Section */}
-            <div className="taskcard-info-description-area">
+            <div
+              className={
+                "taskcard-info-description-area" +
+                (isDescriptionEditing ? " -isEditing" : "")
+              }
+            >
               {isDescriptionEditing ? (
                 <div>
                   <TextEditor
-                    value={tempDescription} // Düzenleme alanındaki değer
-                    setValue={setTempDescription} // Değeri güncelleme fonksiyonu
-                  />
-                  <button
-                    onClick={
+                    value={tempDescription}
+                    setValue={setTempDescription}
+                    saveCallback={
                       isDescriptionEditing
                         ? handleSaveDescription
                         : toggleDescriptionEditing
                     }
-                    className="save-description-button"
-                  >
-                    {isDescriptionEditing ? "Save" : "Edit"} {/* Buton metni */}
-                  </button>
+                    cancelCallback={()=>{
+                      setTempDescription(description);
+                      setIsDescriptionEditing(false);
+                    }}
+                  />
                 </div>
               ) : (
                 <div
-                  className="taskcard-info-textarea"
+                  className="taskcard-info-textarea -description"
                   onClick={toggleDescriptionEditing} // Düzenleme moduna geçiş
                   dangerouslySetInnerHTML={{ __html: description }} // HTML içeriğini güvenli bir şekilde göster
                 />
@@ -537,7 +538,7 @@ const TaskModal = ({
                 <TextEditor value={tempComment} setValue={setTempComment} />
               ) : (
                 <div
-                  className="taskcard-info-textarea"
+                  className="taskcard-info-textarea -comment"
                   onClick={() => setIsCommentEditing(true)}
                 >
                   <div className="add-comment-prompt">Add New Comment!!</div>
