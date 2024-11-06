@@ -19,7 +19,7 @@ export const fetchTask = createAsyncThunk(
 const taskSlice = createSlice({
   name: "task",
   initialState: {
-    entities: {selectedtask:{}},
+    entities: { selectedtask: {} },
     status: "idle",
     error: null,
   },
@@ -41,8 +41,13 @@ const taskSlice = createSlice({
       const { taskId, subtaskId } = action.payload;
       const task = state.entities[taskId];
       if (task) {
-        task.subtasks = task.subtasks.filter((subtask) => subtask._id !== subtaskId);
+        task.subtasks = task.subtasks.filter(
+          (subtask) => subtask._id !== subtaskId
+        );
       }
+    },
+    reset: (state, action) => {
+      state = { entities: { selectedtask: {} }, status: "idle", error: null };
     },
   },
   extraReducers: (builder) => {
@@ -61,5 +66,11 @@ const taskSlice = createSlice({
   },
 });
 
-export const { updateTaskStatus, addSubtask, updateTaskDetails, deleteSubtask } = taskSlice.actions;
+export const {
+  updateTaskStatus,
+  addSubtask,
+  updateTaskDetails,
+  deleteSubtask,
+  reset
+} = taskSlice.actions;
 export default taskSlice.reducer;

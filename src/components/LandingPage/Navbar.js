@@ -61,7 +61,7 @@ const Navbar = () => {
   const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && workspaces.length > 0) {
       const _workspaceIds = workspaces?.map((workspace) => workspace._id);
       const _boardIds = workspaces
         ?.map((workspace) => {
@@ -192,7 +192,7 @@ const Navbar = () => {
         dispatch(search({ workspaceIds, query, page: 1 }));
       }
     }, 500),
-    [] 
+    []
   );
 
   const handleSearch = (e) => {

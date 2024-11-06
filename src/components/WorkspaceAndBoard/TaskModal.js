@@ -24,12 +24,17 @@ import NormalFlag from "../../assets/taskcard-info-priority.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import Tickİcon from "../../assets/ai-message-tick-icon.svg";
 import Crossİcon from "../../assets/ai-message-cross-icon.svg";
-import { fetchTask, updateTaskStatus } from "../../store/taskSlice.js";
+import { fetchTask, updateTaskStatus, reset } from "../../store/taskSlice.js";
 import { RotatingLines } from "react-loader-spinner";
-import TaskApi from "../../api/BoardApi/task.js"
+import TaskApi from "../../api/BoardApi/task.js";
 
-const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen }) => {
-
+const TaskModal = ({
+  taskId,
+  listId,
+  workspaceId,
+  boardId,
+  setIsTaskModalOpen,
+}) => {
   const taskApi = new TaskApi();
 
   const {
@@ -112,15 +117,15 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
 
   useEffect(() => {
     if (status === "idle") {
-      dispatch(fetchTask({ token, workspaceId, taskId }));
+      dispatch(fetchTask({ token, workspaceId, taskId })).finally(() => {
+        getTaskStatuses();
+        getComments();
+      });
     }
   }, [dispatch, status]);
 
   useEffect(() => {
     dispatch(updateTaskStatus({ status: "idle" }));
-    getTaskStatuses();
-    getComments();
-
   }, [taskId]);
 
   const getTaskStatuses = async () => {
@@ -128,42 +133,38 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
       if (taskId) {
         let statuses = await taskApi.getTaskStatus(token, workspaceId, boardId);
         if (statuses.status) {
-          setStatusOptions(statuses.data)
+          setStatusOptions(statuses.data);
         }
 
-        console.log("statuses", statuses)
-
+        console.log("statuses", statuses);
       }
-
-    } catch (error) {
-
-    }
-  }
+    } catch (error) {}
+  };
 
   const getComments = async () => {
     try {
-
       if (taskId) {
-
-        let commentsApi = await taskApi.getTaskComments(token, workspaceId, taskId);
+        let commentsApi = await taskApi.getTaskComments(
+          token,
+          workspaceId,
+          taskId
+        );
         if (commentsApi.status) {
-          setComments(commentsApi.data)
+          setComments(commentsApi.data);
         }
 
-        console.log("comments", commentsApi)
+        console.log("comments", commentsApi);
       }
     } catch (error) {
-      console.log("comment error")
+      console.log("comment error");
     }
-  }
+  };
 
   const addComment = (newComment) => {
     try {
-      taskApi.postTaskComment(token, workspaceId, taskId, newComment)
-    } catch (error) {
-
-    }
-  }
+      taskApi.postTaskComment(token, workspaceId, taskId, newComment);
+    } catch (error) {}
+  };
   const generateSubtasks = async (subtaskTitle) => {
     if (!subtaskTitle.trim()) {
       console.log("Please enter a valid subtask title");
@@ -200,7 +201,6 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
   };
   // Retrieve user info from Redux store
   const boardMembers = useSelector((state) => state.board.entities.members);
-
 
   const sendOptions = ["UX/UI Board", "Markenting Board", "Social Media Board"]; // Status options
 
@@ -246,11 +246,11 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
 
   const handleStatusSelect = (status) => {
     setSelectedStatus(status.name);
-    handleFieldUpdate("statusId", status._id)
+    handleFieldUpdate("statusId", status._id);
     setStatusModalOpen(false);
   };
 
-  const handleRoot = () => { };
+  const handleRoot = () => {};
 
   const handlePrioritySelect = (priority) => {
     setSelectedPriority(priority); // Save both label and icon
@@ -262,7 +262,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
   };
 
   const handleAssigneeSelect = (userInfo) => {
-    handleFieldUpdate("assignee", userInfo._id)
+    handleFieldUpdate("assignee", userInfo._id);
     setSelectedAssignee({
       id: userInfo._id,
       avatar: userInfo.profilePicture,
@@ -284,9 +284,9 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
   };
 
   const handleSaveTitle = (name) => {
-    handleFieldUpdate("name", name)
+    handleFieldUpdate("name", name);
     setIsTitleEditing(false);
-  }
+  };
 
   const getPriorityIcon = (priority) => {
     switch (priority) {
@@ -305,7 +305,7 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
   };
 
   const handleDateChange = (date) => {
-    handleFieldUpdate("dueDate", date)
+    handleFieldUpdate("dueDate", date);
     setSelectedDate(date);
     setIsDatePickerOpen(false); // Close date picker after selection
   };
@@ -319,17 +319,16 @@ const TaskModal = ({ taskId, listId, workspaceId, boardId, setIsTaskModalOpen })
     }
   };
 
-const handleEditComment = (index) => {
-  const comment = comments[index];
-  // Comment nesnesinin tanımlı olup olmadığını kontrol edin
-  if (comment && comment.content) {
-    setEditingIndex(index); // Set the comment to edit mode
-    setEditedComment(comment.content); // Load the existing comment text into temp storage
-  } else {
-    console.warn(`Comment at index ${index} is undefined or has no content`);
-  }
-};
-
+  const handleEditComment = (index) => {
+    const comment = comments[index];
+    // Comment nesnesinin tanımlı olup olmadığını kontrol edin
+    if (comment && comment.content) {
+      setEditingIndex(index); // Set the comment to edit mode
+      setEditedComment(comment.content); // Load the existing comment text into temp storage
+    } else {
+      console.warn(`Comment at index ${index} is undefined or has no content`);
+    }
+  };
 
   const handleSaveEditedComment = (index) => {
     const updatedComments = comments.map((comment, i) =>
@@ -559,53 +558,61 @@ const handleEditComment = (index) => {
 
               {/* Display list of comments */}
               <div className="taskcard-info-comments-list">
-  {comments.map((comment, index) => (
-    <div
-      key={index}
-      className={`taskcard-info-textarea comment-item ${editingIndex === index ? "comment-editing" : ""}`}
-    >
-      {editingIndex === index ? (
-        <>
-          {/* Düzenleme modu: TextEditor gösteriliyor */}
-          <TextEditor value={editedComment} setValue={setEditedComment} />
-          <button
-            onClick={() => handleSaveEditedComment(index)}
-            className="save-description-button"
-          >
-            Save
-          </button>
-        </>
-      ) : (
-        <>
-          {/* Normal görünüm: Yorum içeriği gösteriliyor, null kontrolü yapılır */}
-          {comment && comment.content ? (
-            <div
-              className="comment-content"
-              dangerouslySetInnerHTML={{ __html: comment.content }}
-            />
-          ) : (
-            <div className="comment-content">No content available</div> // İçerik yoksa gösterilecek alternatif
-          )}
-          <div className="comment-icons">
-            <img
-              src={EditIcon}
-              alt="edit icon"
-              className="comment-icon"
-              onClick={() => handleEditComment(index)}
-            />
-            <img
-              src={DeleteIcon}
-              alt="delete icon"
-              className="comment-icon"
-              onClick={() => handleDeleteComment(index)}
-            />
-          </div>
-        </>
-      )}
-    </div>
-  ))}
-</div>
-
+                {comments.map((comment, index) => (
+                  <div
+                    key={index}
+                    className={`taskcard-info-textarea comment-item ${
+                      editingIndex === index ? "comment-editing" : ""
+                    }`}
+                  >
+                    {editingIndex === index ? (
+                      <>
+                        {/* Düzenleme modu: TextEditor gösteriliyor */}
+                        <TextEditor
+                          value={editedComment}
+                          setValue={setEditedComment}
+                        />
+                        <button
+                          onClick={() => handleSaveEditedComment(index)}
+                          className="save-description-button"
+                        >
+                          Save
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        {/* Normal görünüm: Yorum içeriği gösteriliyor, null kontrolü yapılır */}
+                        {comment && comment.content ? (
+                          <div
+                            className="comment-content"
+                            dangerouslySetInnerHTML={{
+                              __html: comment.content,
+                            }}
+                          />
+                        ) : (
+                          <div className="comment-content">
+                            No content available
+                          </div> // İçerik yoksa gösterilecek alternatif
+                        )}
+                        <div className="comment-icons">
+                          <img
+                            src={EditIcon}
+                            alt="edit icon"
+                            className="comment-icon"
+                            onClick={() => handleEditComment(index)}
+                          />
+                          <img
+                            src={DeleteIcon}
+                            alt="delete icon"
+                            className="comment-icon"
+                            onClick={() => handleDeleteComment(index)}
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Render Generated Subtasks */}
@@ -623,7 +630,7 @@ const handleEditComment = (index) => {
                   onClick={handleToggleSubtaskGeneration}
                   className="generate-subtask-button"
                   style={{
-                    marginTop: visibleSubtasks.length > 3 ? '50px' : '10px'
+                    marginTop: visibleSubtasks.length > 3 ? "50px" : "10px",
                   }}
                 >
                   Generate Subtasks
@@ -645,10 +652,11 @@ const handleEditComment = (index) => {
                         variants={cardAnimation}
                         exit={{ opacity: 0, scale: 0 }}
                         transition={{ duration: 0.5 }}
-                        className={`workspaceAi-task ${subtaskStates[task.id] === "rejected"
-                          ? "rejected-task"
-                          : ""
-                          }`}
+                        className={`workspaceAi-task ${
+                          subtaskStates[task.id] === "rejected"
+                            ? "rejected-task"
+                            : ""
+                        }`}
                       >
                         <div className="workspaceAi-task-card">
                           <div className="task-header">{task.name}</div>
@@ -735,7 +743,6 @@ const handleEditComment = (index) => {
                       </div>
                     </div>
                   ))}
-
                 </div>
               )}
             </div>

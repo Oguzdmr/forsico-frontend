@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import data from "../assets/data.json";
 
+const token = JSON.parse(localStorage.getItem("token"));
 const initialState = {
   user: JSON.parse(localStorage.getItem("user")) || null,
-  token: JSON.parse(localStorage.getItem("token")) || null,
-  isAuthenticated: !!localStorage.getItem("token"),
+  token: token || null,
+  isAuthenticated: !!token,
   isThirdParty: false,
+  tokenExpirationDate: token?.expiresOn ?? null,
   boards: data.boards, // boards'ı ekliyoruz
 };
 
@@ -16,6 +18,7 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
+      state.tokenExpirationDate = new Date(action.payload.token?.expiresOn);
       state.isAuthenticated = !!action.payload.token;
       state.isThirdParty = action.payload.thirdParty
         ? action.payload.thirdParty
