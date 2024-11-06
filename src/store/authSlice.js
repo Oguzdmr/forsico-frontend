@@ -8,7 +8,6 @@ const initialState = {
   isAuthenticated: !!token,
   isThirdParty: false,
   tokenExpirationDate: token?.expiresOn ?? null,
-  boards: data.boards, // boards'ı ekliyoruz
 };
 
 const authSlice = createSlice({
