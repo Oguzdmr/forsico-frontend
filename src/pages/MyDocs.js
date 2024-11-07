@@ -8,50 +8,52 @@ import CardTitleIcon from "../assets/mydocs-card-title-icon.svg";
 import CardCommentIcon from "../assets/mydocs-card-comment-icon.svg";
 import AddButtonIcon from "../assets/mydocs-add-button-icon.svg";
 import CrossIcon from "../assets/cross-icon.svg";
-import FilterIcon from "../assets/mydocs-filter-icon.svg"
+import FilterIcon from "../assets/mydocs-filter-icon.svg";
 
 const MyDocs = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const [titleSaved, setTitleSaved] = useState(false);
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [filterTag, setFilterTag] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const tagColors = {
-    "ui design": "rgba(226, 232, 240, 1)", // green
-    'marketing': "rgba(54, 197, 240, 1)", // turquoise
-    "tag1": "rgba(237, 30, 90, 1)", // orange
-    "tag2": "rgba(148, 180, 252, 1)", // purple
-    "tag3": "rgba(255, 99, 132, 1)", // pink
-    "tag4": "rgba(75, 192, 192, 1)", // teal
-    "tag5": "rgba(255, 206, 86, 1)"  // yellow
-  };
-  // Sample array to render multiple cards
-  const cards = Array.from({ length: 30 }, (_, i) => ({
+  const [cards, setCards] = useState(Array.from({ length: 30 }, (_, i) => ({
     title: `Card Title ${i + 1}`,
     lastUpdate: `Today at 10:03 pm`,
     comments: Math.floor(Math.random() * 10),
-    tags: ["ui design", 'marketing', `tag${(i % 5) + 1}`], // Example tags
-  }));
+    tags: ["ui design", "marketing", `tag${(i % 5) + 1}`],
+  })));
 
+  const tagColors = {
+    "ui design": "rgba(226, 232, 240, 1)", 
+    "marketing": "rgba(54, 197, 240, 1)", 
+    "tag1": "rgba(237, 30, 90, 1)", 
+    "tag2": "rgba(148, 180, 252, 1)", 
+    "tag3": "rgba(255, 99, 132, 1)", 
+    "tag4": "rgba(75, 192, 192, 1)", 
+    "tag5": "rgba(255, 206, 86, 1)"
+  };
 
-  // Get unique tags for dropdown
   const uniqueTags = ["All Tags", ...new Set(cards.flatMap(card => card.tags))];
 
   const handleSaveTitle = () => {
-    console.log("Title saved:", title);
+    setTitleSaved(true);
+  };
+
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+    setTitleSaved(false);
+  };
+
+  const handleSaveTags = () => {
+    const newTags = tagInput.split(",").map(tag => tag.trim()).filter(tag => tag);
+    setTags([...tags, ...newTags]);
+    setTagInput("");
   };
 
   const handleTagInput = (e) => {
-    const input = e.target.value;
-    if (input.includes(",")) {
-      const newTags = input.split(",").map(tag => tag.trim()).filter(tag => tag);
-      setTags([...tags, ...newTags]);
-      setTagInput("");
-    } else {
-      setTagInput(input);
-    }
+    setTagInput(e.target.value);
   };
 
   const handleTagSelect = (tag) => {
@@ -59,7 +61,21 @@ const MyDocs = () => {
     setDropdownOpen(false);
   };
 
-  // Filtered cards based on selected tag
+  const handleCreateDocument = () => {
+    const newCard = {
+      title,
+      lastUpdate: new Date().toLocaleString(),
+      comments: 0,
+      tags
+    };
+
+    setCards([...cards, newCard]);
+    setTitle("");
+    setTags([]);
+    setTitleSaved(false);
+    setIsPopupOpen(false);
+  };
+
   const filteredCards = filterTag
     ? cards.filter(card => card.tags.includes(filterTag))
     : cards;
@@ -85,11 +101,10 @@ const MyDocs = () => {
               <div className="mydocs-list-button-area">
                 <a className="mydocs-list-button" href="">
                   <img src={ListIcon} alt="list-icon" />
-                  <span className="td-none mydocs-list-button-text">List</span>
+                  <span className="td-none mydocs-board-button-text">List</span>
                 </a>
               </div>
             </div>
-            {/* Tag Filter Dropdown */}
             <div className="tag-filter-dropdown" onClick={() => setDropdownOpen(!dropdownOpen)}>
               <p className="tag-filter-selected">
                 {filterTag || "All Tags"} <img src={FilterIcon} alt="dropdown-icon" />
@@ -140,7 +155,7 @@ const MyDocs = () => {
                           key={tagIndex}
                           className="mydocs-card-tag"
                           style={{
-                            backgroundColor: tagColors[tag] || "rgba(200, 200, 200, 1)" // default color if tag not found
+                            backgroundColor: tagColors[tag] || "rgba(200, 200, 200, 1)"
                           }}
                         >
                           <span>{tag}</span>
@@ -161,13 +176,23 @@ const MyDocs = () => {
         </div>
       </div>
 
-      {/* Popup Modal */}
       {isPopupOpen && (
         <div className="popup-overlay" onClick={() => setIsPopupOpen(false)}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-            <div className="close-button">
-              <div>
-                Task Tags
+          <div className="close-button">
+              {/* Display Saved Tags */}
+              <div className="popup-doc-task-area">
+                {tags.map((tag, index) => (
+                  <div
+                    key={index}
+                    className="mydocs-card-tag"
+                    style={{
+                      backgroundColor: tagColors[tag] || "rgba(200, 200, 200, 1)"
+                    }}
+                  >
+                    {tag}
+                  </div>
+                ))}
               </div>
               <div>
                 <button className="close-button" onClick={() => setIsPopupOpen(false)}>
@@ -176,18 +201,20 @@ const MyDocs = () => {
               </div>
             </div>
             <div className="popup-header">
-              <div>
-                <input
-                  type="text"
-                  placeholder="Enter document title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="popup-title-input"
-                />
-              </div>
-              <div>
-                <button className="mydocs-title-save-button" onClick={handleSaveTitle}>Save</button>
-              </div>
+              <input
+                type="text"
+                placeholder="Enter document title"
+                value={title}
+                onChange={handleTitleChange}
+                className="popup-title-input"
+              />
+              <button
+                className="mydocs-title-save-button"
+                onClick={handleSaveTitle}
+                disabled={!title || titleSaved}
+              >
+                Save
+              </button>
             </div>
             <div className="popup-tags">
               <input
@@ -197,11 +224,19 @@ const MyDocs = () => {
                 onChange={handleTagInput}
                 className="popup-tags-input"
               />
-              <button className="save-button" onClick={() => setTags([...tags, ...tagInput.split(",").map(tag => tag.trim())])}>Save</button>
+              <button
+                className="mydocs-tags-save-button"
+                onClick={handleSaveTags}
+                disabled={!tagInput}
+              >
+                Save
+              </button>
             </div>
-            <div className="editor-area">
-              <TEditor minHeight={"55vh"} />
-            </div>
+            <div className="editor-area"><TEditor minHeight={"35vh"} /></div>
+            <div>
+              <button className="create-docs-button" onClick={handleCreateDocument}>
+              Create Document
+            </button></div>
           </div>
         </div>
       )}
