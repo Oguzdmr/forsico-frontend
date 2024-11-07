@@ -1,16 +1,23 @@
 import { useCallback, useMemo, useRef, useEffect, useState } from "react";
-import QuillEditor from "react-quill";
+import QuillEditor, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import styles from "./styles.module.css";
 import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
+import ImageResize from "quill-image-resize-module-react";
+import Table from "quill-table-ui";
+import QuillBetterTable from "quill-better-table";
+
+Quill.register("modules/imageResize", ImageResize);
+Quill.register(
+  {
+    "modules/better-table": QuillBetterTable,
+  },
+  true
+);
 
 const Editor = ({ value, setValue, saveCallback, cancelCallback }) => {
   const quill = useRef();
-
-  function handler() {
-    console.log(value);
-  }
 
   const handleSave = () => {
     saveCallback();
@@ -54,8 +61,27 @@ const Editor = ({ value, setValue, saveCallback, cancelCallback }) => {
 
   const modules = useMemo(
     () => ({
+      table:false,
+      'better-table': {
+        operationMenu: {
+          items: {
+            unmergeCells: {
+              text: 'Another unmerge cells name'
+            }
+          }
+        }
+      },
       syntax: {
         highlight: (text) => hljs.highlightAuto(text).value,
+      },
+      imageResize: {
+        parchment: Quill.import("parchment"),
+        displayStyles: {
+          backgroundColor: "#ccc",
+          border: "none",
+          color: "white",
+        },
+        modules: ["Resize", "DisplaySize"],
       },
       toolbar: {
         container: [
@@ -63,6 +89,7 @@ const Editor = ({ value, setValue, saveCallback, cancelCallback }) => {
           ["bold", "italic", "underline", "blockquote"],
           [{ color: [] }],
           [{ "code-block": true }],
+          ["table"],
           [
             { list: "ordered" },
             { list: "bullet" },
@@ -96,6 +123,7 @@ const Editor = ({ value, setValue, saveCallback, cancelCallback }) => {
     "image",
     "color",
     "code-block",
+    "better-table",
   ];
 
   return (
@@ -113,20 +141,10 @@ const Editor = ({ value, setValue, saveCallback, cancelCallback }) => {
       </div>
       <div className={styles["editor-cta-wrapper"]}>
         <div className={styles["editor-cta-area"]}>
-          <button
-            onClick={() => {
-              cancelCallback();
-            }}
-            className={styles["cta-cancel"]}
-          >
+          <button onClick={cancelCallback} className={styles["cta-cancel"]}>
             Cancel
           </button>
-          <button
-            onClick={() => {
-              handleSave();
-            }}
-            className={styles["cta-save"]}
-          >
+          <button onClick={handleSave} className={styles["cta-save"]}>
             Save
           </button>
         </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/mydocs.css";
-
+import TEditor from "../components/Editor/TEditor";
 
 const DocumentCard = ({ title, time, comments, tags }) => (
   <div className="document-card">
@@ -54,19 +54,7 @@ const MyDocs = () => {
 
   return (
     <div className="my-docs">
-      <header className="header">
-        <h1 className="header-title">My Docs</h1>
-        <div className="view-toggle">
-          <button className="btn-view">📋 List</button>
-          <button className="btn-view">📂 Board</button>
-        </div>
-      </header>
-      <div className="documents-grid">
-        {documents.map((doc, index) => (
-          <DocumentCard key={index} {...doc} />
-        ))}
-      </div>
-      <button className="add-docs-btn">Add Docs ➕</button>
+      <TEditor minHeight={800}></TEditor>
     </div>
   );
 };

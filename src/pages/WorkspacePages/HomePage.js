@@ -14,7 +14,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
 
   const animateCounter = (endValue, setState, duration = 800) => {
-    endValue = endValue || 0;
+    endValue = parseInt(endValue) || 0;
 
     let startValue = -1;
     const stepTime = Math.abs(Math.floor(duration / endValue));

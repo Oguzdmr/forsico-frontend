@@ -1,0 +1,61 @@
+.editor-container {
+    border: 1px solid rgba(241, 241, 241, 1);
+    background-color: rgba(241, 241, 241, 1);
+    padding: 10px;
+    border-radius: 1rem;
+    border-radius: 5px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.jodit-workplace{
+    background-color: rgba(241, 241, 241, 1) !important;
+}
+
+.jodit_theme_forsico{
+    border: none !important;
+    background-color: rgba(241, 241, 241, 1) !important;
+}
+
+.jodit-toolbar__box{
+    background-color: rgba(241, 241, 241, 1) !important;
+}
+
+.editor-footer {
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.cancel-btn,
+.save-btn {
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 450;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cancel-btn {
+    margin-right: 1rem;
+    background-color: #D8D8D8;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #c2c0c0;
+}
+
+.save-btn {
+    background-color: #36C5F0;
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #28A0DB;
+}
