@@ -36,15 +36,6 @@ const AppRoutes = () => {
             }
           />
           <Route
-            path="/mydocs"
-            element={
-              <ProtectedRoute>
-                <MyDocs />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
             path="/workspaces"
             element={
               <ProtectedRoute>
@@ -58,6 +49,7 @@ const AppRoutes = () => {
             <Route path="board/:workspaceId/:boardId" element={<Board />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="mytasks" element={<MyTasks />} />
+            <Route path="mydocs" element={<MyDocs />} />
           </Route>
         </Routes>
       </Suspense>

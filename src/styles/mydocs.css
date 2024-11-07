@@ -1,125 +1,320 @@
-/* Genel stil */
-.my-docs {
-    padding: 20px;
-  }
+.mydocs-main-container {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mydocs-upper-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mydocs-upper-title-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.mydocs-upper-buttons {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: start;
+  text-align: center;
+}
+
+.mydocs-line {
+  width: 100%;
+  border-bottom: 1px solid rgba(242, 242, 242, 1);
+}
+
+/* Wrapper for horizontal scrolling */
+.mydocs-lower-area-wrapper {
+  overflow-x: auto; /* Enable horizontal scroll */
+  padding-bottom: 1rem;
+  max-width: 100%;
+}
+
+/* Cards container with columns */
+.mydocs-lower-area {
+  display: flex;
+  gap: 20px; /* Space between columns of cards */
+}
+
+/* Each column containing 3 cards */
+.mydocs-card-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Styling for individual cards */
+.mydocs-card {
+  width: 210px;
+  height: 200px;
+  padding: 1rem;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  border: 1px solid rgba(28, 60, 132, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mydocs-card-title-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mydocs-card-tags{
+  display: flex;
+  flex-wrap: wrap;
+  gap:5px;
+}
+
+.mydocs-card-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 20px;
+  padding: 5px 10px;
+  border-radius: 15px;
+  color: rgba(28, 60, 132, 1); /* Ensures text is visible on colored backgrounds */
+  font-size: 12px;
+}
+
+.mydocs-card-tag {
+  display: flex;
+  align-items: center;
+  width: 75px;
+  height: 15px;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
+.bg-green {
+  background-color: rgba(161, 246, 121, 1);
+}
+
+.bg-turquoise {
+  background-color: rgba(54, 197, 240, 1);
+}
+
+.mydocs-comments {
+  display: flex;
+  gap: 4px;
+}
+
+.mydocs-title {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48.41px;
+  color: rgba(28, 60, 132, 1);
+}
+
+.mydocs-title-icon {
+  align-self: center;
+}
+
+.td-none {
+  text-decoration: none;
+  margin-left: 5px;
+  color: rgba(28, 60, 132, 1);
+}
+
+.mydocs-board-btn-area, .mydocs-list-btn-area {
+  display: flex;
+  text-align: center;
+  gap: 4px;
+}
+
+.mydocs-last-update-text {
+  color: rgba(172, 172, 172, 1);
+}
+
+.mydocs-card-title-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(28, 60, 132, 1);
+}
+
+.mydocs-board-button-area, .mydocs-list-button-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mydocs-board-button-text {
+  color: rgba(54, 197, 240, 1);
+}
+
+.add-docs-button-area {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+
+.add-docs-button {
+  width: 152px;
+  height: 50px;
+  border-radius: 25px;
+  border: none;
+  padding: 1rem;
+  background-color: rgba(54, 197, 240, 1);
+  color: rgba(255, 255, 255, 1);
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  position: absolute;
+  bottom: 5%;
+
+}
+
+.add-docs-button:hover {
+  background-color: rgba(94, 208, 243, 1);
+}
+
+.mydocs-board-button, .mydocs-list-button {
+  display: flex;
+  text-decoration: none;
+}
+
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Popup Content */
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 850px;
+  height: 90vh;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Header with Title and Close Button */
+.popup-header {
+  display: flex;
+}
+
+.popup-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Close Button */
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: end;
+}
+
+/* Title Input */
+.popup-title-input {
+  width: 90%;
+  padding: 8px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Tags Input */
+.popup-tags {
+  margin-bottom: 15px;
+  display: flex;
+}
+
+.popup-tags-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Custom Dropdown Styling */
+.tag-filter-dropdown {
+  position: relative;
+  cursor: pointer;
+  padding: 8px 12px;
+  color: black;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 8px;
+  border-bottom: 1px solid gray;
+  margin-left: auto;
+}
+
+.tag-filter-selected {
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.tag-filter-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 5px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.tag-filter-dropdown-item {
+  padding: 10px;
+  font-size: 14px;
+  color: #1f3c88;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tag-filter-dropdown-item:hover {
+  background-color: #e6f0ff;
+}
+
+.tag-filter-dropdown-item:not(:last-child) {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.mydocs-title-save-button{
+  border: none;
+  width: 30px;
   
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .header-title {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .view-toggle .btn-view {
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #e0e0e0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .documents-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-  }
-  
-  .document-card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
-    position: relative;
-  }
-  
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .document-title {
-    font-size: 16px;
-    font-weight: bold;
-  }
-  
-  .send-icon {
-    font-size: 16px;
-    color: #888;
-    cursor: pointer;
-  }
-  
-  .document-time {
-    font-size: 12px;
-    color: #888;
-  }
-  
-  .document-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .comments {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .comment-icon {
-    margin-right: 5px;
-    color: #3b82f6;
-  }
-  
-  .tags {
-    display: flex;
-    gap: 5px;
-  }
-  
-  .tag {
-    padding: 3px 8px;
-    border-radius: 5px;
-    font-size: 12px;
-    color: white;
-    text-transform: capitalize;
-  }
-  
-  .tag-ui {
-    background-color: #7ad7f0;
-  }
-  
-  .tag-marketing {
-    background-color: #4caf50;
-  }
-  
-  .tag-design {
-    background-color: #ff5722;
-  }
-  
-  .tag-seo {
-    background-color: #ff9800;
-  }
-  
-  .tag-backend {
-    background-color: #9c27b0;
-  }
-  
-  .add-docs-btn {
-    margin-top: 20px;
-    padding: 10px 15px;
-    background-color: #40b4ff;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-  }
+}

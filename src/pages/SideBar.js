@@ -66,14 +66,14 @@ const Sidebar = () => {
         <Link to="/workspaces/home" className="sidebar-blue-letter">Home</Link>
       </div>
 
-      <div className={`sidebar-menu ${isActive("/workspaces/tasks") ? "active" : ""}`}>
+      <div className={`sidebar-menu ${isActive("/workspaces/mytasks") ? "active" : ""}`}>
         <img className="sidebar-tasks-icon" src={SidebarMyTasks} alt="tasks" />
         <Link to="/workspaces/mytasks" className="sidebar-blue-letter">My Tasks</Link>
       </div>
 
-      <div className={`sidebar-menu ${isActive("/mydocs") ? "active" : ""}`}>
+      <div className={`sidebar-menu ${isActive("/workspaces/mydocs") ? "active" : ""}`}>
         <img className="sidebar-docs-icon" src={SidebarMyDocs} alt="docs" />
-        <a href="/mydocs" className="sidebar-blue-letter">My Docs</a>
+        <a href="/workspaces/mydocs" className="sidebar-blue-letter">My Docs</a>
       </div>
 
       <div className="sidebar-line"></div>
