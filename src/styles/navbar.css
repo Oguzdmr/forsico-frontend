@@ -20,11 +20,8 @@
 }
 
 .logo {
-    display: inline-flex;
-    justify-content: center;
-    width: 154px;
-    height: 53px;
-    gap: 0px;
+    display: block;
+    margin: 10px 0;
 }
 
 .navbar-leftside {

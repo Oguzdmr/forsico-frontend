@@ -4,6 +4,10 @@
     gap: 2rem;
 }
 
+body {
+    margin: 0;
+}
+
 .introduction-main{
     display: flex;
     justify-content: space-around;
@@ -55,6 +59,17 @@
     text-align: center;
 }
 
+.introduction-design {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.introduction-design img { 
+    width: 100%;
+}
+
 .introduction-board{
     margin-top: 5rem;
     display: flex;
@@ -78,7 +93,7 @@
     font-size: 25px;
     font-weight: 500;
     color: rgba(255, 255, 255, 1);
-    width: 342px;
+    /* width: 342px; */
     height: 46px;
 }
 
@@ -106,7 +121,7 @@
 .introduction-board-card{
     border: 1px dashed gray;
     border-radius: 15px;
-    width: 342px;
+    /* width: 342px; */
     height: 182px;
 }
 

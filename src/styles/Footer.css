@@ -1,65 +1,44 @@
 /* General Footer Styles */
 .footer-container {
-    margin-top: 1rem;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background-color: #1d4c98;
+    min-height: 360px;
+    margin-bottom: 140px;
+    margin-top: 140px;
+}
+
+.footText {
     width: 100%;
-    background-color: #f5f7fa;
-    /* Keeping the main background neutral */
+    max-width: 540px;
 }
 
-/* Footer Content Section */
-.footer-content {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    position: relative;
-    border-radius: 20px;
-    width: 100%;
-}
-
-.footer-left-area {
-    width: 30%;
-    color: #fff;
-    /* White text on dark background */
-    z-index: 999;
-}
-
-.left-area-title .footer-left-h2 {
+.footer-left-h2 {
     font-size: 2.5rem;
     color: #fff;
 }
 
-.left-area-content .footer-left-p {
+.footer-left-p {
     font-size: 1rem;
     color: #ffffff;
     line-height: 1.5rem;
     margin-top: 1rem;
 }
 
-.footer-input-group {
-    padding: 1rem;
-    width: 30%;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 2;
-    /* Ensuring the form stays above the background */
-}
-
-.footer-input-group .footer-form {
-    display: flex;
-    flex-direction: column;
+.footer-form {
     background-color: white;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 2rem;
     width: 100%;
+    max-width: 460px;
+
+    position: absolute;
+    top: -82px;
+}
+
+@media (max-width: 991px) { 
+    .footer-form { top:258px; }
+    .footer-container { margin-bottom: 480px;}
 }
 
 .input-group-footer {
@@ -93,7 +72,7 @@
 }
 
 .send-btn {
-    align-self: center;
+    display: block;
     background-color: #36C5F0;
     color: white;
     padding: 12px;
@@ -101,9 +80,8 @@
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    width: 100%;
     text-align: center;
-    margin-top: 1rem;
+    margin: 0 auto;
     width: 202px;
     height: 60px;
 }
@@ -114,64 +92,31 @@
 
 /* Footer Bottom Section */
 .footer-bottom {
-    width: 100%;
-    height: 10rem;
+    height: 176px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
-    background-color: #fff;
-    /* White background */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .footer-bottom .logo .footer-bottom-image {
-    width: 20rem;
-    height: 3rem;
+    max-width: 320px;
 }
 
 .footer-bottom .footer-bottom-p {
     font-size: 0.9rem;
     color: #888;
     margin: 0;
-    text-align: center;
-}
-
-.social-icons {
-    display: flex;
-    justify-content: flex-end;
 }
 
 .social-icons .footer-social-icon {
+    display: block;
     cursor: pointer;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.social-icons .footer-social-image {
-    width: 70px;
-    height: 70px;
-}
 
 /* Icon Styles */
 
-.background {
-    width: 100%;
-    height: 350px;
-    position: relative;
-    background-color: #1d4c98;
-    left: 0;
-    top: 20%;
-    border: none;
-    border-radius: 1rem;
-
-}
-
-.background {
-    position: absolute;
-}
 
 .footer-message {
     height: 10rem;

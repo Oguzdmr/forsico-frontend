@@ -57,20 +57,18 @@ const Footer = () => {
   };
 
   return (
-    <footer className="footer-container">
-      <div className="footer-content">
-        <div className="background"></div>
-        <div className="footer-left-area">
-          <div className="left-area-title">
+    <div className="container-fluid">
+      <div className="row footer-container">
+
+        <div className="col-lg-6 d-flex justify-content-center align-items-center">
+          <div className="footText">
             <h2 className="footer-left-h2">Contact us for more information</h2>
-          </div>
-          <div className="left-area-content">
-            <p className="footer-left-p">
-            Have questions, feedback, or need assistance? We’re here to help! Reach out to us, and our team will get back to you as soon as possible.
-            </p>
+            <p className="footer-left-p">Have questions, feedback, or need assistance? We’re here to help!
+              Reach out to us, and our team will get back to you as soon as possible.</p>
           </div>
         </div>
-        <div className="footer-input-group">
+
+        <div className="col-lg-6 d-flex justify-content-center">
           <form className="footer-form" type="post" onSubmit={handleFormSubmit}>
             <div className="input-group-footer">
               <img
@@ -87,6 +85,7 @@ const Footer = () => {
                 required
               />
             </div>
+
             <div className="input-group-footer">
               <img
                 className="input-group-image"
@@ -132,30 +131,33 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="footer-bottom">
-        <div className="logo">
-          <span href="#">
-            <img className="footer-bottom-image" src={FooterLogo} alt="logo" />
-          </span>
+      <div className="row footer-bottom">
+        <div className="col-lg-4 text-center text-lg-start">
+          <a href="#" className="logo"><img className="footer-bottom-image" src={FooterLogo} alt="logo" /></a>
         </div>
-        <div className="footer-middle">
-          <p className="footer-bottom-p">
-            © 2024 Forsico. All rights reserved.
-          </p>
+        <div className="col-lg-4 text-center">
+            <p className="footer-bottom-p">
+              © 2024 Forsico. All rights reserved.
+            </p>
         </div>
-        <div className="social-icons">
-          <a className="icon linkedin-icon footer-social-icon" href="https://www.linkedin.com/company/forsicoio/" target="_blank">
-            <img src={linkedInIcon} alt="linkedin" />
-          </a>
-          <a className="icon instagram-icon footer-social-icon" href="https://www.instagram.com/forsico.io/" target="_blank">
-            <img src={instagramIcon} alt="instagram" />
-          </a>
-          <a className="icon linkedin-icon footer-social-icon" href="https://x.com/forsicoio?s=21&t=x0z6d1vm-mTi9VXGXbnRsw" target="_blank">
-            <img src={twitterIcon} alt="x" />
-          </a>
+        <div className="col-lg-4">
+          <div className="social-icons d-flex justify-content-center justify-content-lg-end">
+            <a className="icon linkedin-icon footer-social-icon" href="https://www.linkedin.com/company/forsicoio/" target="_blank">
+              <img src={linkedInIcon} alt="linkedin" />
+            </a>
+            <a className="icon instagram-icon footer-social-icon" href="https://www.instagram.com/forsico.io/" target="_blank">
+              <img src={instagramIcon} alt="instagram" />
+            </a>
+            <a className="icon linkedin-icon footer-social-icon" href="https://x.com/forsicoio?s=21&t=x0z6d1vm-mTi9VXGXbnRsw" target="_blank">
+              <img src={twitterIcon} alt="x" />
+            </a>
+          </div>
         </div>
       </div>
-    </footer>
+
+    </div>
+
+
   );
 };
 
