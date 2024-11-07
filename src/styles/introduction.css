@@ -1,45 +1,48 @@
-.introduction-main-container{
+.introduction-main-container {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.introduction-main{
+.introduction-main {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     margin-top: 90px;
-    margin-left: 90px;
     align-items: center;
 }
-.introdoction-get-start{
+
+.introdoction-get-start {
     display: flex;
     justify-content: center;
     flex-direction: column;
 }
-.introdoction-get-start h2{
+
+.introdoction-get-start .introduction-get-start-h2 {
     font-size: 50px;
     line-height: 60px;
     font: Inter;
     padding: 0;
     margin: 0;
 }
-.introdoction-get-start h2 span{
+
+.introdoction-get-start h2 span {
     font-size: 50px;
     line-height: 60px;
-    font: Inter;
     color: #ED1E5A;
 }
-.introdoction-get-start p{
+
+.introdoction-get-start .intoduction-get-start-description {
     font-size: 20px;
     line-height: 25px;
-    font: Inter;
     font-weight: 500;
     color: #1C3C84;
     padding-top: 25px;
     padding-bottom: 25px;
     margin: 0;
 }
-.introdoction-get-start button{
+
+
+.introdoction-get-start .introduction-get-start-button {
     background-color: #ED1E5A;
     border: none;
     color: #fff;
@@ -55,23 +58,22 @@
     text-align: center;
 }
 
-.introduction-board{
+.introduction-board {
     margin-top: 5rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     gap: 18px;
 }
 
-.introduction-board-main{
+.introduction-board-main {
+    width: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
     display: flex;
-    gap: 110px;
 }
 
-.board-title-name{
+.board-title-name {
     border-radius: 15px;
     display: flex;
     align-items: center;
@@ -82,46 +84,46 @@
     height: 46px;
 }
 
-.board-title-name-text{
+.board-title-name-text {
     margin-left: 16px;
 }
-.bg-turkuoise{
-    background-color:rgba(54, 197, 240, 1) ;
+
+.bg-turkuoise {
+    background-color: rgba(54, 197, 240, 1);
 }
 
-.bg-blue{
-    background-color:rgba(28, 60, 132, 1) ;
+.bg-blue {
+    background-color: rgba(28, 60, 132, 1);
 }
 
-.bg-green{
-    background-color:rgba(161, 246, 121, 1) ;
+.bg-green {
+    background-color: rgba(161, 246, 121, 1);
 }
 
-.introduction-board-card-main{
+.introduction-board-card-main {
     display: flex;
     gap: 110px;
 
 }
 
-.introduction-board-card{
+.introduction-board-card {
     border: 1px dashed gray;
     border-radius: 15px;
     width: 342px;
     height: 182px;
 }
 
-.introduction-card-icon{
+.introduction-card-icon {
     margin-top: 40px;
     width: 442px;
     height: 282px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transform: translate(454px);
 
 }
 
-.board-card-icon{
+.board-card-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -129,33 +131,101 @@
 
 
 
-
 .introduction-card-icon {
     position: relative;
-    animation: moveIcon 10s infinite; /* Toplam 8 saniyelik döngü */
+    animation: moveIcon 10s infinite;
+    /* Toplam 8 saniyelik döngü */
 }
 
 /* Animasyon tanımı */
 @keyframes moveIcon {
     0% {
-        transform: translateX(0); /* Başlangıç pozisyonu */
+        transform: translateX(0);
+        /* Başlangıç pozisyonu */
     }
+
     17% {
-        transform: translateX(454px); /* 454px sağa gider */
+        transform: translateX(454px);
+        /* 454px sağa gider */
     }
+
     34% {
-        transform: translateX(454px); /* 454px sağa gider */
+        transform: translateX(454px);
+        /* 454px sağa gider */
     }
+
     51% {
-        transform: translateX(908px); /* 454px sağa gider */
+        transform: translateX(908px);
+        /* 454px sağa gider */
     }
+
     68% {
-        transform: translateX(908px); /* Ortada bekler */
+        transform: translateX(908px);
+        /* Ortada bekler */
     }
+
     85% {
-        transform: translateX(0); /* Başlangıç pozisyonuna döner */
+        transform: translateX(0);
+        /* Başlangıç pozisyonuna döner */
     }
+
     100% {
-        transform: translateX(0); /* Başlangıç pozisyonuna döner */
+        transform: translateX(0);
+        /* Başlangıç pozisyonuna döner */
+    }
+}
+
+.introduction-board-list{
+display: flex;
+flex-direction: column;
+gap: 18px;
+}
+
+
+/* Responsive adjustments */
+
+@media screen and (max-width: 430px) {
+    .introduction-main-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .introdoction-get-start{
+        width: 390px;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .introduction-main{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+    }
+
+    .introdoction-get-start .introduction-get-start-button{
+        width: 167px;
+        height: 56px;
+        border-radius: 39px;
+        padding: 15px;
+        font-size: 20px;
+    }
+
+    .introduction-design{
+        display: flex;
+        justify-content: start;
+        align-items: start;
+    }
+
+    .introduction-design-image{
+        width: 370px;
+        height: 185px;
+    }
+
+    .introduction-card-icon {
+        animation:none;
+        /* Toplam 8 saniyelik döngü */
     }
 }
