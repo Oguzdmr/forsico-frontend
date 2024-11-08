@@ -7,14 +7,14 @@ import App from "./App";
 const originalFetch = window.fetch;
 
 window.fetch = async (...args) => {
-  const token = localStorage.getItem("token"); 
+  const token = (JSON.parse(localStorage.getItem("token") || "{}") || {}).token;
   if (token) {
     const tokenExpiration = JSON.parse(atob(token.split(".")[1])).exp * 1000;
     const isTokenExpired = Date.now() > tokenExpiration;
 
     if (isTokenExpired) {
       localStorage.removeItem("token");
-      window.location.href = "/"; 
+      window.location.href = "/";
       return Promise.reject(new Error("Token expired"));
     }
   }

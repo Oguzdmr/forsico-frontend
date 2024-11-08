@@ -59,3 +59,30 @@
 .save-btn:hover {
     background-color: #28A0DB;
 }
+
+.ai-dropdown-toolbar {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px;
+    z-index: 10;
+    max-width: 150px;
+  }
+  
+  .ai-dropdown-toolbar button {
+    display: block;
+    padding: 8px 12px;
+    width: 100%;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+  }
+  
+  .ai-dropdown-toolbar button:hover {
+    background-color: #f0f0f0;
+  }

@@ -29,19 +29,19 @@ const WorkspaceAIPage = () => {
   const [error, setError] = useState(null); // Hata mesajı için yeni state
 
   const _workspaceName = useSelector((state) =>
-    state.workspaces.entities.find((workspace) => workspace._id === workspaceId)?.name || ""
+    state.workspaces?.entities?.find((workspace) => workspace._id === workspaceId)?.name || ""
   );
 
   const _workspaceDesc = useSelector((state) =>
-    state.workspaces.entities.find((workspace) => workspace._id === workspaceId)?.description || ""
+    state.workspaces?.entities?.find((workspace) => workspace._id === workspaceId)?.description || ""
   );
 
   const _boardId = useSelector((state) =>
-    state.workspaces.entities.find((workspace) => workspace._id === workspaceId)?.boards[0]?._id || ""
+    state.workspaces?.entities?.find((workspace) => workspace._id === workspaceId)?.boards[0]?._id || ""
   );
 
   const _listId = useSelector((state) =>
-    state.workspaces.entities.find((workspace) => workspace._id === workspaceId)?.boards[0]?.lists[0]?._id || ""
+    state.workspaces?.entities?.find((workspace) => workspace._id === workspaceId)?.boards[0]?.lists[0]?._id || ""
   );
 
   const ownerId = useSelector((state) => state.auth.user.id || "");
