@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/workspaceCss/workspaceAi.css";
+import "../../styles/workspaceCss/TaskModal.css";
 import WorkspaceTitleIcon from "../../assets/workspaceAi-title-icon.svg";
 import TickIcon from "../../assets/ai-message-tick-icon.svg";
 import CrossIcon from "../../assets/ai-message-cross-icon.svg";

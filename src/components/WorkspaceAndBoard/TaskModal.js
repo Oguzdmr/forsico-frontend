@@ -27,6 +27,7 @@ import Crossİcon from "../../assets/ai-message-cross-icon.svg";
 import { fetchTask, updateTaskStatus, reset } from "../../store/taskSlice.js";
 import { RotatingLines } from "react-loader-spinner";
 import TaskApi from "../../api/BoardApi/task.js";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const TaskModal = ({
   taskId,
@@ -138,7 +139,7 @@ const TaskModal = ({
 
         console.log("statuses", statuses);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const getComments = async () => {
@@ -163,7 +164,7 @@ const TaskModal = ({
   const addComment = (newComment) => {
     try {
       taskApi.postTaskComment(token, workspaceId, taskId, newComment);
-    } catch (error) {}
+    } catch (error) { }
   };
   const generateSubtasks = async (subtaskTitle) => {
     if (!subtaskTitle.trim()) {
@@ -249,7 +250,7 @@ const TaskModal = ({
     setStatusModalOpen(false);
   };
 
-  const handleRoot = () => {};
+  const handleRoot = () => { };
 
   const handlePrioritySelect = (priority) => {
     setSelectedPriority(priority); // Save both label and icon
@@ -478,9 +479,10 @@ const TaskModal = ({
           </div>
         </div>
         <div className="taskcard-info-line"></div>
-        <div className="taskcard-info-lower-area">
-          <div className="taskcard-info-left-lower">
-            <div className="taskcard-info-title-area">
+        <div className="row">
+
+          <div className="col-lg-8">
+            <div className="taskcard-info-title-area mb-4">
               {isTitleEditing ? (
                 <input
                   type="text"
@@ -492,7 +494,7 @@ const TaskModal = ({
                 />
               ) : (
                 <p
-                  className="taskcard-info-title"
+                  className="taskcard-info-title m-0"
                   onClick={() => setIsTitleEditing(true)}
                 >
                   {taskTitle}
@@ -517,7 +519,7 @@ const TaskModal = ({
                         ? handleSaveDescription
                         : toggleDescriptionEditing
                     }
-                    cancelCallback={()=>{
+                    cancelCallback={() => {
                       setTempDescription(description);
                       setIsDescriptionEditing(false);
                     }}
@@ -558,13 +560,12 @@ const TaskModal = ({
               <h3 className="comments-title">Comments</h3>
 
               {/* Display list of comments */}
-              <div className="taskcard-info-comments-list">
+              <div className="taskcard-info-comments-list mb-4">
                 {comments.map((comment, index) => (
                   <div
                     key={index}
-                    className={`taskcard-info-textarea comment-item ${
-                      editingIndex === index ? "comment-editing" : ""
-                    }`}
+                    className={`taskcard-info-textarea ${editingIndex === index ? "comment-editing" : ""
+                      }`}
                   >
                     {editingIndex === index ? (
                       <>
@@ -618,7 +619,7 @@ const TaskModal = ({
 
             {/* Render Generated Subtasks */}
             {/* Subtask Generation Section */}
-            <div className="taskcard-info-subtask-area">
+            <div className="taskcard-info-subtask-area mb-4">
               {showSubtaskMessage && (
                 <p className="subtask-message">Create subtasks of this task</p>
               )}
@@ -653,11 +654,10 @@ const TaskModal = ({
                         variants={cardAnimation}
                         exit={{ opacity: 0, scale: 0 }}
                         transition={{ duration: 0.5 }}
-                        className={`workspaceAi-task ${
-                          subtaskStates[task.id] === "rejected"
+                        className={`workspaceAi-task ${subtaskStates[task.id] === "rejected"
                             ? "rejected-task"
                             : ""
-                        }`}
+                          }`}
                       >
                         <div className="workspaceAi-task-card">
                           <div className="task-header">{task.name}</div>
@@ -688,182 +688,185 @@ const TaskModal = ({
               </motion.div>
             </div>
 
-            <div className="taskcard-info-checklist-area">
+            <div className="taskcard-info-checklist-area mb-4 mb-lg-0">
               <input className="checklist-checkbox" type="checkbox" />
-              <p className="taskcard-info-gray-letter">
+              <p className="taskcard-info-gray-letter m-0">
                 Create a checklist for this task
               </p>
             </div>
           </div>
 
-          <div className="taskcard-info-right-lower">
-            <div className="taskcard-info-assignees">
-              <a className="td-none" href="#" onClick={toggleAssigneeModal}>
-                <img
-                  src={Assignees}
-                  alt="assignees"
-                  className="assignees-icon"
-                />
-                Assignees
-              </a>
-
-              {selectedAssignee.avatar ? (
-                <img
-                  src={selectedAssignee.avatar}
-                  alt="selected assignee avatar"
-                  className="selected-assignee-avatar"
-                />
-              ) : (
-                <img src={Plus} alt="plus" onClick={toggleAssigneeModal} />
-              )}
-
-              {isAssigneeModalOpen && (
-                <div className="assignee-modal" ref={assigneeModalRef}>
-                  <div className="assignee-modal-header">
-                    <h3 className="assignee-modal-title">Assignees</h3>
-                    <img
-                      src={AddMemberIcon}
-                      alt="Add Member"
-                      className="add-member-icon"
-                      onClick={() => setAssigneeModalOpen(false)}
-                    />
-                  </div>
-                  <div className="assignee-modal-divider"></div>
-                  {boardMembers.map((member) => (
-                    <div
-                      className="assignee-modal-content"
-                      onClick={() => handleAssigneeSelect(member)}
-                    >
-                      <img
-                        src={member.profilePicture}
-                        alt="Profile"
-                        className="assignee-avatar"
-                      />
-                      <div className="assignee-name">
-                        {member.firstName} {member.lastName}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="taskcard-info-due-date">
-              <a
-                className="td-none"
-                href="#"
-                onClick={() => setIsDatePickerOpen(true)}
-              >
-                <img src={DueDate} alt="duedate" />
-                Due Date
-              </a>
-              {selectedDate ? (
-                <a
-                  className="taskmodal-selected-date"
-                  onClick={() => setIsDatePickerOpen(true)}
-                >
-                  {format(selectedDate, "MMMM dd")}
-                </a>
-              ) : (
-                <img
-                  src={Plus}
-                  alt="plus"
-                  onClick={() => setIsDatePickerOpen(true)}
-                />
-              )}
-              {isDatePickerOpen && (
-                <div className="datepicker-wrapper">
-                  <DatePicker
-                    selected={selectedDate}
-                    onChange={handleDateChange}
-                    dateFormat="dd MMMM"
-                    className="custom-datepicker"
-                    popperPlacement="bottom"
-                    inline
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className="taskcard-info-status">
-              <a className="td-none" href="#" onClick={toggleStatusModal}>
-                <img src={Status} alt="status" />
-                Status
-              </a>
-              {selectedStatus ? (
-                <span className="status-text">{selectedStatus}</span>
-              ) : (
-                <img src={Plus} alt="plus" onClick={toggleStatusModal} />
-              )}
-
-              {isStatusModalOpen && (
-                <div className="status-modal" ref={statusModalRef}>
-                  <div className="status-modal-header">
-                    <h3 className="status-modal-title">Status</h3>
-                  </div>
-                  <div className="status-modal-divider"></div>
-                  <div className="status-options">
-                    {statusOptions.map((status) => (
-                      <div
-                        key={status._id}
-                        className="status-option"
-                        onClick={() => handleStatusSelect(status)}
-                      >
-                        {status.name}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="taskcard-info-priority">
-              <a className="td-none" href="#" onClick={togglePriorityModal}>
-                <img src={Priority} alt="priority icon" />
-                Priority
-              </a>
-
-              {selectedPriority.label ? (
-                <div className="selected-priority">
+          <div className="col-lg-4">
+            <div className="taskcard-info-right-lower">
+              <div className="taskcard-info-assignees mb-4">
+                <a className="td-none" href="#" onClick={toggleAssigneeModal}>
                   <img
-                    src={selectedPriority.icon}
-                    alt="selected priority icon"
-                    className="priority-icon"
+                    src={Assignees}
+                    alt="assignees"
+                    className="assignees-icon"
                   />
-                  <span className="priority-label">
-                    {selectedPriority.label}
-                  </span>{" "}
-                  {/* Show the priority label */}
-                </div>
-              ) : (
-                <img src={Plus} alt="plus" onClick={togglePriorityModal} />
-              )}
+                  Assignees
+                </a>
 
-              {isPriorityModalOpen && (
-                <div className="priority-modal" ref={priorityModalRef}>
-                  <div className="priority-modal-header">
-                    <h3 className="priority-modal-title">Priority</h3>
-                  </div>
-                  <div className="priority-modal-divider"></div>
-                  <div className="priority-options">
-                    {priorityOptions.map((priority) => (
+                {selectedAssignee.avatar ? (
+                  <img
+                    src={selectedAssignee.avatar}
+                    alt="selected assignee avatar"
+                    className="selected-assignee-avatar"
+                  />
+                ) : (
+                  <img src={Plus} alt="plus" onClick={toggleAssigneeModal} />
+                )}
+
+                {isAssigneeModalOpen && (
+                  <div className="assignee-modal" ref={assigneeModalRef}>
+                    <div className="assignee-modal-header">
+                      <h3 className="assignee-modal-title">Assignees</h3>
+                      <img
+                        src={AddMemberIcon}
+                        alt="Add Member"
+                        className="add-member-icon"
+                        onClick={() => setAssigneeModalOpen(false)}
+                      />
+                    </div>
+                    <div className="assignee-modal-divider"></div>
+                    {boardMembers.map((member) => (
                       <div
-                        key={priority.label}
-                        className="priority-option"
-                        onClick={() => handlePrioritySelect(priority)}
+                        className="assignee-modal-content"
+                        onClick={() => handleAssigneeSelect(member)}
                       >
                         <img
-                          src={priority.icon}
-                          alt={`${priority.label} icon`}
+                          src={member.profilePicture}
+                          alt="Profile"
+                          className="assignee-avatar"
                         />
-                        {priority.label}
+                        <div className="assignee-name">
+                          {member.firstName} {member.lastName}
+                        </div>
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+
+              <div className="taskcard-info-due-date mb-4">
+                <a
+                  className="td-none"
+                  href="#"
+                  onClick={() => setIsDatePickerOpen(true)}
+                >
+                  <img src={DueDate} alt="duedate" />
+                  Due Date
+                </a>
+                {selectedDate ? (
+                  <a
+                    className="taskmodal-selected-date"
+                    onClick={() => setIsDatePickerOpen(true)}
+                  >
+                    {format(selectedDate, "MMMM dd")}
+                  </a>
+                ) : (
+                  <img
+                    src={Plus}
+                    alt="plus"
+                    onClick={() => setIsDatePickerOpen(true)}
+                  />
+                )}
+                {isDatePickerOpen && (
+                  <div className="datepicker-wrapper">
+                    <DatePicker
+                      selected={selectedDate}
+                      onChange={handleDateChange}
+                      dateFormat="dd MMMM"
+                      className="custom-datepicker"
+                      popperPlacement="bottom"
+                      inline
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="taskcard-info-status mb-4">
+                <a className="td-none" href="#" onClick={toggleStatusModal}>
+                  <img src={Status} alt="status" />
+                  Status
+                </a>
+                {selectedStatus ? (
+                  <span className="status-text">{selectedStatus}</span>
+                ) : (
+                  <img src={Plus} alt="plus" onClick={toggleStatusModal} />
+                )}
+
+                {isStatusModalOpen && (
+                  <div className="status-modal" ref={statusModalRef}>
+                    <div className="status-modal-header">
+                      <h3 className="status-modal-title">Status</h3>
+                    </div>
+                    <div className="status-modal-divider"></div>
+                    <div className="status-options">
+                      {statusOptions.map((status) => (
+                        <div
+                          key={status._id}
+                          className="status-option"
+                          onClick={() => handleStatusSelect(status)}
+                        >
+                          {status.name}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="taskcard-info-priority mb-4">
+                <a className="td-none" href="#" onClick={togglePriorityModal}>
+                  <img src={Priority} alt="priority icon" />
+                  Priority
+                </a>
+
+                {selectedPriority.label ? (
+                  <div className="selected-priority">
+                    <img
+                      src={selectedPriority.icon}
+                      alt="selected priority icon"
+                      className="priority-icon"
+                    />
+                    <span className="priority-label">
+                      {selectedPriority.label}
+                    </span>{" "}
+                    {/* Show the priority label */}
+                  </div>
+                ) : (
+                  <img src={Plus} alt="plus" onClick={togglePriorityModal} />
+                )}
+
+                {isPriorityModalOpen && (
+                  <div className="priority-modal" ref={priorityModalRef}>
+                    <div className="priority-modal-header">
+                      <h3 className="priority-modal-title">Priority</h3>
+                    </div>
+                    <div className="priority-modal-divider"></div>
+                    <div className="priority-options">
+                      {priorityOptions.map((priority) => (
+                        <div
+                          key={priority.label}
+                          className="priority-option"
+                          onClick={() => handlePrioritySelect(priority)}
+                        >
+                          <img
+                            src={priority.icon}
+                            alt={`${priority.label} icon`}
+                          />
+                          {priority.label}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/introduction.css'
-import '../../styles/bootstrap-grid.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import UpperRight from "../../assets/home-page-upper-right.svg"
 import MiddleArea from "../../assets/home-page-middle-area.svg"
 import İntroductionCard from "../../assets/introduction-card.svg"

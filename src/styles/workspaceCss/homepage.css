@@ -109,11 +109,11 @@
     border-radius: 0.75rem; /* 12px */
     padding: 1.25rem; /* 20px */
     box-shadow: 0rem 0.25rem 0.5rem rgba(0, 0, 0, 0.1); /* 0px 4px 8px */
-    width: 15.625rem; /* 250px */
+    width: 100%;
+    max-width: 15.625rem; /* 250px */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 5.9375rem; /* 95px */
 }
 
 .workspace-card-upperside {

@@ -15,7 +15,8 @@
     border-radius: 10px;
     padding: 30px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    width: 30em;
+    width: 100%;
+    max-width: 30em;
     height: 40em;
     position: relative;
     display: flex;
@@ -23,6 +24,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    z-index: 999;
 }
 
 .create-board-modal-close {
