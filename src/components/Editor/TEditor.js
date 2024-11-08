@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import JoditEditor from "jodit-react";
 import "./EditorStyles.css";
+const config = require("../../config");
 
 const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
   const editor = useRef(null);
@@ -72,7 +73,7 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer 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`,
+          Authorization: `Bearer ${config.openAiToken}`,
         },
         body: JSON.stringify({
           model: "gpt-3.5-turbo-instruct",
