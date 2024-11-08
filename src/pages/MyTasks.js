@@ -30,7 +30,7 @@ function MyTasks() {
   });
 
   useEffect(() => {
-    if (status === "idle" && workspaces.length > 0) {
+    if (status === "idle" && workspaces?.length > 0) {
       dispatch(fetchMyTasks({ workspaceId: (workspaces || [])[0]?._id }));
     }
   }, [dispatch, status, workspaces]);

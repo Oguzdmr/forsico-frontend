@@ -61,7 +61,7 @@ const Navbar = () => {
   const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
 
   useEffect(() => {
-    if (isAuthenticated && workspaces.length > 0) {
+    if (isAuthenticated && workspaces?.length > 0) {
       const _workspaceIds = workspaces?.map((workspace) => workspace._id);
       const _boardIds = workspaces
         ?.map((workspace) => {
@@ -95,7 +95,7 @@ const Navbar = () => {
   }, [notifications]);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:3001");
+    const socket = new WebSocket(`wss://${window.location.host}`);
 
     socket.onopen = () => {
       console.log("WebSocket bağlantısı kuruldu.");
