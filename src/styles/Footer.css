@@ -92,7 +92,7 @@
 
 /* Footer Bottom Section */
 .footer-bottom {
-    height: 176px;
+    min-height: 136px;
     display: flex;
     justify-content: space-between;
     align-items: center;

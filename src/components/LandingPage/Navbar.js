@@ -4,7 +4,9 @@ import SignUpModal from "../Auth/SignUpModal";
 import ForgotPasswordModal from "../Auth/ForgotPasswordModal";
 import Button from "npm-forsico-ui/dist/Button";
 import Dropdown from "npm-forsico-ui/dist/Dropdown";
-import "../../styles/navbar.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import "../../styles/navbar.css"; 
 import { Link } from "react-router-dom";
 import ForsicoLogoWhite from "../../assets/forsico-logo-white.svg";
 import HasNotificationIcon from "../../assets/has-notification-icon.svg";
@@ -332,295 +334,332 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="navbar">
-      <div className="navbar-leftside">
-        <Link className="logo" to="/">
-          <img src={ForsicoLogoWhite}></img>
-        </Link>
 
-        {!isAuthenticated && (
-          <div className="leftside-buttons">
-            <Dropdown
-              items={projectItems}
-              onSelect={handleSelect}
-              selectedItem={selectedItem}
-              title="Project"
-            />
-            <Dropdown
-              items={solutionsItems}
-              onSelect={handleSelect}
-              selectedItem={selectedItem}
-              title="Solutions"
-            />
-            <Dropdown
-              items={pricingItems}
-              onSelect={handleSelect}
-              selectedItem={selectedItem}
-              title="Pricing"
-            />
-            <Dropdown
-              items={enterpriseItems}
-              onSelect={handleSelect}
-              selectedItem={selectedItem}
-              title="Enterprise"
-            />
-          </div>
-        )}
-      </div>
-      <div className="navbar-rightside">
-        {isAuthenticated ? (
-          <>
-            <div className="navbar-search-bar">
-              <div className="input-wrapper">
-                <img
-                  src={NavbarSearchIcon}
-                  className="navbar-search-icon"
-                ></img>
-                <input
-                  type="text"
-                  className="navbar-search-input"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={handleSearch}
-                  onFocus={handleSearchInputFocus}
-                  onBlur={handleSearchInputBlur}
-                ></input>
-                {isSearchDropdownOpen && (
-                  <div
-                    className="search-dropdown"
-                    onScroll={handleSearchScroll}
-                    ref={searchDropdownRef}
-                  >
-                    {searchResults?.length <= 0 || searchQuery.length < 3 ? (
-                      <div className="is-empty-search">
-                        {searchResultsStatus === "loading" ? (
-                          <div>
-                            <RotatingLines
-                              height="40"
-                              width="40"
-                              radius="9"
-                              strokeColor="#36C5F0"
-                              ariaLabel="loading"
-                              wrapperStyle
-                              wrapperClass
-                            />
+
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+
+        <Link className="navbar-brand logo" to="/"><img src={ForsicoLogoWhite}></img></Link>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-lg-6">
+                {isAuthenticated ? (
+                  ""
+                ) : (
+                  <ul class="navbar-nav leftside-buttons">
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown link
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                  // <div className="leftside-buttons">
+                  //   <Dropdown
+                  //     items={projectItems}
+                  //     onSelect={handleSelect}
+                  //     selectedItem={selectedItem}
+                  //     title="Project"
+                  //   />
+                  //   <Dropdown
+                  //     items={solutionsItems}
+                  //     onSelect={handleSelect}
+                  //     selectedItem={selectedItem}
+                  //     title="Solutions"
+                  //   />
+                  //   <Dropdown
+                  //     items={pricingItems}
+                  //     onSelect={handleSelect}
+                  //     selectedItem={selectedItem}
+                  //     title="Pricing"
+                  //   />
+                  //   <Dropdown
+                  //     items={enterpriseItems}
+                  //     onSelect={handleSelect}
+                  //     selectedItem={selectedItem}
+                  //     title="Enterprise"
+                  //   />
+                  // </div>
+                )}
+              </div>
+              <div className="col-lg-6 col-lg-6 my-4 my-lg-0">
+                {isAuthenticated ? (
+                  <div className="d-flex">
+                    <div className="navbar-search-bar">
+                      <div className="input-wrapper">
+                        <img
+                          src={NavbarSearchIcon}
+                          className="navbar-search-icon"
+                        ></img>
+                        <input
+                          type="text"
+                          className="navbar-search-input"
+                          placeholder="Search..."
+                          value={searchQuery}
+                          onChange={handleSearch}
+                          onFocus={handleSearchInputFocus}
+                          onBlur={handleSearchInputBlur}
+                        ></input>
+                        {isSearchDropdownOpen && (
+                          <div
+                            className="search-dropdown"
+                            onScroll={handleSearchScroll}
+                            ref={searchDropdownRef}
+                          >
+                            {searchResults?.length <= 0 || searchQuery.length < 3 ? (
+                              <div className="is-empty-search">
+                                {searchResultsStatus === "loading" ? (
+                                  <div>
+                                    <RotatingLines
+                                      height="40"
+                                      width="40"
+                                      radius="9"
+                                      strokeColor="#36C5F0"
+                                      ariaLabel="loading"
+                                      wrapperStyle
+                                      wrapperClass
+                                    />
+                                  </div>
+                                ) : (
+                                  " You need to type at least 3 characters to search."
+                                )}
+                              </div>
+                            ) : (
+                              <div className="search-results">
+                                {searchResults?.map((searchResult, index) => (
+                                  <Link
+                                    onClick={handleSearchResultLinkClick}
+                                    key={index}
+                                    to={`/workspaces/board/${searchResult.workspaceId}/${searchResult.boardId?._id}/?selectedTask=${searchResult._id}`}
+                                  >
+                                    <li className="search-result">
+                                      <div className="top">
+                                        <img
+                                          alt="priority"
+                                          className="priority-icon"
+                                          src={flag}
+                                        ></img>
+                                        <h3 className="task-name">
+                                          {searchResult.name}
+                                        </h3>
+                                      </div>
+                                      <div className="bottom">
+                                        <p className="board-name">
+                                          {searchResult.boardId?.name}
+                                        </p>
+                                      </div>
+                                    </li>
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                            <div>
+                              {areSearchResultsLoading ? (
+                                <div className="searchScroll">
+                                  <div>
+                                    <RotatingLines
+                                      height="40"
+                                      width="40"
+                                      radius="9"
+                                      strokeColor="#36C5F0"
+                                      ariaLabel="loading"
+                                      wrapperStyle
+                                      wrapperClass
+                                    />
+                                  </div>
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                            </div>
                           </div>
-                        ) : (
-                          " You need to type at least 3 characters to search."
                         )}
                       </div>
-                    ) : (
-                      <div className="search-results">
-                        {searchResults?.map((searchResult, index) => (
+                    </div>
+
+                    <div className="navbar-notification-button mx-3">
+                      <input
+                        id="notification-dropdown-toggler"
+                        checked={notificationDropdown}
+                        onChange={handleNotificationButtonChange}
+                        type="checkbox"
+                      ></input>
+                      <label htmlFor="notification-dropdown-toggler">
+                        {hasUnReadNotification ? (
+                          <img src={HasNotificationIcon}></img>
+                        ) : (
+                          <img src={NotificationIcon}></img>
+                        )}
+                      </label>
+                      <div
+                        className="notification-dropdown"
+                        ref={notificationDropdownRef}
+                        onScroll={handleNotificationScroll}
+                      >
+                        <div
+                          className="notification-dropdown-header"
+                          onClick={handleMarkAllAsRead}
+                        >
+                          <p className="mark-all-as-read-button">Mark all as read!</p>
+                        </div>
+                        {notifications?.map((notification) => (
                           <Link
-                            onClick={handleSearchResultLinkClick}
-                            key={index}
-                            to={`/workspaces/board/${searchResult.workspaceId}/${searchResult.boardId?._id}/?selectedTask=${searchResult._id}`}
+                            key={notification?._id}
+                            to={`/workspaces/board/${notification.workspaceId}/${notification.boardId}/?selectedTask=${notification.taskId}`}
                           >
-                            <li className="search-result">
-                              <div className="top">
-                                <img
-                                  alt="priority"
-                                  className="priority-icon"
-                                  src={flag}
-                                ></img>
-                                <h3 className="task-name">
-                                  {searchResult.name}
-                                </h3>
-                              </div>
-                              <div className="bottom">
-                                <p className="board-name">
-                                  {searchResult.boardId?.name}
-                                </p>
+                            <li
+                              notificationid={notification._id}
+                              workspaceid={notification.workspaceId}
+                              boardid={notification.boardId}
+                              targetid={notification.targetId}
+                              isread={
+                                notification.readBy?.map((user) => {
+                                  user.id === userInfo.id;
+                                }).length > 0
+                                  ? "true"
+                                  : "false"
+                              }
+                              onClick={() => {
+                                handleNotificationClick(
+                                  notification.workspaceId,
+                                  notification._id
+                                );
+                              }}
+                            >
+                              <div className="notification-container">
+                                <div className="notification-header">
+                                  <img
+                                    className="notification-image"
+                                    src={notification?.user?.profilePicture}
+                                  ></img>
+                                  <div className="notification-header-text">
+                                    {notification.message?.split("::=>")[0].trim()}
+                                  </div>
+                                </div>
+                                <div className="notification-content">
+                                  {notification.message?.includes("::=>")
+                                    ? notification.message
+                                      ?.split("::=>")
+                                      .slice(-1)[0]
+                                      ?.trim()
+                                    : ""}
+                                </div>
                               </div>
                             </li>
                           </Link>
                         ))}
-                      </div>
-                    )}
-                    <div>
-                      {areSearchResultsLoading ? (
-                        <div className="searchScroll">
-                          <div>
-                            <RotatingLines
-                              height="40"
-                              width="40"
-                              radius="9"
-                              strokeColor="#36C5F0"
-                              ariaLabel="loading"
-                              wrapperStyle
-                              wrapperClass
-                            />
-                          </div>
+                        <div>
+                          {areNotificationsLoading ? (
+                            <div className="notificationScroll">
+                              <div>
+                                <RotatingLines
+                                  height="40"
+                                  width="40"
+                                  radius="9"
+                                  strokeColor="#36C5F0"
+                                  ariaLabel="loading"
+                                  wrapperStyle
+                                  wrapperClass
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            ""
+                          )}
                         </div>
-                      ) : (
-                        ""
-                      )}
+                      </div>
+                    </div>
+
+                    <div className="navbar-profile-button">
+                      <input
+                        id="profile-dropdown-toggler"
+                        checked={profileDropdown}
+                        onChange={handleProfileButtonChange}
+                        type="checkbox"
+                      ></input>
+                      <label htmlFor="profile-dropdown-toggler">
+                        <img
+                          className="navbar-profile-image"
+                          src={userInfo?.profilePictureUrl || ""}
+                        ></img>
+                      </label>
+                      <div className="profile-dropdown" ref={profileDropdownRef}>
+                        <li>
+                          <Link className="go-profile" to="/workspaces/profile">
+                            My Profile
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="go-profile" to="/workspaces/home">
+                            My Workspaces
+                          </Link>
+                        </li>
+                        <li>
+                          <a className="go-profile" onClick={handleLogoutClick}>
+                            Logout
+                          </a>
+                        </li>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="d-flex justify-content-center justify-content-lg-end">
+                    <div className="rightside-button login me-2">
+                      <Button
+                        Title="Login"
+                        onClick={() => setShowLoginModal(true)}
+                        style={{
+                          backgroundColor: "#1C3C83",
+                          color: "#FFF",
+                          width: "100px",
+                          height: "40px",
+                          borderRadius: "20px",
+                          border: "2px solid #FFF",
+                          fontSize: "15px",
+                        }}
+                      />
+                    </div>
+                    <div className="rightside-button sign-up">
+                      <Button
+                        Title="Sign Up"
+                        onClick={() => setShowSignUpModal(true)}
+                        style={{
+                          backgroundColor: "#36C5F0",
+                          color: "white",
+                          padding: "11px, 33px, 11px, 33px",
+                          borderRadius: "20px",
+                          width: "100px",
+                          height: "40px",
+                          fontSize: "15px",
+                        }}
+                      />
                     </div>
                   </div>
                 )}
               </div>
             </div>
-
-            <div className="navbar-notification-button">
-              <input
-                id="notification-dropdown-toggler"
-                checked={notificationDropdown}
-                onChange={handleNotificationButtonChange}
-                type="checkbox"
-              ></input>
-              <label htmlFor="notification-dropdown-toggler">
-                {hasUnReadNotification ? (
-                  <img src={HasNotificationIcon}></img>
-                ) : (
-                  <img src={NotificationIcon}></img>
-                )}
-              </label>
-              <div
-                className="notification-dropdown"
-                ref={notificationDropdownRef}
-                onScroll={handleNotificationScroll}
-              >
-                <div
-                  className="notification-dropdown-header"
-                  onClick={handleMarkAllAsRead}
-                >
-                  <p className="mark-all-as-read-button">Mark all as read!</p>
-                </div>
-                {notifications?.map((notification) => (
-                  <Link
-                    key={notification?._id}
-                    to={`/workspaces/board/${notification.workspaceId}/${notification.boardId}/?selectedTask=${notification.taskId}`}
-                  >
-                    <li
-                      notificationid={notification._id}
-                      workspaceid={notification.workspaceId}
-                      boardid={notification.boardId}
-                      targetid={notification.targetId}
-                      isread={
-                        notification.readBy?.map((user) => {
-                          user.id === userInfo.id;
-                        }).length > 0
-                          ? "true"
-                          : "false"
-                      }
-                      onClick={() => {
-                        handleNotificationClick(
-                          notification.workspaceId,
-                          notification._id
-                        );
-                      }}
-                    >
-                      <div className="notification-container">
-                        <div className="notification-header">
-                          <img
-                            className="notification-image"
-                            src={notification?.user?.profilePicture}
-                          ></img>
-                          <div className="notification-header-text">
-                            {notification.message?.split("::=>")[0].trim()}
-                          </div>
-                        </div>
-                        <div className="notification-content">
-                          {notification.message?.includes("::=>")
-                            ? notification.message
-                                ?.split("::=>")
-                                .slice(-1)[0]
-                                ?.trim()
-                            : ""}
-                        </div>
-                      </div>
-                    </li>
-                  </Link>
-                ))}
-                <div>
-                  {areNotificationsLoading ? (
-                    <div className="notificationScroll">
-                      <div>
-                        <RotatingLines
-                          height="40"
-                          width="40"
-                          radius="9"
-                          strokeColor="#36C5F0"
-                          ariaLabel="loading"
-                          wrapperStyle
-                          wrapperClass
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="navbar-profile-button">
-              <input
-                id="profile-dropdown-toggler"
-                checked={profileDropdown}
-                onChange={handleProfileButtonChange}
-                type="checkbox"
-              ></input>
-              <label htmlFor="profile-dropdown-toggler">
-                <img
-                  className="navbar-profile-image"
-                  src={userInfo?.profilePictureUrl || ""}
-                ></img>
-              </label>
-              <div className="profile-dropdown" ref={profileDropdownRef}>
-                <li>
-                  <Link className="go-profile" to="/workspaces/profile">
-                    My Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link className="go-profile" to="/workspaces/home">
-                    My Workspaces
-                  </Link>
-                </li>
-                <li>
-                  <a className="go-profile" onClick={handleLogoutClick}>
-                    Logout
-                  </a>
-                </li>
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="rightside-button login">
-              <Button
-                Title="Login"
-                onClick={() => setShowLoginModal(true)}
-                style={{
-                  backgroundColor: "#1C3C83",
-                  color: "#FFF",
-                  width: "100px",
-                  height: "40px",
-                  borderRadius: "20px",
-                  border: "2px solid #FFF",
-                  fontSize: "15px",
-                }}
-              />
-            </div>
-            <div className="rightside-button sign-up">
-              <Button
-                Title="Sign Up"
-                onClick={() => setShowSignUpModal(true)}
-                style={{
-                  backgroundColor: "#36C5F0",
-                  color: "white",
-                  padding: "11px, 33px, 11px, 33px",
-                  borderRadius: "20px",
-                  width: "100px",
-                  height: "40px",
-                  fontSize: "15px",
-                }}
-              />
-            </div>
-          </>
-        )}
+          </div>
+        </div>
       </div>
 
       {showLoginModal && (
@@ -650,7 +689,8 @@ const Navbar = () => {
           onClose={() => setShowForgotPasswordModal(false)}
         />
       )}
-    </div>
+
+    </nav>
   );
 };
 
