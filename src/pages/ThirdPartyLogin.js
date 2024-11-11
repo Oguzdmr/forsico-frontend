@@ -44,7 +44,7 @@ const ThirdPartyLogin = () => {
                     thirdParty:true
                 })
             );
-            navigate('/projects');    
+            navigate('/workspaces');    
             console.log("Login response:", loginResponse);
           } else {
             setMessage("Confirmation error")

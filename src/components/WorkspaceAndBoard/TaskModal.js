@@ -27,7 +27,7 @@ import Crossİcon from "../../assets/ai-message-cross-icon.svg";
 import { fetchTask, updateTaskStatus, reset } from "../../store/taskSlice.js";
 import { RotatingLines } from "react-loader-spinner";
 import TaskApi from "../../api/BoardApi/task.js";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const TaskModal = ({
   taskId,
@@ -139,7 +139,7 @@ const TaskModal = ({
 
         console.log("statuses", statuses);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const getComments = async () => {
@@ -164,7 +164,7 @@ const TaskModal = ({
   const addComment = (newComment) => {
     try {
       taskApi.postTaskComment(token, workspaceId, taskId, newComment);
-    } catch (error) { }
+    } catch (error) {}
   };
   const generateSubtasks = async (subtaskTitle) => {
     if (!subtaskTitle.trim()) {
@@ -250,7 +250,7 @@ const TaskModal = ({
     setStatusModalOpen(false);
   };
 
-  const handleRoot = () => { };
+  const handleRoot = () => {};
 
   const handlePrioritySelect = (priority) => {
     setSelectedPriority(priority); // Save both label and icon
@@ -480,7 +480,6 @@ const TaskModal = ({
         </div>
         <div className="taskcard-info-line"></div>
         <div className="row">
-
           <div className="col-lg-8">
             <div className="taskcard-info-title-area mb-4">
               {isTitleEditing ? (
@@ -564,8 +563,9 @@ const TaskModal = ({
                 {comments.map((comment, index) => (
                   <div
                     key={index}
-                    className={`taskcard-info-textarea ${editingIndex === index ? "comment-editing" : ""
-                      }`}
+                    className={`taskcard-info-textarea ${
+                      editingIndex === index ? "comment-editing" : ""
+                    }`}
                   >
                     {editingIndex === index ? (
                       <>
@@ -619,74 +619,85 @@ const TaskModal = ({
 
             {/* Render Generated Subtasks */}
             {/* Subtask Generation Section */}
-            <div className="taskcard-info-subtask-area mb-4">
-              {showSubtaskMessage && (
-                <p className="subtask-message">Create subtasks of this task</p>
-              )}
-              {isLoading ? (
-                <div className="loader-container-top-left">
-                  <RotatingLines height="30" width="30" strokeColor="#36C5F0" />
-                </div>
-              ) : (
-                <button
-                  onClick={handleToggleSubtaskGeneration}
-                  className="generate-subtask-button"
-                  style={{
-                    marginTop: visibleSubtasks.length > 3 ? "50px" : "10px",
-                  }}
-                >
-                  Generate Subtasks
-                </button>
-              )}
+            {selectedTask.parentTask ? (
+              <></>
+            ) : (
+              <div className="taskcard-info-subtask-area mb-4">
+                {showSubtaskMessage && (
+                  <p className="subtask-message">
+                    Create subtasks of this task
+                  </p>
+                )}
+                {isLoading ? (
+                  <div className="loader-container-top-left">
+                    <RotatingLines
+                      height="30"
+                      width="30"
+                      strokeColor="#36C5F0"
+                    />
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleToggleSubtaskGeneration}
+                    className="generate-subtask-button"
+                    style={{
+                      marginTop: visibleSubtasks.length > 3 ? "50px" : "10px",
+                    }}
+                  >
+                    Generate Subtasks
+                  </button>
+                )}
 
-              {/* Display generated subtasks */}
-              <motion.div
-                className="workspaceAi-message"
-                variants={staggerAnimation}
-                initial="hidden"
-                animate="visible"
-              >
-                <AnimatePresence>
-                  {visibleSubtasks.map((task) => (
-                    <div key={task.id}>
-                      <motion.div
-                        key={task.id}
-                        variants={cardAnimation}
-                        exit={{ opacity: 0, scale: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className={`workspaceAi-task ${subtaskStates[task.id] === "rejected"
-                            ? "rejected-task"
-                            : ""
+                {/* Display generated subtasks */}
+                <motion.div
+                  className="workspaceAi-message"
+                  variants={staggerAnimation}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <AnimatePresence>
+                    {visibleSubtasks.map((task) => (
+                      <div key={task.id}>
+                        <motion.div
+                          key={task.id}
+                          variants={cardAnimation}
+                          exit={{ opacity: 0, scale: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className={`workspaceAi-task ${
+                            subtaskStates[task.id] === "rejected"
+                              ? "rejected-task"
+                              : ""
                           }`}
-                      >
-                        <div className="workspaceAi-task-card">
-                          <div className="task-header">{task.name}</div>
-                          <div className="task-desc">{task.description}</div>
-                          <div className="task-tags">
-                            <span className="task-tag">{task.type}</span>
-                            <span className="task-tag">{task.assignee}</span>
+                        >
+                          <div className="workspaceAi-task-card">
+                            <div className="task-header">{task.name}</div>
+                            <div className="task-desc">{task.description}</div>
+                            <div className="task-tags">
+                              <span className="task-tag">{task.type}</span>
+                              <span className="task-tag">{task.assignee}</span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="task-icons">
-                          <span
-                            className="task-icon"
-                            onClick={() => handleReject(task.id)}
-                          >
-                            <img src={Crossİcon} alt="Reject" />
-                          </span>
-                          <span
-                            className="task-icon"
-                            onClick={() => handleApprove(task)}
-                          >
-                            <img src={Tickİcon} alt="Approve" />
-                          </span>
-                        </div>
-                      </motion.div>
-                    </div>
-                  ))}
-                </AnimatePresence>
-              </motion.div>
-            </div>
+                          <div className="task-icons">
+                            <span
+                              className="task-icon"
+                              onClick={() => handleReject(task.id)}
+                            >
+                              <img src={Crossİcon} alt="Reject" />
+                            </span>
+                            <span
+                              className="task-icon"
+                              onClick={() => handleApprove(task)}
+                            >
+                              <img src={Tickİcon} alt="Approve" />
+                            </span>
+                          </div>
+                        </motion.div>
+                      </div>
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+              </div>
+            )}
 
             <div className="taskcard-info-checklist-area mb-4 mb-lg-0">
               <input className="checklist-checkbox" type="checkbox" />
@@ -866,7 +877,6 @@ const TaskModal = ({
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>

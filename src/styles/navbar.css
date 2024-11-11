@@ -1,61 +1,24 @@
 .navbar {
-    position: fixed;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgb(28, 60, 132);
-    width: 100%;
-    height: 80px;
+    background: #1C3C84;
+    min-height: 80px;
 }
 
-.navbar {
-    position: relative;
-    width: 100%;
-    height: 80px;
-    background-color: rgb(28, 60, 132);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10;
+.navbar-toggler {
+    color: #fff;
+    background: #fff;
+    border: 1px solid #fff;
 }
 
-.logo {
-    display: block;
-    margin: 10px 0;
+.nav-link, .nav-link:hover, .nav-link:focus, .nav-link:active,
+.nav-link.active, .nav-link.show {
+    color: #fff!important;
 }
 
-.navbar-leftside {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    gap: 35px;
+.leftside-buttons {
+    
 }
 
-.navbar .navbar-leftside .leftside-buttons {
-    display: inline-flex;
-    justify-content: space-between;
-    align-items: center;
-
-    background-color: rgb(28, 60, 132);
-    border: none;
-    border-radius: 25%;
-
-
-}
-
-.navbar .navbar-rightside {
-    width: 50%;
-    display: flex;
-    justify-content: flex-end;
-    gap: 20px;
-    align-items: center;
-    position: absolute;
-    right: 0;
-    margin-right: 10px;
-    background-color: transparent;
-}
-
-.navbar-rightside .navbar-demo-button {
+.navbar-demo-button {
     color: white;
     display: flex;
     align-items: center;
@@ -69,7 +32,6 @@
     display: flex;
     justify-content: end;
     align-items: center;
-    margin-right: 6.90%;
 }
 
 .navbar-search-bar .input-wrapper {
@@ -272,8 +234,6 @@
     text-decoration: none;
 }
 
-
-
 .navbar-notification-button .notification-dropdown li[isread="false"] {
     background-color: rgba(100, 100, 100, 0.07)
 }
@@ -293,7 +253,6 @@
     display: flex;
     flex-direction: column;
 }
-
 
 .notification-dropdown .notification-container .notification-header {
     display: flex;

@@ -1,17 +1,28 @@
 import React, { useState } from "react";
 import "../styles/mydocs.css";
-import TEditor from "../components/Editor/TEditor";
 import BoardIcon from "../assets/mydocs-board-icon.svg";
 import ListIcon from "../assets/mydocs-list-icon.svg";
 import Titleicon from "../assets/mydocs-title-icon.svg";
 import CardTitleIcon from "../assets/mydocs-card-title-icon.svg";
 import CardCommentIcon from "../assets/mydocs-card-comment-icon.svg";
 import AddButtonIcon from "../assets/mydocs-add-button-icon.svg";
-import CrossIcon from "../assets/cross-icon.svg";
 import FilterIcon from "../assets/mydocs-filter-icon.svg";
+import BlankPage from "../components/Docs/Blank";
+import WriteWithAi from "../components/Docs/WriteWithAi";
+import BlogPost from "../components/Docs/BlogPost";
+import CampaignIdeas from "../components/Docs/CampignIdeas";
+import SeoArticleBrief from "../components/Docs/SeoArticleBrief";
+import GenerateFAQs from "../components/Docs/GenerateFAQs";
+import DocsPopupMenu from "../components/Docs/DocsPopupMenu";
+import CrossIcon from "../assets/cross-icon.svg"
+import LeftArrow from "../assets/left-arrow-icon.svg"
+
+
+
 
 const MyDocs = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedComponent, setSelectedComponent] = useState("DocsPopupMenu"); // Başlangıç bileşeni
   const [title, setTitle] = useState("");
   const [titleSaved, setTitleSaved] = useState(false);
   const [tags, setTags] = useState([]);
@@ -25,13 +36,42 @@ const MyDocs = () => {
     tags: ["ui design", "marketing", `tag${(i % 5) + 1}`],
   })));
 
+
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+    setSelectedComponent("DocsPopupMenu"); // İlk açıldığında DocsPopupMenu gösterilecek
+  };
+
+  const handleComponentSelect = (componentName) => {
+    setSelectedComponent(componentName); // Seçilen bileşeni ayarla
+  };
+
+  const renderSelectedComponent = () => {
+    switch (selectedComponent) {
+      case "BlankPage":
+        return <BlankPage />;
+      case "WriteWithAi":
+        return <WriteWithAi />;
+      case "BlogPost":
+        return <BlogPost />;
+      case "CampaignIdeas":
+        return <CampaignIdeas />;
+      case "SeoArticleBrief":
+        return <SeoArticleBrief />;
+      case "GenerateFAQs":
+        return <GenerateFAQs />;
+      default:
+        return <DocsPopupMenu onSelect={handleComponentSelect} />;
+    }
+  };
+
   const tagColors = {
-    "ui design": "rgba(226, 232, 240, 1)", 
-    "marketing": "rgba(54, 197, 240, 1)", 
-    "tag1": "rgba(237, 30, 90, 1)", 
-    "tag2": "rgba(148, 180, 252, 1)", 
-    "tag3": "rgba(255, 99, 132, 1)", 
-    "tag4": "rgba(75, 192, 192, 1)", 
+    "ui design": "rgba(226, 232, 240, 1)",
+    "marketing": "rgba(54, 197, 240, 1)",
+    "tag1": "rgba(237, 30, 90, 1)",
+    "tag2": "rgba(148, 180, 252, 1)",
+    "tag3": "rgba(255, 99, 132, 1)",
+    "tag4": "rgba(75, 192, 192, 1)",
     "tag5": "rgba(255, 206, 86, 1)"
   };
 
@@ -177,66 +217,18 @@ const MyDocs = () => {
       </div>
 
       {isPopupOpen && (
-        <div className="popup-overlay" onClick={() => setIsPopupOpen(false)}>
+        <div className="popup-overlay" >
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-          <div className="close-button">
-              {/* Display Saved Tags */}
-              <div className="popup-doc-task-area">
-                {tags.map((tag, index) => (
-                  <div
-                    key={index}
-                    className="mydocs-card-tag"
-                    style={{
-                      backgroundColor: tagColors[tag] || "rgba(200, 200, 200, 1)"
-                    }}
-                  >
-                    {tag}
-                  </div>
-                ))}
+            <div className="mydocs-popup-cross-icon" >
+              <img className="left-arrow-icon" onClick={() => {  setSelectedComponent("")}} src={LeftArrow} alt="left-arrow" />
+              <img className="popup-cross-icon" onClick={() => { setIsPopupOpen(false); setSelectedComponent("")}} src={CrossIcon} alt="cross" />
               </div>
-              <div>
-                <button className="close-button" onClick={() => setIsPopupOpen(false)}>
-                  <img src={CrossIcon} alt="cross" />
-                </button>
-              </div>
-            </div>
-            <div className="popup-header">
-              <input
-                type="text"
-                placeholder="Enter document title"
-                value={title}
-                onChange={handleTitleChange}
-                className="popup-title-input"
-              />
-              <button
-                className="mydocs-title-save-button"
-                onClick={handleSaveTitle}
-                disabled={!title || titleSaved}
-              >
-                Save
-              </button>
-            </div>
-            <div className="popup-tags">
-              <input
-                type="text"
-                placeholder="Add tags (separate by commas)"
-                value={tagInput}
-                onChange={handleTagInput}
-                className="popup-tags-input"
-              />
-              <button
-                className="mydocs-tags-save-button"
-                onClick={handleSaveTags}
-                disabled={!tagInput}
-              >
-                Save
-              </button>
-            </div>
-            <div className="editor-area"><TEditor minHeight={"35vh"} /></div>
+            <div>{renderSelectedComponent()} {/* Seçilen bileşeni render et */}</div>
             <div>
               <button className="create-docs-button" onClick={handleCreateDocument}>
-              Create Document
-            </button></div>
+                Create Document
+              </button>
+            </div>
           </div>
         </div>
       )}

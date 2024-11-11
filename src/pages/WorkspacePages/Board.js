@@ -14,6 +14,9 @@ import { Link, useParams } from "react-router-dom";
 import CreateListModal from "../../components/WorkspaceAndBoard/CreateListModal";
 import InviteTeamModal from "../../components/WorkspaceAndBoard/InviteTeamModal";
 import { RotatingLines } from "react-loader-spinner";
+import TaskApi from "../../api/BoardApi/task.js";
+import { TailSpin } from 'react-loader-spinner';
+import TaskModal from "../../components/WorkspaceAndBoard/TaskModal";
 
 function Board() {
   const [windowSize, setWindowSize] = useState([
@@ -28,9 +31,17 @@ function Board() {
   } = useSelector((state) => state.board || {});
   
   const { workspaceId, boardId } = useParams();
+  const ownerId = useSelector((state) => state.auth.user.id || "");
+  const _listId = useSelector((state) =>
+    state?.board?.entities?.lists ? state?.board?.entities?.lists[0]?._id || "" : ""
+  );
+  const token = useSelector((state) => state.auth.token.token || "");
+  const [isFetchingTasks, setIsFetchingTasks] = useState(false);
   const memberModalRef = useRef(null);
   const shareModalRef = useRef(null);
-
+  const taskApi = new TaskApi();
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [taskId, setTaskId] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isAddMemberModalOpen, setAddMemberModalOpen] = useState(false);
@@ -82,6 +93,26 @@ function Board() {
     }
   };
 
+  const handleAddTask = async () => {
+    try {
+      setIsFetchingTasks(true);
+      var createTaskRes = await taskApi.createTask(token, workspaceId, {
+        name: "My Task",
+        description: "My Task Description",
+        listId: _listId,
+        boardId: boardId,
+        ownerId: ownerId,
+        assignee: ownerId,
+      });
+      if(createTaskRes.status){
+        setIsFetchingTasks(false)
+        setTaskId(createTaskRes.data._id)
+        setIsTaskModalOpen(true)
+      }
+    } catch (error) {
+      
+    }
+  }
   return (
     <div className="board-page">
       <div className="board-header">
@@ -181,12 +212,30 @@ function Board() {
             {isListModalOpen && (
               <CreateListModal onClose={() => setIsListModalOpen(false)} workspaceId={workspaceId} boardId={boardId} />
             )}
-            <button className="add-task-button">Add Task +</button>
+            <button className="add-task-button" onClick={()=> handleAddTask()} >{isFetchingTasks ? (
+                <TailSpin
+                  height="25"
+                  width="25"
+                  color="#ffffff"
+                  ariaLabel="loading-indicator"
+                />
+              ) : (
+                "Add Task +"
+              )}</button>
           </div>
         </div>
       )}
 
       {isAddMemberModalOpen && <InviteTeamModal onClose={() => setAddMemberModalOpen(false)} />}
+      {isTaskModalOpen && (
+        <TaskModal
+          listId={_listId}
+          taskId={taskId}
+          workspaceId={workspaceId}
+          boardId={boardId}
+          setIsTaskModalOpen={setIsTaskModalOpen}
+        />
+      )}
     </div>
   );
 }
