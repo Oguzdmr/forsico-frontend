@@ -5,9 +5,7 @@ const appConfig = require("../../config");
 
 const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
   const editor = useRef(null);
-  const [content, setContent] = useState(
-    "Previously on the partner site, when you deleted the last product from the cart page, the page was refreshed by the partner. triggerCartButton rule was working in accordance with this development. There is a possibility that the partner may have forgotten this improvement on the cart page during the update. If the partner confirms that it will not refresh the page in the cart for this part, let's update the triggerCartButton rule accordingly. Can you get approval for this part?"
-  );
+  const [content, setContent] = useState("");
   const [initialContent, setInitialContent] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
@@ -86,7 +84,7 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
   const generatePrompt = (template) => {
     let generatedPrompt = template;
     for (const key in promptData) {
-      generatedPrompt = generatedPrompt.replace(
+      generatedPrompt = generatedPrompt?.replace(
         `{{${key}}}`,
         promptData[key] || ""
       );
@@ -195,11 +193,6 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
       "|",
       "hr",
       "eraser",
-      ...aiTools.map((tool) => ({
-        name: tool.title,
-        tooltip: tool.title,
-        exec: (editorInstance) => addCustomButton(editorInstance, tool),
-      })),
     ],
     readonly: false,
     toolbar: true,

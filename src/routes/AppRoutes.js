@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
+import { Playground } from "../pages/Playground";
 
 const LandingPage = lazy(() => import("../pages/LandingPage"));
 const ResetPasswordPage = lazy(() => import("../pages/ResetPasswordPage"));
@@ -24,6 +25,7 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/resetPassword" element={<ResetPasswordPage />} />
+          <Route path="/playground" element={<Playground />} />
           <Route path="/confirmEmail" element={<ConfirmEmailPage />} />
           <Route path="/thirdpartylogin" element={<ThirdPartyLogin />} />
           <Route path="/confirmchangeemail" element={<ConfirmEmailUpdatePage />} />
