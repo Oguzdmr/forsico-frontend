@@ -101,20 +101,6 @@ const MyDocs = () => {
     setDropdownOpen(false);
   };
 
-  const handleCreateDocument = () => {
-    const newCard = {
-      title,
-      lastUpdate: new Date().toLocaleString(),
-      comments: 0,
-      tags
-    };
-
-    setCards([...cards, newCard]);
-    setTitle("");
-    setTags([]);
-    setTitleSaved(false);
-    setIsPopupOpen(false);
-  };
 
   const filteredCards = filterTag
     ? cards.filter(card => card.tags.includes(filterTag))
@@ -225,9 +211,6 @@ const MyDocs = () => {
               </div>
             <div>{renderSelectedComponent()} {/* Seçilen bileşeni render et */}</div>
             <div>
-              <button className="create-docs-button" onClick={handleCreateDocument}>
-                Create Document
-              </button>
             </div>
           </div>
         </div>

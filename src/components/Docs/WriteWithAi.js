@@ -5,6 +5,8 @@ import TEditor from '../Editor/TEditor'
 
 
 const WriteWithAi = () => {
+
+  
   return (
    <div className='writewithai-main-container'>
     <div className='writewithai-main'>
@@ -24,6 +26,11 @@ const WriteWithAi = () => {
       </div>
       <div>
       <TEditor></TEditor>
+      </div>
+      <div>
+      <button className="create-docs-button">
+                Create Document
+              </button>
       </div>
    </div>
   )

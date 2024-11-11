@@ -5,10 +5,14 @@ import TEditor from '../Editor/TEditor'
 import PenIcon from "../../assets/board-pen-icon.svg"
 
 
+
+
+
 const BlogPost = () => {
+  
   return (
-   <div className='blogpost-main-container'>
-    <div className='blogpost-main'>
+    <div className='blogpost-main-container'>
+      <div className='blogpost-main'>
         <div className='blogpost-title-area'>
           <div><img src={PenIcon} alt="pen" /></div>
           <div className='blogpost-title'><span className='blogpost-title-text'>Blog Post</span></div>
@@ -25,7 +29,12 @@ const BlogPost = () => {
       <div className='blogpost-generate-button-area'>
         <button className='blogpost-generate-button'>Generate</button>
       </div>
-   </div>
+      <div>
+        <button className="create-docs-button">
+          Create Document
+        </button>
+      </div>
+    </div>
   )
 }
 

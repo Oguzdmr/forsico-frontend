@@ -4,6 +4,8 @@ import PenIcon from "../../assets/board-pen-icon.svg"
 
 
 const SeoArticleBrief = () => {
+
+  
   return (
    <div className='seoarticlebrief-main-container'>
     <div className='seoarticlebrief-main'>
@@ -26,6 +28,11 @@ const SeoArticleBrief = () => {
       </div>
       <div className='seoarticlebrief-generate-button-area'>
         <button className='seoarticlebrief-generate-button'>Generate</button>
+      </div>
+      <div>
+      <button className="create-docs-button">
+                Create Document
+              </button>
       </div>
    </div>
   )

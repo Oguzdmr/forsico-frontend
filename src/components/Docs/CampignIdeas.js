@@ -5,6 +5,7 @@ import PenIcon from "../../assets/board-pen-icon.svg"
 
 
 const CampaignIdeas = () => {
+  
   return (
    <div className='campaign-main-container'>
     <div className='campaign-main'>
@@ -27,6 +28,11 @@ const CampaignIdeas = () => {
       </div>
       <div className='campaign-generate-button-area'>
         <button className='campaign-generate-button'>Generate</button>
+      </div>
+      <div>
+      <button className="create-docs-button">
+                Create Document
+              </button>
       </div>
    </div>
   )
