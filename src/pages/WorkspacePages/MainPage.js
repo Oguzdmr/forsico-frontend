@@ -11,6 +11,7 @@ const MainPage = () => {
     <div className="main-container">
       <Navbar />
       <div className="content-container">
+        <a className="openMobileSideMenu"><span className="ico"></span></a>
         <Sidebar />
         <div className="outlet-container">
           <Outlet />

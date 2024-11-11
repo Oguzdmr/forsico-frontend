@@ -61,6 +61,7 @@ const Sidebar = () => {
 
   return (
     <div className="sidebar">
+      <a className="closeSideMenu" >x</a>
       <div className={`sidebar-menu ${isActive("/workspaces/home") ? "active" : ""}`}>
         <img className="sidebar-home-icon" src={SidebarHome} alt="home" />
         <Link to="/workspaces/home" className="sidebar-blue-letter">Home</Link>
