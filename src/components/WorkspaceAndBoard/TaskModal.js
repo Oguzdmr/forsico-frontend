@@ -25,9 +25,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Tickİcon from "../../assets/ai-message-tick-icon.svg";
 import Crossİcon from "../../assets/ai-message-cross-icon.svg";
 import { fetchTask, updateTaskStatus, reset } from "../../store/taskSlice.js";
+import { fetchBoard, updateStatus } from "../../store/boardSlice";
 import { RotatingLines } from "react-loader-spinner";
 import TaskApi from "../../api/BoardApi/task.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import {addTask} from "../../store/boardSlice.js"
 
 const TaskModal = ({
   taskId,
@@ -56,6 +58,9 @@ const TaskModal = ({
   const [description, setDescription] = useState(
     entities.selectedtask?.description || ""
   );
+  const [loadingTasks, setLoadingTasks] = useState({});
+  const workspaceField = useSelector((state) => {return state.workspaces.entities})?.filter((x) => x._id === workspaceId)[0]
+  const userField = useSelector((state) => state.auth.user || {})
   const [isDescriptionEditing, setIsDescriptionEditing] = useState(false);
   const [subtaskStates, setSubtaskStates] = useState({});
   const [generatedSubtasks, setGeneratedSubtasks] = useState([]);
@@ -90,7 +95,7 @@ const TaskModal = ({
   const priorityModalRef = useRef(null);
   const rightArrowModalRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState(
-    entities.selectedtask.dueDate || null
+    entities?.selectedtask?.dueDate || null
   );
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [taskTitle, setTaskTitle] = useState(entities.selectedtask?.name || "");
@@ -208,11 +213,15 @@ const TaskModal = ({
   const handleFieldUpdate = async (field, value) => {
     try {
       await taskApi.updateTask(token, workspaceId, taskId, { [field]: value });
-      dispatch(fetchTask({ token, workspaceId, taskId }));
+      // dispatch(fetchTask({ token, workspaceId, taskId }));
     } catch (error) {
       console.error(`Error updating task ${field}:`, error);
     }
   };
+  const handleRoot = async (newBoardField) => { 
+    await taskApi.updateTask(token, workspaceId, taskId, { listId: newBoardField.lists[0]._id, boardId: newBoardField._id });
+      // dispatch(fetchTask({ token, workspaceId, taskId }));
+   };
 
   const handleSaveDescription = () => {
     if (tempDescription.trim() !== "") {
@@ -249,8 +258,6 @@ const TaskModal = ({
     handleFieldUpdate("statusId", status._id);
     setStatusModalOpen(false);
   };
-
-  const handleRoot = () => {};
 
   const handlePrioritySelect = (priority) => {
     setSelectedPriority(priority); // Save both label and icon
@@ -343,10 +350,28 @@ const TaskModal = ({
     console.log(`Delete comment at index ${index}`);
   };
 
-  const handleApprove = (subtask) => {
-    setSubtaskStates((prev) => ({ ...prev, [subtask.id]: "approved" }));
-  };
-
+  const handleApprove = async (subtask) => {
+    setLoadingTasks((prev) => ({ ...prev, [subtask.id]: true }));
+    let responseCreateSubtask = await taskApi.createTask(token, workspaceId, {
+      "name": subtask.name,
+      "description": subtask.description,
+      "boardId": selectedTask.boardId,
+      "listId": selectedTask.listId,
+      "assignee": userField.id,
+      "ownerId":userField.id,
+      "priority": 0,
+      "parentTask": selectedTask._id
+    }
+    )
+    console.log(subtask)
+    console.log("res subtask",responseCreateSubtask)
+    if(responseCreateSubtask.status){
+      setSubtaskStates((prev) => ({ ...prev, [subtask.id]: "approved" }));
+      setLoadingTasks((prev) => ({ ...prev, [subtask.id]: false }));
+      dispatch(addTask({ name: subtask.name, description: subtask.description, boardId: selectedTask.boardId , listId:selectedTask.listId, userId:userField.id, parentId:selectedTask._id, taskId:responseCreateSubtask.data._id}));
+      dispatch(fetchBoard({ workspaceId, boardId }))
+    }
+  }
   const handleReject = (subtaskId) => {
     setSubtaskStates((prev) => ({ ...prev, [subtaskId]: "rejected" }));
   };
@@ -441,7 +466,7 @@ const TaskModal = ({
       <div className={`modal-content-task`}>
         <div className="taskcard-info-upper-area">
           <div className="taskcard-info-left-upper">
-            <span>Forsico/General</span>
+          <span>{workspaceField?.name}</span>
           </div>
           <div className="taskcard-info-right-upper">
             <img
@@ -460,19 +485,23 @@ const TaskModal = ({
               <div className="right-arrow-modal" ref={rightArrowModalRef}>
                 <div className="right-arrow-modal-header">
                   <h3 className="right-arrow-modal-title">
-                    Send from board General to...
+                    Send from board to...
                   </h3>
                 </div>
                 <div className="right-arrow-options">
-                  {sendOptions.map((board) => (
-                    <div
-                      key={board}
-                      className="right-arrow-option"
-                      onClick={() => handleRoot(board)}
-                    >
-                      {board}
-                    </div>
-                  ))}
+                  {workspaceField?.boards?.map((boardField) => {
+                    if(boardField.name !== board.name){
+                      return (
+                        <div
+                          key={boardField._id}
+                          className="right-arrow-option"
+                          onClick={() => handleRoot(boardField)}
+                        >
+                          {boardField.name}
+                        </div>
+                      )
+                    }
+                    })}
                 </div>
               </div>
             )}
@@ -678,18 +707,30 @@ const TaskModal = ({
                             </div>
                           </div>
                           <div className="task-icons">
-                            <span
-                              className="task-icon"
-                              onClick={() => handleReject(task.id)}
-                            >
-                              <img src={Crossİcon} alt="Reject" />
-                            </span>
-                            <span
-                              className="task-icon"
-                              onClick={() => handleApprove(task)}
-                            >
-                              <img src={Tickİcon} alt="Approve" />
-                            </span>
+                          {loadingTasks[task.id] ? (
+                          <RotatingLines height="20" width="20" strokeColor="#36C5F0" />
+                        ) : (
+                          <>
+                            {subtaskStates[task.id] === "approved" ? (
+                              <span className="task-icon" style={{ pointerEvents: "none" }}>
+                                <img src={Tickİcon} alt="tick" />
+                              </span>
+                            ) : subtaskStates[task.id] === "rejected" ? (
+                              <span className="task-icon" style={{ pointerEvents: "none" }}>
+                                <img src={Crossİcon} alt="cross" />
+                              </span>
+                            ) : (
+                              <>
+                                <span className="task-icon" onClick={() => handleReject(task.id)}>
+                                  <img src={Crossİcon} alt="cross" />
+                                </span>
+                                <span className="task-icon" onClick={() => handleApprove(task)}>
+                                  <img src={Tickİcon} alt="tick" />
+                                </span>
+                              </>
+                            )}
+                          </>
+                        )}
                           </div>
                         </motion.div>
                       </div>

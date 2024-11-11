@@ -21,6 +21,13 @@ function TaskCard({ list, task, colIndex,workspaceId,boardId, taskIndex, color }
   }) || []);
   let completed = 0;
 
+  const board = useSelector((state) => state.board.entities || {});
+
+  useEffect(()=>{
+    setSubtasks(task.subtasks.map((sub)=>{
+      return list.tasks.filter(tsk => tsk._id === sub)[0]
+    }) || [])
+  },[task])
   const dispatch = useDispatch();
   const handleOnDrag = (e) => {
     e.dataTransfer.setData(
@@ -34,7 +41,7 @@ function TaskCard({ list, task, colIndex,workspaceId,boardId, taskIndex, color }
   };
 
 
-  const hasSubtasks = subtasks?.length > 0;
+  const hasSubtasks = task.subtasks?.length > 0;
 console.log(subtasks)
   return (
     <div>

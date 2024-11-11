@@ -692,6 +692,14 @@ const Navbar = () => {
       {showForgotPasswordModal && (
         <ForgotPasswordModal
           onClose={() => setShowForgotPasswordModal(false)}
+          login={() => {
+            setShowLoginModal(true);
+            setShowForgotPasswordModal(false);
+          }}
+          signup={() => {
+            setShowForgotPasswordModal(false);
+            setShowSignUpModal(true);
+          }}
         />
       )}
 

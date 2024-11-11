@@ -11,6 +11,7 @@ const MyInvitations = () => {
   const token = useSelector((state) => {
     return state.auth.token.token;
   });
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchInvitations = async () => {
@@ -60,6 +61,7 @@ const MyInvitations = () => {
         setInvitations(
           invitations.filter((invitation) => invitation._id !== id)
         );
+        dispatch(fetchWorkspaces());
       } else {
         console.error("Failed to accept invitation", await response.json());
       }

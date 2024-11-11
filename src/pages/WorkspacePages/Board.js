@@ -54,6 +54,7 @@ function Board() {
     dispatch(updateStatus({ status: "idle" }));
   }, [boardId]);
 
+
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchBoard({ workspaceId, boardId })).finally(() => {
@@ -108,6 +109,7 @@ function Board() {
         setIsFetchingTasks(false)
         setTaskId(createTaskRes.data._id)
         setIsTaskModalOpen(true)
+        dispatch(fetchBoard({ workspaceId, boardId }))
       }
     } catch (error) {
       

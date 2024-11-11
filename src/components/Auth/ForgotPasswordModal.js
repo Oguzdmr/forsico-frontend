@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Authentication from '../../api/AuthApi/authentication';
-import '../../styles/loginModal.css';
+import '../../styles/forgatPassMoadal.css';
 import CrossIcon from "../../assets/cross-icon.svg"
 import EmailIcon from "../../assets/emailInput.svg"
 
@@ -79,8 +79,8 @@ const ForgotPasswordModal = ({ onClose, login, signup }) => {
                 </div>
                 <div className='forgotpassword-line'></div>
                 <div className='button-lower-area'>
-                    <span className='gray-letter'>Already have an account?<a className='signup-modal-login-link' >Login</a></span>
-                    <span className='gray-letter'>Don't have an account yet?<a className='signup-modal-login-link'>Sign Up</a></span>
+                    <span className='gray-letter'>Already have an account?<a className='signup-modal-login-link' onClick={login} >Login</a></span>
+                    <span className='gray-letter'>Don't have an account yet?<a className='signup-modal-login-link' onClick={signup}>Sign Up</a></span>
                 </div>
             </div>
         </div>

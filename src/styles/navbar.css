@@ -88,6 +88,7 @@
     max-height: 500px;
     height: auto;
     overflow-y: scroll;
+    z-index: 10;
 }
 
 .search-dropdown:has(.is-empty-search) {
@@ -248,7 +249,9 @@
     height: 50px;
     border-radius: 75px;
 }
-
+.notification-dropdown{
+    z-index: 10;
+}
 .notification-dropdown .notification-container {
     display: flex;
     flex-direction: column;
@@ -339,6 +342,7 @@ body:has(#notification-dropdown-toggler:checked, .navbar-search-input:focus) {
     width: 10em;
     height: auto;
     overflow: hidden;
+    z-index: 10;
 }
 
 .navbar-profile-button .profile-dropdown li {
