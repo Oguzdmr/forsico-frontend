@@ -43,55 +43,6 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
     };
   }, []);
 
-  const aiTools = [
-    {
-      Title: "Blog Post",
-      Heroicon: "pencil",
-      Prompt: "Write a blog post about {{Topic}} for a {{Audience}} audience.",
-      fields: ["Topic", "Audience"],
-    },
-    {
-      Title: "Campaign Ideas",
-      Heroicon: "light-bulb",
-      Prompt: "Generate campaign ideas for {{Product}} targeting {{Audience}}.",
-      fields: ["Product", "Audience"],
-    },
-    {
-      Title: "Product Description",
-      Heroicon: "tag",
-      Prompt:
-        "Create a product description for {{Product}}, focusing on {{Features}}.",
-      fields: ["Product", "Features"],
-    },
-    {
-      Title: "Email Template",
-      Heroicon: "envelope",
-      Prompt: "Write an email template for {{Purpose}} targeting {{Audience}}.",
-      fields: ["Purpose", "Audience"],
-    },
-  ];
-
-  const openModalForPrompt = (tool) => {
-    setCurrentPrompt(tool);
-    setPromptData({});
-    setIsModalOpen(true);
-  };
-
-  const handlePromptDataChange = (field, value) => {
-    setPromptData((prevData) => ({ ...prevData, [field]: value }));
-  };
-
-  const generatePrompt = (template) => {
-    let generatedPrompt = template;
-    for (const key in promptData) {
-      generatedPrompt = generatedPrompt?.replace(
-        `{{${key}}}`,
-        promptData[key] || ""
-      );
-    }
-    return generatedPrompt;
-  };
-
   const handleSave = () => {
     setInitialContent(content);
     setIsPreview(true);
@@ -146,29 +97,6 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
     }
   };
 
-  const addCustomButton = (editorInstance, tool) => {
-    editorInstance.registerButton({
-      name: tool.title,
-      icon: `https://example.com/${tool.icon}-icon.png`,
-      exec: () => {
-        setCurrentTool(tool);
-        const inputElement = document.createElement("input");
-        inputElement.type = "text";
-        inputElement.placeholder = tool.placeholder;
-        inputElement.classList.add("ai-input-inline");
-
-        inputElement.onblur = () => {
-          setUserInput(inputElement.value);
-          handleAIEnhance();
-          editorInstance.selection.insertHTML("");
-        };
-
-        editorInstance.selection.insertNode(inputElement);
-        inputElement.focus();
-      },
-    });
-  };
-
   const config = {
     buttons: [
       "paragraph",
@@ -192,7 +120,6 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
       "redo",
       "|",
       "hr",
-      "eraser",
     ],
     readonly: false,
     toolbar: true,
@@ -223,19 +150,6 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
     showWordsCounter: false,
     showXPathInStatusbar: false,
     placeholder: "Type here...",
-  };
-
-  const toggleDropdown = (editorInstance) => {
-    const range = editorInstance?.selection?.sel?.getRangeAt(0);
-    if (range) {
-      const rect = range.getBoundingClientRect();
-
-      setDropdownPosition({
-        top: rect.top + window.scrollY,
-        left: rect.left + window.scrollX + 50,
-      });
-      setIsDropdownOpen(!isDropdownOpen);
-    }
   };
 
   return (
