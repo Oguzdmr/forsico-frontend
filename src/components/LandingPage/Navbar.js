@@ -615,6 +615,11 @@ const Navbar = () => {
                           </Link>
                         </li>
                         <li>
+                          <Link className="go-profile" to="/workspaces/invitations">
+                            My Invitations
+                          </Link>
+                        </li>
+                        <li>
                           <a className="go-profile" onClick={handleLogoutClick}>
                             Logout
                           </a>

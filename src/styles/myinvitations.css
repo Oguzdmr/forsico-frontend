@@ -1,0 +1,96 @@
+.invitations-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.invitations-container h2 {
+    font-size: 24px;
+    color: #1C3C84;
+    margin-bottom: 20px;
+}
+
+.no-invitations {
+    color: #777;
+    font-size: 16px;
+}
+
+.invitations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.invitation-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.invitation-info h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.invitation-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.invitation-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.accept-btn, .decline-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.accept-btn {
+    background-color: #36C5F0;
+    color: white;
+}
+
+.accept-btn:hover {
+    background-color: #28A0DB;
+}
+
+.decline-btn {
+    background-color: #D8D8D8;
+    color: white;
+}
+
+.decline-btn:hover {
+    background-color: #c2c0c0;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .invitation-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .invitation-actions {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .accept-btn, .decline-btn {
+        width: 45%;
+    }
+}

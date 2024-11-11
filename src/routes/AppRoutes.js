@@ -15,6 +15,7 @@ const MainPage = lazy(() => import("../pages/WorkspacePages/MainPage"));
 const Board = lazy(() => import("../pages/WorkspacePages/Board"));
 const MyDocs = lazy(() => import("../pages/MyDocs"));
 const MyTasks = lazy(() => import("../pages/MyTasks"));
+const MyInvitations = lazy(() => import("../pages/MyInvitations"));
 
 const LoadingFallback = () => <div>Loading...</div>;
 
@@ -51,6 +52,7 @@ const AppRoutes = () => {
             <Route path="board/:workspaceId/:boardId" element={<Board />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="mytasks" element={<MyTasks />} />
+            <Route path="invitations" element={<MyInvitations />} />
             <Route path="mydocs" element={<MyDocs />} />
           </Route>
         </Routes>
