@@ -1,11 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import JoditEditor from "jodit-react";
 import "./EditorStyles.css";
-const config = require("../../config");
+const appConfig = require("../../config");
 
 const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
   const editor = useRef(null);
-  const [content, setContent] = useState("Previously on the partner site, when you deleted the last product from the cart page, the page was refreshed by the partner. triggerCartButton rule was working in accordance with this development. There is a possibility that the partner may have forgotten this improvement on the cart page during the update. If the partner confirms that it will not refresh the page in the cart for this part, let's update the triggerCartButton rule accordingly. Can you get approval for this part?");
+  const [content, setContent] = useState(
+    "Previously on the partner site, when you deleted the last product from the cart page, the page was refreshed by the partner. triggerCartButton rule was working in accordance with this development. There is a possibility that the partner may have forgotten this improvement on the cart page during the update. If the partner confirms that it will not refresh the page in the cart for this part, let's update the triggerCartButton rule accordingly. Can you get approval for this part?"
+  );
   const [initialContent, setInitialContent] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
@@ -43,6 +45,55 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
     };
   }, []);
 
+  const aiTools = [
+    {
+      Title: "Blog Post",
+      Heroicon: "pencil",
+      Prompt: "Write a blog post about {{Topic}} for a {{Audience}} audience.",
+      fields: ["Topic", "Audience"],
+    },
+    {
+      Title: "Campaign Ideas",
+      Heroicon: "light-bulb",
+      Prompt: "Generate campaign ideas for {{Product}} targeting {{Audience}}.",
+      fields: ["Product", "Audience"],
+    },
+    {
+      Title: "Product Description",
+      Heroicon: "tag",
+      Prompt:
+        "Create a product description for {{Product}}, focusing on {{Features}}.",
+      fields: ["Product", "Features"],
+    },
+    {
+      Title: "Email Template",
+      Heroicon: "envelope",
+      Prompt: "Write an email template for {{Purpose}} targeting {{Audience}}.",
+      fields: ["Purpose", "Audience"],
+    },
+  ];
+
+  const openModalForPrompt = (tool) => {
+    setCurrentPrompt(tool);
+    setPromptData({});
+    setIsModalOpen(true);
+  };
+
+  const handlePromptDataChange = (field, value) => {
+    setPromptData((prevData) => ({ ...prevData, [field]: value }));
+  };
+
+  const generatePrompt = (template) => {
+    let generatedPrompt = template;
+    for (const key in promptData) {
+      generatedPrompt = generatedPrompt.replace(
+        `{{${key}}}`,
+        promptData[key] || ""
+      );
+    }
+    return generatedPrompt;
+  };
+
   const handleSave = () => {
     setInitialContent(content);
     setIsPreview(true);
@@ -73,7 +124,7 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${config.openAiToken}`,
+          Authorization: `Bearer ${appConfig.openAiToken}`,
         },
         body: JSON.stringify({
           model: "gpt-3.5-turbo-instruct",
@@ -86,16 +137,38 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
       const data = await response.json();
       const aiResult = (data.choices || [])[0]?.text?.trim();
 
-      console.log("SELECTEDTEXT", selectedText);
-      console.log("CONTENT", content);
-      const updatedContent = content.replace(selectedText, aiResult);
-      console.log("UPDATED CONTENT",updatedContent);
-      setContent(updatedContent); 
-      setIsDropdownOpen(false);
+      if (aiResult) {
+        const updatedContent = content.replace(selectedText, aiResult);
+        setContent(updatedContent);
+        setIsDropdownOpen(false);
+      }
     } catch (error) {
       setIsDropdownOpen(false);
       console.error("AI işlem hatası:", error);
     }
+  };
+
+  const addCustomButton = (editorInstance, tool) => {
+    editorInstance.registerButton({
+      name: tool.title,
+      icon: `https://example.com/${tool.icon}-icon.png`,
+      exec: () => {
+        setCurrentTool(tool);
+        const inputElement = document.createElement("input");
+        inputElement.type = "text";
+        inputElement.placeholder = tool.placeholder;
+        inputElement.classList.add("ai-input-inline");
+
+        inputElement.onblur = () => {
+          setUserInput(inputElement.value);
+          handleAIEnhance();
+          editorInstance.selection.insertHTML("");
+        };
+
+        editorInstance.selection.insertNode(inputElement);
+        inputElement.focus();
+      },
+    });
   };
 
   const config = {
@@ -122,12 +195,11 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
       "|",
       "hr",
       "eraser",
-      {
-        name: "aiEnhance",
-        tooltip: "AI Enhance",
-        iconURL: "https://example.com/ai-icon.png",
-        exec: (editorInstance) => toggleDropdown(editorInstance),
-      },
+      ...aiTools.map((tool) => ({
+        name: tool.title,
+        tooltip: tool.title,
+        exec: (editorInstance) => addCustomButton(editorInstance, tool),
+      })),
     ],
     readonly: false,
     toolbar: true,
