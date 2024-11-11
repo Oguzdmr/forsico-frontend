@@ -4,6 +4,8 @@ import PenIcon from "../../assets/board-pen-icon.svg"
 
 
 const GenerateFAQs = () => {
+
+  
   return (
    <div className='generatefaqs-main-container'>
     <div className='generatefaqs-main'>
@@ -22,6 +24,11 @@ const GenerateFAQs = () => {
       </div>
       <div className='generatefaqs-generate-button-area'>
         <button className='generatefaqs-generate-button'>Generate</button>
+      </div>
+      <div>
+      <button className="create-docs-button">
+                Create Document
+              </button>
       </div>
    </div>
   )

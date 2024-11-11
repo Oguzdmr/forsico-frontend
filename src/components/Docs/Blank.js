@@ -19,6 +19,8 @@ const Blank = () => {
       comments: Math.floor(Math.random() * 10),
       tags: ["ui design", "marketing", `tag${(i % 5) + 1}`],
     })));
+
+    
   
     const tagColors = {
       "ui design": "rgba(226, 232, 240, 1)",
@@ -55,6 +57,7 @@ const Blank = () => {
       setFilterTag(tag === "All Tags" ? "" : tag);
       setDropdownOpen(false);
     };
+  
   
     const handleCreateDocument = () => {
       const newCard = {
@@ -122,6 +125,11 @@ const Blank = () => {
               </button>
             </div>
             <div className="editor-area"><TEditor minHeight={"35vh"} /></div>
+            <div>
+            <button className="create-docs-button" onClick={handleCreateDocument}>
+                Create Document
+              </button>
+            </div>
            
     </>
   )
