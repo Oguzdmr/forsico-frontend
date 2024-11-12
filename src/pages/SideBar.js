@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../styles/sidebar.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedComponent } from "../store/selectedComponentSlice";
@@ -21,6 +21,7 @@ const Sidebar = () => {
   const [showCreateBoardModal, setShowCreateBoardModal] = useState(false);
   const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
   const [selectedWorkspaceId, setSelectedWorkspaceId] = useState();
+  const sideRef = useRef(null);
 
   const {
     entities,
@@ -59,8 +60,21 @@ const Sidebar = () => {
 
   const isActive = (path) => location.pathname === path; // Aktif sayfayı kontrol eder
 
+  const handleClickOutside = (event) => {
+    if (sideRef.current && !sideRef.current.contains(event.target)) {
+      document.querySelector('.sidebar').classList.remove('active');
+    }
+  };
+
+  useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+      };
+  }, []);
+
   return (
-    <div className="sidebar">
+    <div className="sidebar" ref={sideRef}>
       {/* <a className="closeSideMenu" onClick={()=>{document.querySelector('.sidebar').classList.remove('active');}} >x</a> */}
       <div className={`sidebar-menu ${isActive("/workspaces/home") ? "active" : ""}`}>
         <img className="sidebar-home-icon" src={SidebarHome} alt="home" />

@@ -189,7 +189,7 @@ const TaskModal = ({
     }
 
     try {
-      let response = await forsicoAiApi.generateAzureAIContent(subtaskTitle);
+      let response = await forsicoAiApi.generateAzureAISubTaskContent(subtaskTitle);
       if (response.success) {
         setGeneratedSubtasks(response.data.result.tasks);
         setVisibleSubtasks([]);

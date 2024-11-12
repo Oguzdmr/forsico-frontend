@@ -4,12 +4,14 @@ import shareCopyIcon from "../../assets/shareCopyIcon.svg";
 import cancelIcon from "../../assets/cancel.svg";
 import emailIcon from "../../assets/emailIcon.svg";
 import Invitation from "../../api/BoardApi/invitation";
+import { TailSpin } from "react-loader-spinner";
 
 const InviteTeamModal = ({ onClose, workspaceId, token, boardId, userId }) => {
   const [emailInput, setEmailInput] = useState("");
   const [emails, setEmails] = useState([]);
   const [error, setError] = useState("");
   const invitationService = new Invitation();
+  const [loading, setLoading] = useState(false);
 
   const handleAddEmail = (e) => {
     e.preventDefault();
@@ -47,7 +49,14 @@ const InviteTeamModal = ({ onClose, workspaceId, token, boardId, userId }) => {
   };
 
   const handleInvite = async () => {
-    invitationService.sendInvitation(token, workspaceId, boardId, userId, emails);
+    setLoading(true);
+    var res = await invitationService.sendInvitation(token, workspaceId, boardId, userId, emails);
+    if(res?.data?.success?.length > 0){
+      setEmails([]);
+      setLoading(false)
+    }else{
+      setLoading(false)
+    }
   };
 
   return (
@@ -117,7 +126,12 @@ const InviteTeamModal = ({ onClose, workspaceId, token, boardId, userId }) => {
             className="invite-team-continue-button"
             onClick={handleInvite}
           >
-            Add Members
+            {loading ? (
+              <TailSpin height="24" width="24" color="#fff" ariaLabel="loading" />
+            ) : (
+              "Add Members"
+            )}
+            
           </button>
         </div>
       </div>
