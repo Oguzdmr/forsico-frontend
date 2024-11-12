@@ -43,6 +43,7 @@
 }
 
 .login-modal-title {
+    font-weight: 700;
     font-size: 50px;
     display: flex;
     flex-direction: column;

@@ -147,7 +147,7 @@ const LoginModal = ({ onClose, signUp, forgotPassword }) => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            placeholder="E-posta adresiniz"
+                            placeholder="E-Mail"
                         />
                         {!validateEmail(email) && email !== '' && (
                             <span className="login-error-icon">
