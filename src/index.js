@@ -4,23 +4,6 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import App from "./App";
 
-const originalFetch = window.fetch;
-
-window.fetch = async (...args) => {
-  const token = (JSON.parse(localStorage.getItem("token") || "{}") || {}).token;
-  if (token) {
-    const tokenExpiration = JSON.parse(atob(token.split(".")[1])).exp * 1000;
-    const isTokenExpired = Date.now() > tokenExpiration;
-
-    if (isTokenExpired) {
-      localStorage.removeItem("token");
-      window.location.href = "/";
-      return Promise.reject(new Error("Token expired"));
-    }
-  }
-
-  return originalFetch(...args);
-};
 
 ReactDOM.render(
   <Provider store={store}>

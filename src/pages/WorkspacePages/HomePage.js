@@ -65,7 +65,7 @@ const HomePage = () => {
       <div className="taskboard-main-container">
         <div className="taskboard-homepage-layout">
           <div className="meet-message">
-            <span>Good Morning, Murat!</span>
+            <span>Welcome!</span>
           </div>
           <div className="workspace-general-info">
             <div className="general-info-leftside">
