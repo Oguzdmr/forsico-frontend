@@ -6,7 +6,7 @@ import linkedInIcon from "../../assets/linkedin-icon.svg";
 import instagramIcon from "../../assets/instagram-icon.svg";
 import twitterIcon from "../../assets/x-icon.svg";
 import Support from "../../api/SupportApi/index";
-import FooterLogo from "../../assets/forsico-logo.svg";
+import FooterLogo from "../../assets/forsico-logo-mavi.svg";
 import { RotatingLines } from "react-loader-spinner";
 
 const Footer = () => {

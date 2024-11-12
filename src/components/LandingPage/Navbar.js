@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import "../../styles/navbar.css";
 import { Link } from "react-router-dom";
-import ForsicoLogoWhite from "../../assets/forsico-logo-white.svg";
+import ForsicoLogoWhite from "../../assets/forsico-logo-beyaz.svg";
 import HasNotificationIcon from "../../assets/has-notification-icon.svg";
 import NavbarSearchIcon from "../../assets/navbar-search-icon.svg";
 import NotificationIcon from "../../assets/has-no-notification.svg";
