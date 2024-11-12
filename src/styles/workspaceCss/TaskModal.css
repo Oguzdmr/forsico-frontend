@@ -138,7 +138,6 @@
   text-align: center;
   width: 100%;
   min-height: 150px;
-  max-height: 500px;
   border: 1px solid rgba(241, 241, 241, 1);
   background-color: rgba(241, 241, 241, 1);
   border-radius: 1rem;
@@ -896,4 +895,10 @@
 
 .taskcard-info-assignees .assignees-icon {
   margin-right: 14px;
+}
+
+
+.generated-subtasks{
+  max-height: 500px;
+  overflow-y: scroll;
 }

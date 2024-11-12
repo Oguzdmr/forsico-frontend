@@ -7,9 +7,12 @@ import instagramIcon from "../../assets/instagram-icon.svg";
 import twitterIcon from "../../assets/x-icon.svg";
 import Support from "../../api/SupportApi/index";
 import FooterLogo from "../../assets/forsico-logo.svg";
+import { RotatingLines } from "react-loader-spinner";
 
 const Footer = () => {
   const support = new Support();
+  const [contactRequestLoader, setContactRequestLoader] = useState(false);
+  const [showPrivacyLabel, setShowPrivacyLabel] = useState(false);
   const [ticketState, setTicketState] = useState({
     email: "",
     fullName: "",
@@ -39,7 +42,7 @@ const Footer = () => {
   };
 
   const handlePrivacyChange = (e) => {
-    console.log("Privacy", e);
+    setShowPrivacyLabel(false);
     setTicketState((previousState) => ({
       ...previousState,
       privacyAccepted: e.target.checked || false,
@@ -50,21 +53,38 @@ const Footer = () => {
     e.preventDefault();
 
     if (ticketState.privacyAccepted) {
-      await support.createContactTicket(ticketState.content, ticketState.fullName, ticketState.email);
+      setContactRequestLoader(true);
+      support
+        .createContactTicket(
+          ticketState.content,
+          ticketState.fullName,
+          ticketState.email
+        )
+        .then(() => {
+          setContactRequestLoader(false);
+          setTicketState({
+            email: "",
+            fullName: "",
+            content: "",
+            privacyAccepted: false,
+          });
+        });
     } else {
-      //TODO show alert
+      setShowPrivacyLabel(true);
     }
   };
 
   return (
     <div className="container-fluid">
       <div className="row footer-container">
-
         <div className="col-lg-6 d-flex justify-content-center align-items-center">
           <div className="footText">
             <h2 className="footer-left-h2">Contact us for more information</h2>
-            <p className="footer-left-p">Have questions, feedback, or need assistance? We’re here to help!
-              Reach out to us, and our team will get back to you as soon as possible.</p>
+            <p className="footer-left-p">
+              Have questions, feedback, or need assistance? We’re here to help!
+              Reach out to us, and our team will get back to you as soon as
+              possible.
+            </p>
           </div>
         </div>
 
@@ -116,16 +136,40 @@ const Footer = () => {
               <input
                 className="privacy-input"
                 onChange={handlePrivacyChange}
+                value={ticketState.privacyAccepted}
+                checked={ticketState.privacyAccepted}
                 type="checkbox"
                 required
               />
-              <label className="privacy-label">
+              <label
+                className="privacy-label"
+                style={{ color: showPrivacyLabel ? "red" : "inherit", }}
+              >
                 I have read and accept the privacy policy.
               </label>
             </div>
 
-            <button type="submit" className="send-btn">
-              Send
+            <button
+              type="submit"
+              className="send-btn"
+              disabled={contactRequestLoader ? "disabled" : ""}
+            >
+              {contactRequestLoader ? (
+                <>
+                  {" "}
+                  <RotatingLines
+                    height="20"
+                    width="20"
+                    radius="9"
+                    strokeColor="white"
+                    ariaLabel="loading"
+                    wrapperStyle
+                    wrapperClass
+                  />
+                </>
+              ) : (
+                "Send"
+              )}
             </button>
           </form>
         </div>
@@ -133,31 +177,42 @@ const Footer = () => {
 
       <div className="row footer-bottom">
         <div className="col-lg-4 text-center text-lg-start my-4 my-lg-0">
-          <a href="#" className="logo"><img className="footer-bottom-image" src={FooterLogo} alt="logo" /></a>
+          <a href="#" className="logo">
+            <img className="footer-bottom-image" src={FooterLogo} alt="logo" />
+          </a>
         </div>
         <div className="col-lg-4 text-center">
-            <p className="footer-bottom-p">
-              © 2024 Forsico. All rights reserved.
-            </p>
+          <p className="footer-bottom-p">
+            © 2024 Forsico. All rights reserved.
+          </p>
         </div>
         <div className="col-lg-4">
           <div className="social-icons d-flex justify-content-center justify-content-lg-end">
-            <a className="icon linkedin-icon footer-social-icon" href="https://www.linkedin.com/company/forsicoio/" target="_blank">
+            <a
+              className="icon linkedin-icon footer-social-icon"
+              href="https://www.linkedin.com/company/forsicoio/"
+              target="_blank"
+            >
               <img src={linkedInIcon} alt="linkedin" />
             </a>
-            <a className="icon instagram-icon footer-social-icon" href="https://www.instagram.com/forsico.io/" target="_blank">
+            <a
+              className="icon instagram-icon footer-social-icon"
+              href="https://www.instagram.com/forsico.io/"
+              target="_blank"
+            >
               <img src={instagramIcon} alt="instagram" />
             </a>
-            <a className="icon linkedin-icon footer-social-icon" href="https://x.com/forsicoio?s=21&t=x0z6d1vm-mTi9VXGXbnRsw" target="_blank">
+            <a
+              className="icon linkedin-icon footer-social-icon"
+              href="https://x.com/forsicoio?s=21&t=x0z6d1vm-mTi9VXGXbnRsw"
+              target="_blank"
+            >
               <img src={twitterIcon} alt="x" />
             </a>
           </div>
         </div>
       </div>
-
     </div>
-
-
   );
 };
 

@@ -1,33 +1,66 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
 import TaskModal from "./TaskModal";
 import SubTaskCard from "./SubTaskCard";
-import '../../styles/workspaceCss/TaskCard.css';
+import "../../styles/workspaceCss/TaskCard.css";
 import { useSelector, useDispatch } from "react-redux";
-import rightButton from '../../assets/right-button.svg';
-import miniCalendar from '../../assets/mini-calendar.svg';
-import fork from '../../assets/fork-blue.svg';
-import people from '../../assets/people-blue.svg';
-import flag from '../../assets/flag.svg';
-import downArrow from '../../assets/down-arrow.svg';
-import upArrow from '../../assets/up-arrow.svg';
-import moment from 'moment';
-import { fetchBoard, updateStatus } from "../../store/boardSlice";
+import rightButton from "../../assets/right-button.svg";
+import miniCalendar from "../../assets/mini-calendar.svg";
+import fork from "../../assets/fork-blue.svg";
+import people from "../../assets/people-blue.svg";
+import flag from "../../assets/flag.svg";
+import downArrow from "../../assets/down-arrow.svg";
+import upArrow from "../../assets/up-arrow.svg";
+import moment from "moment";
+import UrgentFlag from "../../assets/redFlag.svg";
+import HighFlag from "../../assets/blueFlag.svg";
+import NormalFlag from "../../assets/taskcard-info-priority.svg";
 
-function TaskCard({ list, task, colIndex,workspaceId,boardId, taskIndex, color }) {
+
+function TaskCard({
+  list,
+  task,
+  colIndex,
+  workspaceId,
+  boardId,
+  taskIndex,
+  color,
+}) {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isSubtasksVisible, setIsSubtasksVisible] = useState(false);
-  const [subtasks,setSubtasks] = useState(task.subtasks.map((sub)=>{
-    return list.tasks.filter(tsk => tsk._id === sub)[0]
-  }) || []);
-  let completed = 0;
+  const [subtasks, setSubtasks] = useState(
+    task.subtasks.map((sub) => {
+      return list.tasks.filter((tsk) => tsk._id === sub)[0];
+    }) || []
+  );
+  const navigate = useNavigate();
+  const location = useLocation();
+  const priorityOptions = [
+    { label: "Urgent", icon: UrgentFlag, index: 0 },
+    { label: "High", icon: HighFlag, index: 1 },
+    { label: "Normal", icon: NormalFlag, index: 2 },
+  ];
 
-  const board = useSelector((state) => state.board.entities || {});
+  console.log("Taskcard prio", task.priority)
 
-  useEffect(()=>{
-    setSubtasks(task.subtasks.map((sub)=>{
-      return list.tasks.filter(tsk => tsk._id === sub)[0]
-    }) || [])
-  },[task])
+  useEffect(() => {
+    setSubtasks(
+      task.subtasks.map((sub) => {
+        return list.tasks.filter((tsk) => tsk._id === sub)[0];
+      }) || []
+    );
+  }, [task]);
+
+  useEffect(() => {
+    if (isTaskModalOpen) {
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set('selectedTask', taskIndex);
+  
+      navigate(`${location.pathname}?${searchParams.toString()}`);
+    }
+  }, [isTaskModalOpen]);
+
+
   const dispatch = useDispatch();
   const handleOnDrag = (e) => {
     e.dataTransfer.setData(
@@ -40,9 +73,8 @@ function TaskCard({ list, task, colIndex,workspaceId,boardId, taskIndex, color }
     setIsSubtasksVisible(!isSubtasksVisible);
   };
 
-
   const hasSubtasks = task.subtasks?.length > 0;
-console.log(subtasks)
+  console.log(subtasks);
   return (
     <div>
       <div
@@ -51,7 +83,7 @@ console.log(subtasks)
         }}
         draggable
         onDragStart={handleOnDrag}
-        className={`task-container ${!hasSubtasks ? 'no-subtasks' : ''}`} // Alt görev yoksa sınıf ekle
+        className={`task-container ${!hasSubtasks ? "no-subtasks" : ""}`} // Alt görev yoksa sınıf ekle
         style={{ borderColor: color }} // Border'ı pasif yap
       >
         <div className="task-frame">
@@ -67,13 +99,15 @@ console.log(subtasks)
         <div className="task-info">
           {task.dueDate && (
             <div className="task-date">
-            <div className="mini-calendar-icon">
-              <img src={miniCalendar} alt="mini calendar" />
-            </div>
-            <span className="date-text">{moment(task.dueDate).format("MMMM-DD")}</span>
+              <div className="mini-calendar-icon">
+                <img src={miniCalendar} alt="mini calendar" />
+              </div>
+              <span className="date-text">
+                {moment(task.dueDate).format("MMMM-DD")}
+              </span>
             </div>
           )}
-         
+
           <div className="task-status">
             <span>%50</span>
           </div>
@@ -84,7 +118,7 @@ console.log(subtasks)
             <div className="stat-icon">
               <img src={fork} alt="Fork icon" />
             </div>
-            <div className="stat-text">{subtasks?.length}</div> {/* Burayı güncelledik */}
+            <div className="stat-text">{subtasks?.length}</div>{" "}
           </div>
 
           <div className="stat-group">
@@ -94,16 +128,24 @@ console.log(subtasks)
             <div className="stat-text">1</div>
           </div>
           <div className="task-extra">
-            <img src={flag} alt="Right button" />
+            <img src={priorityOptions[task.priority]?.icon} alt="Priority" />
           </div>
         </div>
       </div>
 
       {/* Task footer: Subtasks'ı açmak için */}
       {hasSubtasks && ( // Alt görev varsa footer'ı göster
-        <div className="task-footer" onClick={toggleSubtasks} style={{ borderColor: color }}>
+        <div
+          className="task-footer"
+          onClick={toggleSubtasks}
+          style={{ borderColor: color }}
+        >
           <span className="footer-text"></span>
-          <img src={isSubtasksVisible ? upArrow : downArrow} alt="Arrow icon" className="footer-icon" />
+          <img
+            src={isSubtasksVisible ? upArrow : downArrow}
+            alt="Arrow icon"
+            className="footer-icon"
+          />
         </div>
       )}
 

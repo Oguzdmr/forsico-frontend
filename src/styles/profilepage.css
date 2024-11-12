@@ -3,8 +3,8 @@
 /* Main layout */
 
 .profile-page-main-div{
-    margin: 1rem;
-    width: calc(100vw - 320px);
+    padding: 1rem;
+    width: 100%;
     display: flex;
     justify-content: center;
 }

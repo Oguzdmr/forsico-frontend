@@ -36,307 +36,323 @@
 } */
 
 .board-page {
-    display: flex;
-    flex-direction: column;
-    background-color: #ffff;
-    width: max-content;
-    min-width: calc(100vw - 290px);
+  display: flex;
+  flex-direction: column;
+  background-color: #ffff;
+  width: 100%;
+  min-width: calc(100vw - 290px);
 }
 
 .board-header {
-    padding: 20px;
-    color: #1C3C84;
-    width: calc(100vw - 330px);
-    /* Genişlik ayarı */
-    height: 78px;
-    position: fixed;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    /* Dikey ortalama */
-    justify-content: space-between;
-    /* Öğeleri iki uca yayar */
-
+  padding: 20px;
+  color: #1C3C84;
+  width: 100%;
+  max-width: calc(100vw - 290px);
+  height: 78px;
+  position: fixed;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .board-title {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    /* Başlık alanını genişletir */
+  display: flex;
+  align-items: center;
+  flex: 1;
+  /* Başlık alanını genişletir */
 }
 
 .board-title h1 {
-    font-size: 40px;
+  text-align: center;
+  font-size: 40px;
+  margin: 0;
 }
 
 .board-button-group {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    /* İkonları sağa yaslar */
-    gap: 10px;
-    /* İkonlar arasında boşluk */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+
+.board-button-group a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .board-members img {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .member-modal {
-    position: absolute;
-    top: 80px;
-    /* Header’ın hemen altında */
-    right: 10px;
-    /* Sağ tarafta hizalanmış */
-    width: 238px;
-    height: 162px;
-    padding: 16px;
-    gap: 15px;
-    background-color: #fff;
-    border-radius: 15px 0px 15px 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #1C3C8480
+  position: absolute;
+  top: 80px;
+  /* Header’ın hemen altında */
+  right: 10px;
+  /* Sağ tarafta hizalanmış */
+  width: 238px;
+  height: 162px;
+  padding: 16px;
+  gap: 15px;
+  background-color: #fff;
+  border-radius: 15px 0px 15px 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #1C3C8480
 }
 
 .member-modal-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .member-modal-title h1 {
-    font-size: 20px;
-    color: #1C3C84;
-    font-weight: 700;
-    line-height: 24.2px;
+  font-size: 20px;
+  color: #1C3C84;
+  font-weight: 700;
+  line-height: 24.2px;
 }
 
 .member-modal-line {
-    width: 100%;
-    height: 1px;
-    background-color: #F2F2F2;
+  width: 100%;
+  height: 1px;
+  background-color: #F2F2F2;
 }
 
 .member-modal-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: auto;
 }
 
 .member {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .member img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .board-top-line {
-    height: 2px;
-    width: auto;
-    min-width: calc(100vw - 330px);
-    margin-top: -10px;
-    margin-bottom: 24px;
-    background-color: #F2F2F2;
+  height: 2px;
+  width: auto;
+  min-width: calc(100vw - 330px);
+  margin-top: -10px;
+  margin-bottom: 24px;
+  background-color: #F2F2F2;
 }
 
 .board-container {
-    padding: 24px;
-    padding-top: 130px;
-    background-color: #ffff;
-    display: flex;
-    width: max-content;
-    flex-direction: column;
+  padding: 24px;
+  padding-top: 130px;
+  background-color: #ffff;
+  display: flex;
+  width: max-content;
+  flex-direction: column;
 }
 
 .board-content {
-    display: flex;
-    flex-direction: row;
-    gap: 1.5rem;
-    overflow: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  overflow: auto;
 }
 
 .new-column-button {
-    display: flex;
-    align-items: start;
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-    height: 32px;
+  display: flex;
+  align-items: start;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
 }
 
 .new-column-button img {
-    width: 24px;
-    height: 24px;
+  width: 24px;
+  height: 24px;
 }
 
 .add-task-button {
-    background-color: #36C5F0;
-    color: white;
-    border: 1px solid transparent;
-    border-radius: 20px;
-    width: 100px;
-    height: 40px;
-    font-size: 15px;
-    display: block;
-    align-self: end;
-    margin-bottom: 100px;
-    cursor: pointer;
+  background-color: #36C5F0;
+  color: white;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  width: 100px;
+  height: 40px;
+  font-size: 15px;
+  display: block;
+  align-self: end;
+  cursor: pointer;
 }
 
 .add-task-button {
-    background-color: #36C5F0;
-    color: white;
-    border: 1px solid transparent;
-    border-radius: 20px;
-    width: 100px;
-    height: 40px;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    /* Butonu ekranın sağ alt köşesine sabitle */
-    bottom: 20px;
-    /* Ekranın altından boşluk */
-    right: 20px;
-    /* Ekranın sağından boşluk */
-    cursor: pointer;
-    z-index: 100;
-    /* Diğer elemanların üzerinde gösterilmesini sağla */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    /* Hafif bir gölge ekle */
-    transition: background-color 0.3s ease;
+  background-color: #36C5F0;
+  color: white;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  width: 100px;
+  height: 40px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 50px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
 }
 
 .add-task-button:hover {
-    background-color: #2BA9E1;
-    /* Hover durumunda farklı bir renk */
+  background-color: #2BA9E1;
+  /* Hover durumunda farklı bir renk */
 }
 
 .share-modal {
-    position: absolute;
-    top: 80px;
-    right: 10px;
-    width: 424px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 15px 0 15px 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    border: 1px solid #1C3C8480;
-  }
-  
-  .share-modal-title h1 {
-    font-size: 20px;
-    color: #1C3C84;
-    font-weight: 700;
-    margin: 0;
-  }
-  
-  .share-modal-line {
-    width: 100%;
-    height: 1px;
-    background-color: #F2F2F2;
-  }
-  
-  .share-modal-content {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .email-input-wrapper {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  
-  .email-input {
-    flex: 1;
-    height: 40px;
-    padding: 0 10px;
-    border-radius: 20px;
-    border: 1px solid #D9D9D9;
-    font-size: 14px;
-  }
-  
-  .send-button {
-    height: 40px;
-    padding: 0 15px;
-    background-color: #36C5F0;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .share-connection-link-wrapper label {
-    font-family: 'Forsico-Font',sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: #9A9A9A;
-    line-height: 18.15px;
-  }
-  
-  .share-link-input-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-    border-radius: 20px;
-    border: 1px solid #D9D9D9;
-    background-color: #F9F9F9;
+  position: absolute;
+  top: 80px;
+  right: 10px;
+  width: 424px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 15px 0 15px 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border: 1px solid #1C3C8480;
+}
 
-  }
-  
-  .share-link-input {
-    flex: 1;
-    height: 40px;
-    padding: 0 10px;
-    border: none;
-    font-size: 14px;
-    color: #707070;
-    border-radius: 20px;
+.share-modal-title h1 {
+  font-size: 20px;
+  color: #1C3C84;
+  font-weight: 700;
+  margin: 0;
+}
 
-    background-color: #F9F9F9;
+.share-modal-line {
+  width: 100%;
+  height: 1px;
+  background-color: #F2F2F2;
+}
 
+.share-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.email-input-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.email-input {
+  flex: 1;
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 20px;
+  border: 1px solid #D9D9D9;
+  font-size: 14px;
+}
+
+.send-button {
+  height: 40px;
+  padding: 0 15px;
+  background-color: #36C5F0;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.share-connection-link-wrapper label {
+  font-family: 'Forsico-Font', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #9A9A9A;
+  line-height: 18.15px;
+}
+
+.share-link-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  border-radius: 20px;
+  border: 1px solid #D9D9D9;
+  background-color: #F9F9F9;
+
+}
+
+.share-link-input {
+  flex: 1;
+  height: 40px;
+  padding: 0 10px;
+  border: none;
+  font-size: 14px;
+  color: #707070;
+  border-radius: 20px;
+
+  background-color: #F9F9F9;
+
+}
+
+.share-copy-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.share-copy-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.share-copy-success {
+  color: #36C5F0;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+@media (max-width: 480px) {
+  .board-title h1 {
+    font-size: 24px;
   }
-  
-  .share-copy-button {
-    background: none;
-    border: none;
-    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .board-header {
+    max-width: calc(100vw - 5px);
   }
-  
-  .share-copy-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+
+  .add-task-button{
+    bottom: 10px !important;
   }
-  .share-copy-success {
-    color: #36C5F0;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-  .loader-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
+}

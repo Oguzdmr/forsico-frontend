@@ -15,7 +15,7 @@ import Priority from "../../assets/taskcard-info-priority.svg";
 import RightArrow from "../../assets/taskcard-info-rightarrow.svg";
 import Comment from "../../assets/taskcard-info-comment.svg";
 import Cross from "../../assets/taskcard-info-cross.svg";
-import TextEditor from "../Editor/TextEditor";
+import TEditor from "../Editor/TEditor.js";
 import AddMemberIcon from "../../assets/addMemberIcon.svg";
 import ModalPlus from "../../assets/status-modal-plus.svg";
 import UrgentFlag from "../../assets/redFlag.svg";
@@ -29,7 +29,8 @@ import { fetchBoard, updateStatus } from "../../store/boardSlice";
 import { RotatingLines } from "react-loader-spinner";
 import TaskApi from "../../api/BoardApi/task.js";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {addTask} from "../../store/boardSlice.js"
+import { addTask } from "../../store/boardSlice.js";
+import UserAvatar from "../../components/WorkspaceAndBoard/UserAvatar.js";
 
 const TaskModal = ({
   taskId,
@@ -49,18 +50,21 @@ const TaskModal = ({
   });
 
   const priorityOptions = [
-    { label: "Urgent", icon: UrgentFlag },
-    { label: "High", icon: HighFlag },
-    { label: "Normal", icon: NormalFlag },
+    { label: "Urgent", icon: UrgentFlag, index: 0 },
+    { label: "High", icon: HighFlag, index: 1 },
+    { label: "Normal", icon: NormalFlag, index: 2 },
   ];
+
   const board = useSelector((state) => state.board.entities);
   const selectedTask = entities.selectedtask || {};
   const [description, setDescription] = useState(
     entities.selectedtask?.description || ""
   );
   const [loadingTasks, setLoadingTasks] = useState({});
-  const workspaceField = useSelector((state) => {return state.workspaces.entities})?.filter((x) => x._id === workspaceId)[0]
-  const userField = useSelector((state) => state.auth.user || {})
+  const workspaceField = useSelector((state) => {
+    return state.workspaces.entities;
+  })?.filter((x) => x._id === workspaceId)[0];
+  const userField = useSelector((state) => state.auth.user || {});
   const [isDescriptionEditing, setIsDescriptionEditing] = useState(false);
   const [subtaskStates, setSubtaskStates] = useState({});
   const [generatedSubtasks, setGeneratedSubtasks] = useState([]);
@@ -84,12 +88,15 @@ const TaskModal = ({
     id: entities.selectedtask?.assignee?._id || "",
     avatar: entities.selectedtask?.assignee?.profilePicture || "",
     name: entities.selectedtask?.assignee?.firstName || "",
+    lastname: entities.selected?.assignee?.lastName || "",
   });
   const [selectedPriority, setSelectedPriority] = useState(
     entities.selectedtask?.priority
       ? priorityOptions[entities.selectedtask.priority]
       : { label: "", icon: "" }
   );
+
+  console.log("selected prio", selectedPriority);
   const assigneeModalRef = useRef(null);
   const statusModalRef = useRef(null);
   const priorityModalRef = useRef(null);
@@ -110,14 +117,17 @@ const TaskModal = ({
 
   useEffect(() => {
     setDescription(selectedTask.description || "");
+    setTempDescription(selectedTask.description || "");
     setTaskTitle(selectedTask.name || "");
     setSelectedStatus(selectedTask.statusId?.name || "");
     setSelectedAssignee({
       id: selectedTask.assignee?._id || "",
       avatar: selectedTask.assignee?.profilePicture || "",
       name: selectedTask.assignee?.firstName || "",
+      lastname: selectedTask.assignee?.lastName || "",
     });
-    setSelectedPriority(selectedTask.priority || "");
+
+    setSelectedPriority(priorityOptions[selectedTask.priority]);
     setSelectedDate(selectedTask.dueDate || null);
   }, [selectedTask]);
 
@@ -174,7 +184,7 @@ const TaskModal = ({
   const generateSubtasks = async (subtaskTitle) => {
     if (!subtaskTitle.trim()) {
       console.log("Please enter a valid subtask title");
-      setIsLoading(false); // Hata durumunda loading'i false yap
+      setIsLoading(false);
       return;
     }
 
@@ -182,14 +192,14 @@ const TaskModal = ({
       let response = await forsicoAiApi.generateAzureAIContent(subtaskTitle);
       if (response.success) {
         setGeneratedSubtasks(response.data.result.tasks);
-        setVisibleSubtasks([]); // Yeni cevap geldiğinde listeyi temizle
+        setVisibleSubtasks([]);
       } else {
         console.error("Error in generating subtasks:", response.error);
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      setIsLoading(false); // Cevap geldiğinde loading durumunu false yap
+      setIsLoading(false);
     }
   };
 
@@ -205,38 +215,38 @@ const TaskModal = ({
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0 },
   };
-  // Retrieve user info from Redux store
   const boardMembers = useSelector((state) => state.board.entities.members);
-
-  const sendOptions = ["UX/UI Board", "Markenting Board", "Social Media Board"]; // Status options
 
   const handleFieldUpdate = async (field, value) => {
     try {
       await taskApi.updateTask(token, workspaceId, taskId, { [field]: value });
-      // dispatch(fetchTask({ token, workspaceId, taskId }));
     } catch (error) {
       console.error(`Error updating task ${field}:`, error);
     }
   };
-  const handleRoot = async (newBoardField) => { 
-    await taskApi.updateTask(token, workspaceId, taskId, { listId: newBoardField.lists[0]._id, boardId: newBoardField._id });
-      // dispatch(fetchTask({ token, workspaceId, taskId }));
-   };
+  const handleRoot = async (newBoardField) => {
+    taskApi
+      .changeTaskBoard(token, workspaceId, taskId, {
+        listId: newBoardField.lists[0]._id,
+        boardId: newBoardField._id,
+      })
+      .then(() => {
+        window.location.replace(
+          `/workspaces/board/${workspaceId}/${newBoardField._id}`
+        );
+      });
+  };
 
   const handleSaveDescription = () => {
     if (tempDescription.trim() !== "") {
+      console.log("temp desc", tempDescription);
       setDescription(tempDescription);
       handleFieldUpdate("description", tempDescription);
     }
     setIsDescriptionEditing(false);
   };
 
-  const handleSaveComment = () => setIsCommentEditing(false);
-
-  // const handleGenerateSubtask = () => {
-  //   console.log("Generated Subtask:", subtaskTitle); // Here, you can add logic to save the subtask
-  //   setIsGeneratingSubtask(false); // Close input box after generating
-  // };
+  const handleSaveComment = () => {};
 
   const toggleAssigneeModal = () => {
     console.log("Toggled Assignee Modal");
@@ -260,20 +270,29 @@ const TaskModal = ({
   };
 
   const handlePrioritySelect = (priority) => {
-    setSelectedPriority(priority); // Save both label and icon
+    handleFieldUpdate("priority", priority.index);
+    setSelectedPriority(priority);
     setPriorityModalOpen(false);
   };
 
   const toggleDescriptionEditing = () => {
-    setIsDescriptionEditing((prev) => !prev); // Düzenleme modunu tersine çevir
+    if (selectedTask._id) {
+      setIsDescriptionEditing((prev) => !prev);
+    }
   };
 
-  const handleAssigneeSelect = (userInfo) => {
-    handleFieldUpdate("assignee", userInfo._id);
+  const handleAssigneeSelect = async (userInfo) => {
+    await taskApi.changeAssignee(
+      token,
+      workspaceId,
+      selectedTask._id,
+      userInfo.id
+    );
     setSelectedAssignee({
       id: userInfo._id,
       avatar: userInfo.profilePicture,
-      name: `${userInfo.firstName} ${userInfo.lastName}`,
+      name: userInfo.firstName,
+      lastname: userInfo.lastName,
     });
     setAssigneeModalOpen(false);
   };
@@ -328,10 +347,9 @@ const TaskModal = ({
 
   const handleEditComment = (index) => {
     const comment = comments[index];
-    // Comment nesnesinin tanımlı olup olmadığını kontrol edin
     if (comment && comment.content) {
-      setEditingIndex(index); // Set the comment to edit mode
-      setEditedComment(comment.content); // Load the existing comment text into temp storage
+      setEditingIndex(index);
+      setEditedComment(comment.content);
     } else {
       console.warn(`Comment at index ${index} is undefined or has no content`);
     }
@@ -353,25 +371,34 @@ const TaskModal = ({
   const handleApprove = async (subtask) => {
     setLoadingTasks((prev) => ({ ...prev, [subtask.id]: true }));
     let responseCreateSubtask = await taskApi.createTask(token, workspaceId, {
-      "name": subtask.name,
-      "description": subtask.description,
-      "boardId": selectedTask.boardId,
-      "listId": selectedTask.listId,
-      "assignee": userField.id,
-      "ownerId":userField.id,
-      "priority": 0,
-      "parentTask": selectedTask._id
-    }
-    )
-    console.log(subtask)
-    console.log("res subtask",responseCreateSubtask)
-    if(responseCreateSubtask.status){
+      name: subtask.name,
+      description: subtask.description,
+      boardId: selectedTask.boardId,
+      listId: selectedTask.listId,
+      assignee: userField.id,
+      ownerId: userField.id,
+      priority: 2,
+      parentTask: selectedTask._id,
+    });
+    console.log(subtask);
+    console.log("res subtask", responseCreateSubtask);
+    if (responseCreateSubtask.status) {
       setSubtaskStates((prev) => ({ ...prev, [subtask.id]: "approved" }));
       setLoadingTasks((prev) => ({ ...prev, [subtask.id]: false }));
-      dispatch(addTask({ name: subtask.name, description: subtask.description, boardId: selectedTask.boardId , listId:selectedTask.listId, userId:userField.id, parentId:selectedTask._id, taskId:responseCreateSubtask.data._id}));
-      dispatch(fetchBoard({ workspaceId, boardId }))
+      dispatch(
+        addTask({
+          name: subtask.name,
+          description: subtask.description,
+          boardId: selectedTask.boardId,
+          listId: selectedTask.listId,
+          userId: userField.id,
+          parentId: selectedTask._id,
+          taskId: responseCreateSubtask.data._id,
+        })
+      );
+      dispatch(fetchBoard({ workspaceId, boardId }));
     }
-  }
+  };
   const handleReject = (subtaskId) => {
     setSubtaskStates((prev) => ({ ...prev, [subtaskId]: "rejected" }));
   };
@@ -421,13 +448,6 @@ const TaskModal = ({
       }
 
       if (
-        !event.target.closest(".taskcard-info-description-area") &&
-        isDescriptionEditing
-      ) {
-        setIsDescriptionEditing(false);
-      }
-
-      if (
         !event.target.closest(".taskcard-info-comment-area") &&
         isCommentEditing
       ) {
@@ -466,7 +486,7 @@ const TaskModal = ({
       <div className={`modal-content-task`}>
         <div className="taskcard-info-upper-area">
           <div className="taskcard-info-left-upper">
-          <span>{workspaceField?.name}</span>
+            <span>{workspaceField?.name}</span>
           </div>
           <div className="taskcard-info-right-upper">
             <img
@@ -477,7 +497,10 @@ const TaskModal = ({
             <img
               src={Cross}
               alt="taskcard-info-cross"
-              onClick={() => setIsTaskModalOpen(false)}
+              onClick={() => {
+                setIsTaskModalOpen(false);
+                dispatch(fetchBoard({ workspaceId, boardId }));
+              }}
               style={{ cursor: "pointer" }}
             />
 
@@ -490,7 +513,7 @@ const TaskModal = ({
                 </div>
                 <div className="right-arrow-options">
                   {workspaceField?.boards?.map((boardField) => {
-                    if(boardField.name !== board.name){
+                    if (boardField.name !== board.name) {
                       return (
                         <div
                           key={boardField._id}
@@ -499,9 +522,9 @@ const TaskModal = ({
                         >
                           {boardField.name}
                         </div>
-                      )
+                      );
                     }
-                    })}
+                  })}
                 </div>
               </div>
             )}
@@ -539,33 +562,45 @@ const TaskModal = ({
             >
               {isDescriptionEditing ? (
                 <div>
-                  <TextEditor
-                    value={tempDescription}
+                  <TEditor
+                    Outsidevalue={tempDescription}
                     setValue={setTempDescription}
                     saveCallback={
                       isDescriptionEditing
                         ? handleSaveDescription
                         : toggleDescriptionEditing
                     }
+                    minHeight={300}
                     cancelCallback={() => {
                       setTempDescription(description);
                       setIsDescriptionEditing(false);
                     }}
+                    setEditingMode={setIsDescriptionEditing}
                   />
                 </div>
               ) : (
                 <div
                   className="taskcard-info-textarea -description"
-                  onClick={toggleDescriptionEditing} // Düzenleme moduna geçiş
+                  onClick={() => {
+                    setIsDescriptionEditing(true);
+                  }}
                   dangerouslySetInnerHTML={{ __html: description }} // HTML içeriğini güvenli bir şekilde göster
                 />
               )}
             </div>
 
-            {/* Comment Section */}
             <div className="taskcard-info-comment-area">
               {isCommentEditing ? (
-                <TextEditor value={tempComment} setValue={setTempComment} />
+                <TEditor
+                  Outsidevalue={tempComment}
+                  setValue={setTempComment}
+                  saveCallback={handleAddComment}
+                  minHeight={150}
+                  cancelCallback={() => {
+                    setIsCommentEditing(false);
+                  }}
+                  setEditingMode={setIsCommentEditing}
+                />
               ) : (
                 <div
                   className="taskcard-info-textarea -comment"
@@ -575,19 +610,8 @@ const TaskModal = ({
                 </div>
               )}
 
-              {isCommentEditing && (
-                <button
-                  onClick={handleAddComment}
-                  className="save-description-button"
-                >
-                  Save
-                </button>
-              )}
-
-              {/* Comments section title */}
               <h3 className="comments-title">Comments</h3>
 
-              {/* Display list of comments */}
               <div className="taskcard-info-comments-list mb-4">
                 {comments.map((comment, index) => (
                   <div
@@ -598,34 +622,45 @@ const TaskModal = ({
                   >
                     {editingIndex === index ? (
                       <>
-                        {/* Düzenleme modu: TextEditor gösteriliyor */}
-                        <TextEditor
-                          value={editedComment}
+                        <TEditor
+                          Outsidevalue={editedComment}
                           setValue={setEditedComment}
+                          saveCallback={handleEditComment}
+                          minHeight={150}
+                          cancelCallback={() => {
+                            handleEditComment(-1);
+                          }}
+                          setEditingMode={setIsCommentEditing}
                         />
-                        <button
-                          onClick={() => handleSaveEditedComment(index)}
-                          className="save-description-button"
-                        >
-                          Save
-                        </button>
                       </>
                     ) : (
                       <>
-                        {/* Normal görünüm: Yorum içeriği gösteriliyor, null kontrolü yapılır */}
                         {comment && comment.content ? (
-                          <div
-                            className="comment-content"
-                            dangerouslySetInnerHTML={{
-                              __html: comment.content,
-                            }}
-                          />
+                          <>
+                            <div className="comment-header d-flex align-items-center text-align-center">
+                              <UserAvatar
+                                firstName={comment.userId?.firstName}
+                                lastName={comment?.userId?.lastName}
+                                profilePicture={comment?.userId?.profilePicture}
+                                size="36"
+                              />
+                              <p className="mb-0 ms-1">{`${comment.userId?.firstName} ${comment.userId?.lastName} `}</p>
+                            </div>
+                            <hr></hr>
+                            <div
+                              className="comment-content mt-3"
+                              dangerouslySetInnerHTML={{
+                                __html: comment.content,
+                              }}
+                            />
+                          </>
                         ) : (
                           <div className="comment-content">
-                            No content available
-                          </div> // İçerik yoksa gösterilecek alternatif
+                            We couldn't load this comment. Please refresh the
+                            page to see comment content.
+                          </div>
                         )}
-                        <div className="comment-icons">
+                        {/* <div className="comment-icons">
                           <img
                             src={EditIcon}
                             alt="edit icon"
@@ -638,7 +673,7 @@ const TaskModal = ({
                             className="comment-icon"
                             onClick={() => handleDeleteComment(index)}
                           />
-                        </div>
+                        </div> */}
                       </>
                     )}
                   </div>
@@ -670,82 +705,105 @@ const TaskModal = ({
                     onClick={handleToggleSubtaskGeneration}
                     className="generate-subtask-button"
                     style={{
-                      marginTop: visibleSubtasks.length > 3 ? "50px" : "10px",
+                      marginTop: visibleSubtasks.length > 3 ? "25px" : "10px",
+                      marginBottom:
+                        visibleSubtasks.length > 3 ? "25px" : "10px",
                     }}
                   >
                     Generate Subtasks
                   </button>
                 )}
 
-                {/* Display generated subtasks */}
-                <motion.div
-                  className="workspaceAi-message"
-                  variants={staggerAnimation}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <AnimatePresence>
-                    {visibleSubtasks.map((task) => (
-                      <div key={task.id}>
-                        <motion.div
-                          key={task.id}
-                          variants={cardAnimation}
-                          exit={{ opacity: 0, scale: 0 }}
-                          transition={{ duration: 0.5 }}
-                          className={`workspaceAi-task ${
-                            subtaskStates[task.id] === "rejected"
-                              ? "rejected-task"
-                              : ""
-                          }`}
-                        >
-                          <div className="workspaceAi-task-card">
-                            <div className="task-header">{task.name}</div>
-                            <div className="task-desc">{task.description}</div>
-                            <div className="task-tags">
-                              <span className="task-tag">{task.type}</span>
-                              <span className="task-tag">{task.assignee}</span>
+                <div className="generated-subtasks">
+                  <motion.div
+                    className="workspaceAi-message"
+                    variants={staggerAnimation}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <AnimatePresence>
+                      {visibleSubtasks.map((task) => (
+                        <div key={task.id}>
+                          <motion.div
+                            key={task.id}
+                            variants={cardAnimation}
+                            exit={{ opacity: 0, scale: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className={`workspaceAi-task ${
+                              subtaskStates[task.id] === "rejected"
+                                ? "rejected-task"
+                                : ""
+                            }`}
+                          >
+                            <div className="workspaceAi-task-card">
+                              <div className="task-header">{task.name}</div>
+                              <div className="task-desc">
+                                {task.description}
+                              </div>
+                              <div className="task-tags">
+                                <span className="task-tag">{task.type}</span>
+                                <span className="task-tag">
+                                  {task.assignee}
+                                </span>
+                              </div>
                             </div>
-                          </div>
-                          <div className="task-icons">
-                          {loadingTasks[task.id] ? (
-                          <RotatingLines height="20" width="20" strokeColor="#36C5F0" />
-                        ) : (
-                          <>
-                            {subtaskStates[task.id] === "approved" ? (
-                              <span className="task-icon" style={{ pointerEvents: "none" }}>
-                                <img src={Tickİcon} alt="tick" />
-                              </span>
-                            ) : subtaskStates[task.id] === "rejected" ? (
-                              <span className="task-icon" style={{ pointerEvents: "none" }}>
-                                <img src={Crossİcon} alt="cross" />
-                              </span>
-                            ) : (
-                              <>
-                                <span className="task-icon" onClick={() => handleReject(task.id)}>
-                                  <img src={Crossİcon} alt="cross" />
-                                </span>
-                                <span className="task-icon" onClick={() => handleApprove(task)}>
-                                  <img src={Tickİcon} alt="tick" />
-                                </span>
-                              </>
-                            )}
-                          </>
-                        )}
-                          </div>
-                        </motion.div>
-                      </div>
-                    ))}
-                  </AnimatePresence>
-                </motion.div>
+                            <div className="task-icons">
+                              {loadingTasks[task.id] ? (
+                                <RotatingLines
+                                  height="20"
+                                  width="20"
+                                  strokeColor="#36C5F0"
+                                />
+                              ) : (
+                                <>
+                                  {subtaskStates[task.id] === "approved" ? (
+                                    <span
+                                      className="task-icon"
+                                      style={{ pointerEvents: "none" }}
+                                    >
+                                      <img src={Tickİcon} alt="tick" />
+                                    </span>
+                                  ) : subtaskStates[task.id] === "rejected" ? (
+                                    <span
+                                      className="task-icon"
+                                      style={{ pointerEvents: "none" }}
+                                    >
+                                      <img src={Crossİcon} alt="cross" />
+                                    </span>
+                                  ) : (
+                                    <>
+                                      <span
+                                        className="task-icon"
+                                        onClick={() => handleReject(task.id)}
+                                      >
+                                        <img src={Crossİcon} alt="cross" />
+                                      </span>
+                                      <span
+                                        className="task-icon"
+                                        onClick={() => handleApprove(task)}
+                                      >
+                                        <img src={Tickİcon} alt="tick" />
+                                      </span>
+                                    </>
+                                  )}
+                                </>
+                              )}
+                            </div>
+                          </motion.div>
+                        </div>
+                      ))}
+                    </AnimatePresence>
+                  </motion.div>
+                </div>
               </div>
             )}
 
-            <div className="taskcard-info-checklist-area mb-4 mb-lg-0">
+            {/* <div className="taskcard-info-checklist-area mb-4 mb-lg-0">
               <input className="checklist-checkbox" type="checkbox" />
               <p className="taskcard-info-gray-letter m-0">
                 Create a checklist for this task
               </p>
-            </div>
+            </div> */}
           </div>
 
           <div className="col-lg-4">
@@ -760,11 +818,12 @@ const TaskModal = ({
                   Assignees
                 </a>
 
-                {selectedAssignee.avatar ? (
-                  <img
-                    src={selectedAssignee.avatar}
-                    alt="selected assignee avatar"
-                    className="selected-assignee-avatar"
+                {selectedAssignee.name ? (
+                  <UserAvatar
+                    firstName={selectedAssignee?.name}
+                    lastName={selectedAssignee?.lastname}
+                    profilePicture={selectedAssignee.avatar}
+                    size="36"
                   />
                 ) : (
                   <img src={Plus} alt="plus" onClick={toggleAssigneeModal} />
@@ -787,12 +846,13 @@ const TaskModal = ({
                         className="assignee-modal-content"
                         onClick={() => handleAssigneeSelect(member)}
                       >
-                        <img
-                          src={member.profilePicture}
-                          alt="Profile"
-                          className="assignee-avatar"
+                        <UserAvatar
+                          firstName={member?.firstName}
+                          lastName={member?.lastName}
+                          profilePicture={member.profilePicture}
+                          size="36"
                         />
-                        <div className="assignee-name">
+                        <div className="assignee-name ms-1">
                           {member.firstName} {member.lastName}
                         </div>
                       </div>
@@ -876,15 +936,15 @@ const TaskModal = ({
                   Priority
                 </a>
 
-                {selectedPriority.label ? (
+                {selectedPriority?.label ? (
                   <div className="selected-priority">
                     <img
-                      src={selectedPriority.icon}
+                      src={selectedPriority?.icon}
                       alt="selected priority icon"
                       className="priority-icon"
                     />
                     <span className="priority-label">
-                      {selectedPriority.label}
+                      {selectedPriority?.label}
                     </span>{" "}
                     {/* Show the priority label */}
                   </div>

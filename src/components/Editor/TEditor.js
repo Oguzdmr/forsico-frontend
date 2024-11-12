@@ -1,18 +1,30 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
 import JoditEditor from "jodit-react";
 import "./EditorStyles.css";
 const appConfig = require("../../config");
 
-const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
+const TEditor = ({
+  minHeight,
+  Outsidevalue,
+  setValue,
+  saveCallback,
+  cancelCallback,
+  setEditingMode,
+}) => {
   const editor = useRef(null);
-  const [content, setContent] = useState("");
-  const [initialContent, setInitialContent] = useState("");
+  const [content, setContent] = useState(Outsidevalue ?? "");
+  const [initialContent, setInitialContent] = useState(Outsidevalue ?? "");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const [savedSelection, setSavedSelection] = useState(null);
+  useEffect(() => {
+    if (content) {
+      setValue(content);
+    }
+  }, [content]);
 
   useEffect(() => {
-    setInitialContent(content);
+    setContent(initialContent);
 
     const handleContextMenu = (event) => {
       event.preventDefault();
@@ -45,8 +57,7 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
 
   const handleSave = () => {
     setInitialContent(content);
-    setIsPreview(true);
-    saveCallback();
+    saveCallback(content);
   };
 
   const handleCancel = () => {
@@ -97,60 +108,63 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
     }
   };
 
-  const config = {
-    buttons: [
-      "paragraph",
-      "font",
-      "fontsize",
-      "brush",
-      "|",
-      "bold",
-      "italic",
-      "underline",
-      "|",
-      "ul",
-      "ol",
-      "|",
-      "link",
-      "image",
-      "table",
-      "|",
-      "align",
-      "undo",
-      "redo",
-      "|",
-      "hr",
-    ],
-    readonly: false,
-    toolbar: true,
-    height: minHeight,
-    addNewLine: false,
-    toolbarAdaptive: false,
-    uploader: {
-      insertImageAsBase64URI: true,
-    },
-    font: {
-      options: [
-        "Arial",
-        "Georgia",
-        "Impact",
-        "Tahoma",
-        "Times New Roman",
-        "Verdana",
+  const config = useMemo(
+    () => ({
+      buttons: [
+        "paragraph",
+        "font",
+        "fontsize",
+        "brush",
+        "|",
+        "bold",
+        "italic",
+        "underline",
+        "|",
+        "ul",
+        "ol",
+        "|",
+        "link",
+        "image",
+        "table",
+        "|",
+        "align",
+        "undo",
+        "redo",
+        "|",
+        "hr",
       ],
-      default: "Arial",
-    },
-    fontsize: {
-      options: ["8", "10", "12", "14", "16", "18", "24", "30", "36", "48"],
-      default: "14",
-    },
-    theme: "forsico",
-    spellcheck: true,
-    showCharsCounter: false,
-    showWordsCounter: false,
-    showXPathInStatusbar: false,
-    placeholder: "Type here...",
-  };
+      readonly: false,
+      toolbar: true,
+      height: minHeight,
+      addNewLine: false,
+      toolbarAdaptive: false,
+      uploader: {
+        insertImageAsBase64URI: true,
+      },
+      font: {
+        options: [
+          "Arial",
+          "Georgia",
+          "Impact",
+          "Tahoma",
+          "Times New Roman",
+          "Verdana",
+        ],
+        default: "Arial",
+      },
+      fontsize: {
+        options: ["8", "10", "12", "14", "16", "18", "24", "30", "36", "48"],
+        default: "14",
+      },
+      theme: "forsico",
+      spellcheck: true,
+      showCharsCounter: false,
+      showWordsCounter: false,
+      showXPathInStatusbar: false,
+      placeholder: "Type here...",
+    }),
+    []
+  );
 
   return (
     <div className="editor-container">
@@ -158,7 +172,12 @@ const TEditor = ({ minHeight, saveCallback, cancelCallback }) => {
         ref={editor}
         value={content}
         config={config}
-        onBlur={(newContent) => setContent(newContent)}
+        onBlur={(newContent) => {
+          setContent(newContent);
+          setTimeout(() => {
+            setEditingMode(false);
+          }, 400);
+        }}
       />
       {isDropdownOpen && (
         <div

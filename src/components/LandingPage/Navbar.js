@@ -4,9 +4,9 @@ import SignUpModal from "../Auth/SignUpModal";
 import ForgotPasswordModal from "../Auth/ForgotPasswordModal";
 import Button from "npm-forsico-ui/dist/Button";
 import Dropdown from "npm-forsico-ui/dist/Dropdown";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-import "../../styles/navbar.css"; 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import "../../styles/navbar.css";
 import { Link } from "react-router-dom";
 import ForsicoLogoWhite from "../../assets/forsico-logo-white.svg";
 import HasNotificationIcon from "../../assets/has-notification-icon.svg";
@@ -17,6 +17,7 @@ import { logout } from "../../store/authSlice";
 import { debounce } from "lodash";
 import { RotatingLines } from "react-loader-spinner";
 import flag from "../../assets/flag.svg";
+import UserAvatar from "../WorkspaceAndBoard/UserAvatar";
 
 import {
   fetchNotifications,
@@ -334,15 +335,21 @@ const Navbar = () => {
   ];
 
   return (
-
-
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
+        <Link className="navbar-brand logo" to="/">
+          <img src={ForsicoLogoWhite}></img>
+        </Link>
 
-        <Link className="navbar-brand logo" to="/"><img src={ForsicoLogoWhite}></img></Link>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -355,22 +362,46 @@ const Navbar = () => {
                 ) : (
                   <ul class="navbar-nav leftside-buttons">
                     <li class="nav-item">
-                      <a class="nav-link active" aria-current="page" href="#">Home</a>
+                      <a class="nav-link active" aria-current="page" href="#">
+                        Home
+                      </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Features</a>
+                      <a class="nav-link" href="#">
+                        Features
+                      </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Pricing</a>
+                      <a class="nav-link" href="#">
+                        Pricing
+                      </a>
                     </li>
                     <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
                         Dropdown link
                       </a>
                       <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        <li>
+                          <a class="dropdown-item" href="#">
+                            Action
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">
+                            Another action
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">
+                            Something else here
+                          </a>
+                        </li>
                       </ul>
                     </li>
                   </ul>
@@ -426,7 +457,8 @@ const Navbar = () => {
                             onScroll={handleSearchScroll}
                             ref={searchDropdownRef}
                           >
-                            {searchResults?.length <= 0 || searchQuery.length < 3 ? (
+                            {searchResults?.length <= 0 ||
+                            searchQuery.length < 3 ? (
                               <div className="is-empty-search">
                                 {searchResultsStatus === "loading" ? (
                                   <div>
@@ -520,7 +552,9 @@ const Navbar = () => {
                           className="notification-dropdown-header"
                           onClick={handleMarkAllAsRead}
                         >
-                          <p className="mark-all-as-read-button">Mark all as read!</p>
+                          <p className="mark-all-as-read-button">
+                            Mark all as read!
+                          </p>
                         </div>
                         {notifications?.map((notification) => (
                           <Link
@@ -548,20 +582,27 @@ const Navbar = () => {
                             >
                               <div className="notification-container">
                                 <div className="notification-header">
-                                  <img
-                                    className="notification-image"
-                                    src={notification?.user?.profilePicture}
-                                  ></img>
-                                  <div className="notification-header-text">
-                                    {notification.message?.split("::=>")[0].trim()}
+                                  <UserAvatar
+                                    firstName={notification?.user?.firstName}
+                                    lastName={notification?.user?.lastName}
+                                    profilePicture={
+                                      notification?.user?.profilePicture
+                                    }
+                                    size="50"
+                                  />
+
+                                  <div className="notification-header-text ms-3">
+                                    {notification.message
+                                      ?.split("::=>")[0]
+                                      .trim()}
                                   </div>
                                 </div>
                                 <div className="notification-content">
                                   {notification.message?.includes("::=>")
                                     ? notification.message
-                                      ?.split("::=>")
-                                      .slice(-1)[0]
-                                      ?.trim()
+                                        ?.split("::=>")
+                                        .slice(-1)[0]
+                                        ?.trim()
                                     : ""}
                                 </div>
                               </div>
@@ -598,12 +639,17 @@ const Navbar = () => {
                         type="checkbox"
                       ></input>
                       <label htmlFor="profile-dropdown-toggler">
-                        <img
-                          className="navbar-profile-image"
-                          src={userInfo?.profilePictureUrl || ""}
-                        ></img>
+                        <UserAvatar
+                          firstName={userInfo?.firstName}
+                          lastName={userInfo?.lastName}
+                          profilePicture={userInfo.profilePictureUrl}
+                          size="50"
+                        />
                       </label>
-                      <div className="profile-dropdown" ref={profileDropdownRef}>
+                      <div
+                        className="profile-dropdown"
+                        ref={profileDropdownRef}
+                      >
                         <li>
                           <Link className="go-profile" to="/workspaces/profile">
                             My Profile
@@ -615,7 +661,10 @@ const Navbar = () => {
                           </Link>
                         </li>
                         <li>
-                          <Link className="go-profile" to="/workspaces/invitations">
+                          <Link
+                            className="go-profile"
+                            to="/workspaces/invitations"
+                          >
                             My Invitations
                           </Link>
                         </li>
@@ -702,7 +751,6 @@ const Navbar = () => {
           }}
         />
       )}
-
     </nav>
   );
 };

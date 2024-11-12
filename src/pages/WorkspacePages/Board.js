@@ -3,20 +3,20 @@ import TaskList from "../../components/WorkspaceAndBoard/TaskList";
 import VectorIcon from "../../assets/Vector.png";
 import MembersIcon from "../../assets/memberIcon.svg";
 import ShareIcon from "../../assets/shareIcon.svg";
-import FilterBoardIcon from "../../assets/filterBoard.svg";
 import AiIcon from "../../assets/aiIcon.svg";
 import shareCopyIcon from "../../assets/shareCopyIcon.svg";
 import AddMemberIcon from "../../assets/addMemberIcon.svg";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/workspaceCss/board.css";
 import { fetchBoard, updateStatus } from "../../store/boardSlice";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import CreateListModal from "../../components/WorkspaceAndBoard/CreateListModal";
 import InviteTeamModal from "../../components/WorkspaceAndBoard/InviteTeamModal";
 import { RotatingLines } from "react-loader-spinner";
 import TaskApi from "../../api/BoardApi/task.js";
-import { TailSpin } from 'react-loader-spinner';
+import { TailSpin } from "react-loader-spinner";
 import TaskModal from "../../components/WorkspaceAndBoard/TaskModal";
+import UserAvatar from "../../components/WorkspaceAndBoard/UserAvatar.js";
 
 function Board() {
   const [windowSize, setWindowSize] = useState([
@@ -29,13 +29,16 @@ function Board() {
     status = "idle",
     error,
   } = useSelector((state) => state.board || {});
-  
+
   const { workspaceId, boardId } = useParams();
   const ownerId = useSelector((state) => state.auth.user.id || "");
   const _listId = useSelector((state) =>
-    state?.board?.entities?.lists ? state?.board?.entities?.lists[0]?._id || "" : ""
+    state?.board?.entities?.lists
+      ? state?.board?.entities?.lists[0]?._id || ""
+      : ""
   );
   const token = useSelector((state) => state.auth.token.token || "");
+  const userId = useSelector((state) => state.auth.user.id || "");
   const [isFetchingTasks, setIsFetchingTasks] = useState(false);
   const memberModalRef = useRef(null);
   const shareModalRef = useRef(null);
@@ -46,6 +49,22 @@ function Board() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isAddMemberModalOpen, setAddMemberModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.search.includes("selectedTask")) {
+      setTaskId(
+        location.search
+          .split("selectedTask=")
+          .slice(-1)[0]
+          .split("&")[0]
+          .split("#")[0]
+      );
+      setIsTaskModalOpen(true);
+    } else {
+      setIsTaskModalOpen(false);
+    }
+  }, [location.pathname]);
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
@@ -53,7 +72,6 @@ function Board() {
     setIsLoading(true);
     dispatch(updateStatus({ status: "idle" }));
   }, [boardId]);
-
 
   useEffect(() => {
     if (status === "idle") {
@@ -69,10 +87,16 @@ function Board() {
   }, []);
 
   const handleClickOutside = (event) => {
-    if (memberModalRef.current && !memberModalRef.current.contains(event.target)) {
+    if (
+      memberModalRef.current &&
+      !memberModalRef.current.contains(event.target)
+    ) {
       setIsModalOpen(false);
     }
-    if (shareModalRef.current && !shareModalRef.current.contains(event.target)) {
+    if (
+      shareModalRef.current &&
+      !shareModalRef.current.contains(event.target)
+    ) {
       setIsShareModalOpen(false);
     }
   };
@@ -105,39 +129,42 @@ function Board() {
         ownerId: ownerId,
         assignee: ownerId,
       });
-      if(createTaskRes.status){
-        setIsFetchingTasks(false)
-        setTaskId(createTaskRes.data._id)
-        setIsTaskModalOpen(true)
-        dispatch(fetchBoard({ workspaceId, boardId }))
+      if (createTaskRes.status) {
+        setIsFetchingTasks(false);
+        setTaskId(createTaskRes.data._id);
+        setIsTaskModalOpen(true);
+        dispatch(fetchBoard({ workspaceId, boardId }));
       }
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
   return (
     <div className="board-page">
       <div className="board-header">
-        <div className="board-title">
-        {isLoading ? (
-            <h1></h1>
-          ) : (
-            <h1>{board?.name}</h1>
+        {!isLoading ? (
+          <>
+            <div className="board-title">
+              <h1>{board?.name}</h1>
+            </div>
+            <div className="board-button-group ms-3">
+              <div className="board-ai">
+                <Link to={`/workspaces/ai/${workspaceId}`}>
+                  <img src={AiIcon} alt="AI" />
+                </Link>
+              </div>
+              <div className="board-members" onClick={toggleModal}>
+                <img src={MembersIcon} alt="Members" />
+              </div>
+              <div
+                className="board-share"
+                onClick={() => setIsShareModalOpen(!isShareModalOpen)}
+              >
+                <img src={ShareIcon} alt="Share" />
+              </div>
+            </div>
+          </>
+        ) : (
+          ""
         )}
-        </div>
-        <div className="board-button-group">
-          <div className="board-ai">
-            <Link to={`/workspaces/ai/${workspaceId}`}>
-              <img src={AiIcon} alt="AI" />
-            </Link>
-          </div>
-          <div className="board-members" onClick={toggleModal}>
-            <img src={MembersIcon} alt="Members" />
-          </div>
-          <div className="board-share" onClick={() => setIsShareModalOpen(!isShareModalOpen)}>
-            <img src={ShareIcon} alt="Share" />
-          </div>
-        </div>
 
         {isModalOpen && (
           <div className="member-modal" ref={memberModalRef}>
@@ -151,7 +178,12 @@ function Board() {
             <div className="member-modal-content">
               {entities?.members.map((member) => (
                 <div className="member" key={member._id}>
-                  <img src={member?.profilePicture} alt="Member" />
+                  <UserAvatar
+                    firstName={member?.firstName}
+                    lastName={member?.lastName}
+                    profilePicture={member.profilePicture}
+                  />
+
                   <span>
                     {member.firstName} {member.lastName}
                   </span>
@@ -178,11 +210,20 @@ function Board() {
                     className="share-link-input"
                     ref={linkInputRef}
                   />
-                  <button className="share-copy-button" onClick={handleCopyClick}>
-                    <img src={shareCopyIcon} alt="Copy" className="share-copy-icon" />
+                  <button
+                    className="share-copy-button"
+                    onClick={handleCopyClick}
+                  >
+                    <img
+                      src={shareCopyIcon}
+                      alt="Copy"
+                      className="share-copy-icon"
+                    />
                   </button>
                 </div>
-                {copySuccess && <span className="share-copy-success">Copied!</span>}
+                {copySuccess && (
+                  <span className="share-copy-success">Copied!</span>
+                )}
               </div>
             </div>
           </div>
@@ -191,7 +232,13 @@ function Board() {
 
       {isLoading ? (
         <div className="loader-container">
-          <RotatingLines height="40" width="40" radius="9" strokeColor="#36C5F0" ariaLabel="loading" />
+          <RotatingLines
+            height="40"
+            width="40"
+            radius="9"
+            strokeColor="#36C5F0"
+            ariaLabel="loading"
+          />
         </div>
       ) : (
         <div className="board-container scrollbar-hide">
@@ -200,21 +247,38 @@ function Board() {
             {entities?.lists?.length > 0 ? (
               <>
                 {entities.lists.map((list, index) => (
-                  <TaskList key={index} list={list} colIndex={list._id} workspaceId={workspaceId} boardId={boardId} />
+                  <TaskList
+                    key={index}
+                    list={list}
+                    colIndex={list._id}
+                    workspaceId={workspaceId}
+                    boardId={boardId}
+                  />
                 ))}
-                <div onClick={() => setIsListModalOpen(true)} className="new-column-button">
+                <div
+                  onClick={() => setIsListModalOpen(true)}
+                  className="new-column-button"
+                >
                   <img src={VectorIcon} alt="New Column" />
                 </div>
               </>
             ) : (
-              <div onClick={() => setIsListModalOpen(true)} className="new-column-button">
+              <div
+                onClick={() => setIsListModalOpen(true)}
+                className="new-column-button"
+              >
                 <img src={VectorIcon} alt="New Column" />
               </div>
             )}
             {isListModalOpen && (
-              <CreateListModal onClose={() => setIsListModalOpen(false)} workspaceId={workspaceId} boardId={boardId} />
+              <CreateListModal
+                onClose={() => setIsListModalOpen(false)}
+                workspaceId={workspaceId}
+                boardId={boardId}
+              />
             )}
-            <button className="add-task-button" onClick={()=> handleAddTask()} >{isFetchingTasks ? (
+            <button className="add-task-button" onClick={() => handleAddTask()}>
+              {isFetchingTasks ? (
                 <TailSpin
                   height="25"
                   width="25"
@@ -223,12 +287,21 @@ function Board() {
                 />
               ) : (
                 "Add Task +"
-              )}</button>
+              )}
+            </button>
           </div>
         </div>
       )}
 
-      {isAddMemberModalOpen && <InviteTeamModal onClose={() => setAddMemberModalOpen(false)} />}
+      {isAddMemberModalOpen && (
+        <InviteTeamModal
+          onClose={() => setAddMemberModalOpen(false)}
+          workspaceId={workspaceId}
+          boardId={boardId}
+          token={token}
+          userId={userId}
+        />
+      )}
       {isTaskModalOpen && (
         <TaskModal
           listId={_listId}

@@ -89,7 +89,10 @@ class Task {
     };
 
     try {
-      const response = await fetch(`${config.boardApiBaseUrl}/task`, requestOptions);
+      const response = await fetch(
+        `${config.boardApiBaseUrl}/task`,
+        requestOptions
+      );
       const result = await response.json();
       return result;
     } catch (error) {
@@ -187,18 +190,17 @@ class Task {
     }
   }
 
-
   async getTaskStatus(token, workspaceId, boardId) {
     const myHeaders = new Headers();
     myHeaders.append("x-workspace-id", workspaceId);
     myHeaders.append("Authorization", `Bearer ${token}`);
-  
+
     const requestOptions = {
       method: "GET",
       headers: myHeaders,
       redirect: "follow",
     };
-  
+
     try {
       const response = await fetch(
         `${config.boardApiBaseUrl}/taskstatus/board/${boardId}`,
@@ -216,13 +218,13 @@ class Task {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${token}`);
     myHeaders.append("x-workspace-id", workspaceId);
-  
+
     const requestOptions = {
       method: "GET",
       headers: myHeaders,
       redirect: "follow",
     };
-  
+
     try {
       const response = await fetch(
         `${config.boardApiBaseUrl}/comment/task/${taskId}/comments`,
@@ -241,19 +243,19 @@ class Task {
     myHeaders.append("Authorization", `Bearer ${token}`);
     myHeaders.append("x-workspace-id", workspaceId);
     myHeaders.append("Content-Type", "application/json");
-  
+
     const raw = JSON.stringify({
       content: content,
       fileUrls: fileUrls,
     });
-  
+
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
       redirect: "follow",
     };
-  
+
     try {
       const response = await fetch(
         `${config.boardApiBaseUrl}/comment/task/${taskId}/comment`,
@@ -267,7 +269,67 @@ class Task {
     }
   }
 
-  
+  async changeAssignee(token, workspaceId, taskId, newAssigneeId) {
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${token}`);
+    myHeaders.append("x-workspace-id", workspaceId);
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      newAssigneeId: newAssigneeId,
+    });
+
+    const requestOptions = {
+      method: "PATCH",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch(
+        `${config.boardApiBaseUrl}/task/changeAssignee/${taskId}`,
+        requestOptions
+      );
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Error changing task assignee:", error);
+      throw error;
+    }
+  }
+
+  async changeTaskBoard(token, workspaceId, taskId, newData) {
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${token}`);
+    myHeaders.append("x-workspace-id", workspaceId);
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      newBoardId: newData.boardId,
+      newListId: newData.listId,
+    });
+
+    const requestOptions = {
+      method: "PATCH",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch(
+        `${config.boardApiBaseUrl}/task/changeBoard/${taskId}`,
+        requestOptions
+      );
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("Error changing task board:", error);
+      throw error;
+    }
+  }
+
   async searchTasks(token, workspaceIds, query, page = 1, limit = 10) {
     const myHeaders = new Headers();
     myHeaders.append("x-workspace-id", workspaceIds[0]);

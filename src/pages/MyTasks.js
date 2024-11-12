@@ -61,7 +61,7 @@ function MyTasks() {
           <h1>My Tasks</h1>
         </div>
 
-        <div className="board-button-group">
+        <div className="board-button-group ms-3">
           <div className="board-share">
             <img src={ShareIcon} alt="Share" />
           </div>

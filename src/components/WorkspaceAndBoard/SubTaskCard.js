@@ -5,11 +5,18 @@ import { useSelector } from "react-redux";
 
 import miniCalendar from '../../assets/mini-calendar.svg';
 import people from '../../assets/people-blue.svg';
-import flag from '../../assets/flag.svg';
+
+import UrgentFlag from "../../assets/redFlag.svg";
+import HighFlag from "../../assets/blueFlag.svg";
+import NormalFlag from "../../assets/taskcard-info-priority.svg";
 
 function SubTaskCard({listId, taskId, subtask, workspaceId, boardId, color }) { // subtask'ı prop olarak alıyoruz
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-
+  const priorityOptions = [
+    { label: "Urgent", icon: UrgentFlag, index: 0 },
+    { label: "High", icon: HighFlag, index: 1 },
+    { label: "Normal", icon: NormalFlag, index: 2 },
+  ];
   const handleOnDrag = (e) => {
     e.dataTransfer.setData(
       "text",
@@ -32,7 +39,7 @@ function SubTaskCard({listId, taskId, subtask, workspaceId, boardId, color }) { 
           <div className="subtask-content">
             <p className="subtask-title">{subtask?.name}</p> {/* subtask başlığını kullanıyoruz */}
             <div className="subtask-extra">
-              <img src={flag} alt="Flag icon" />
+              <img src={priorityOptions[subtask?.priority]?.icon} alt="Flag icon" />
             </div>
           </div>
           <div className="subtask-divider"></div>

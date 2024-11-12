@@ -5,6 +5,7 @@ import DoughnutChart from "../DoughnutChart";
 import BarChart from "../BarChart";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMyTasks } from "../../store/myTasksSlice";
+import UserAvatar from "../../components/WorkspaceAndBoard/UserAvatar.js";
 
 const HomePage = () => {
   const [percentageForCompletedTasks, setPercentageForCompletedTasks] =
@@ -139,13 +140,8 @@ const HomePage = () => {
                       </div>
                       <div className="workspace-card-lowerside">
                         <div className="members-image">
-                          {/* Placeholder for member images */}
                           {board.members.map((member) => (
-                            <img
-                              className="member-image"
-                              src={member.profilePicture}
-                              alt="member"
-                            />
+                             <UserAvatar firstName={member?.firstName} lastName={member?.lastName} profilePicture={member.profilePicture}/>
                           ))}
                         </div>
                         <span className="total-members">

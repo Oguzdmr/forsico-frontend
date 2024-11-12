@@ -128,11 +128,11 @@ body {
 .introduction-card-icon{
     margin-top: 40px;
     width: 442px;
-    height: 282px;
+    height: 280px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transform: translate(454px);
+    /* transform: translate(454px); */
 
 }
 
@@ -147,7 +147,7 @@ body {
 
 .introduction-card-icon {
     position: relative;
-    animation: moveIcon 10s infinite; /* Toplam 8 saniyelik döngü */
+    /*animation: moveIcon 10s infinite;  Toplam 8 saniyelik döngü */
 }
 
 /* Animasyon tanımı */

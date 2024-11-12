@@ -6,7 +6,7 @@ export const fetchBoard = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     const token = getState().auth?.token?.token;
     const board = new BoardApi();
-
+    console.log("FETCH BOARD CALLED");
     try {
       const response = await board.getBoard(token, _.workspaceId, _.boardId);
       return response.data;
