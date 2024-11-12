@@ -98,7 +98,7 @@ const Navbar = () => {
   }, [notifications]);
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://localhost:8445`);
+    const socket = new WebSocket(`wss://${window.location.host}:8445`);
 
     socket.onopen = () => {
       console.log("WebSocket bağlantısı kuruldu.");
